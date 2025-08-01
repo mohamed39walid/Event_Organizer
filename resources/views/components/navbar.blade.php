@@ -2,9 +2,9 @@
     <div class="flex flex-wrap justify-between items-center gap-4 max-w-7xl mx-auto">
         <a href="{{ route('home') }}" class="flex items-center gap-3 text-xl sm:text-2xl font-bold">
             <div class="bg-white dark:bg-dark-surface p-2 rounded-full shadow">
-                <img src="{{ asset('images/logo.png') }}" alt="Event Hub Logo"
+                <img src="{{ asset('images/logo.webp') }}" alt="Event Hub Logo"
                     class="w-8 h-8 object-contain dark:hidden" />
-                <img src="{{ asset('images/logo-dark.png') }}" alt="Event Hub Logo (Dark)"
+                <img src="{{ asset('images/logo-dark.webp') }}" alt="Event Hub Logo (Dark)"
                     class="w-8 h-8 object-contain hidden dark:block" />
             </div>
             <span class="tracking-wide font-heading">Event Hub</span>
