@@ -28,7 +28,7 @@
 
 
 
-    <main class="h-[calc(100vh-132px)] w-full ">
+    <main class="h-[calc(100vh-140px)] w-full ">
         @yield('main')
     </main>
 
