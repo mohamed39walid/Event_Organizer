@@ -41,7 +41,7 @@
 
         <div
             class="bg-surface dark:bg-dark-surface w-sm h-[600px] text-white flex justify-center rounded-r-2xl overflow-hidden">
-            <img src="{{ asset('images/register.png') }}" class="w-full h-full object-cover rounded-r-2xl"
+            <img src="{{ asset('images/register.webp') }}" class="w-full h-full object-cover rounded-r-2xl"
                 alt="Register Image">
         </div>
     </div>
