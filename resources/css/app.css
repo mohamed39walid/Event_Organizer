@@ -4,34 +4,33 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-    --font-heading: "Space Grotesk", sans-serif; /* Headlines / Logo */
-    --font-sans: "Inter", sans-serif; /* Body Text / UI */
-    --font-poppins: "Poppins", sans-serif; /* Buttons / Badges */
-    --font-manrope: "Manrope", sans-serif; /* Paragraphs / Details */
-    --font-urbanist: "Urbanist", sans-serif; /* Sections / UI Areas */
-    --font-instrument: "Instrument Sans", sans-serif; /* Hero / Subheaders */
+    --font-heading: "Space Grotesk", sans-serif;       /* Headlines / Logo */
+    --font-sans: "Inter", sans-serif;                  /* Body Text / UI */
+    --font-poppins: "Poppins", sans-serif;             /* Buttons / Badges */
+    --font-manrope: "Manrope", sans-serif;             /* Paragraphs / Details */
+    --font-urbanist: "Urbanist", sans-serif;           /* Sections / UI Areas */
+    --font-instrument: "Instrument Sans", sans-serif;  /* Hero / Subheaders */
 
-    --color-accent: #0e487a; /* CTAs, links */
-    --color-accent-hover: #022a4c; /* Hover for accent */
+    --color-accent: #0e487a;          /* CTAs, links */
+    --color-accent-hover: #022a4c;    /* Hover for accent */
 
     /* === Light Theme Colors === */
-    --color-primary: #171717; /* Main text */
-    --color-secondary: #2d2d2d; /* Headings */
-    --color-muted: #6b7280; /* Subtle text */
-    --color-border: #d1d5db; /* Dividers / inputs */
-    --color-bg: #f9fafb; /* Page background */
-    --color-surface: #f3f4f6; /* Cards / panels */
-    --color-white: #ffffff; /* White */
-    --color-error: #dc2626; /* Danger */
-    --color-success: #16a34a; /* Success */
-    --color-info: #2563eb; /* Info */
+    --color-primary: #171717;         /* Main text */
+    --color-secondary: #2d2d2d;       /* Headings */
+    --color-muted: #6b7280;           /* Subtle text */
+    --color-border: #d1d5db;          /* Dividers / inputs */
+    --color-bg: #f9fafb;              /* Page background */
+    --color-surface: #f3f4f6;         /* Cards / panels */
+    --color-error: #dc2626;           /* Danger */
+    --color-success: #16a34a;         /* Success */
+    --color-info: #2563eb;            /* Info */
 
     /* === Dark Theme Colors === */
     --color-dark-primary: #f9fafb;
@@ -39,9 +38,23 @@
     --color-dark-muted: #9ca3af;
     --color-dark-border: #3f3f46;
     --color-dark-bg: #121212;
-    --color-dark-surface: #1f2937;
-    --color-dark-white: #f9fafb;
+    --color-dark-surface: #171717;
     --color-dark-error: #ef4444;
     --color-dark-success: #10b981;
     --color-dark-info: #3b82f6;
+}
+
+/* === Enhanced Text Selection Styling === */
+::selection {
+    background-color: var(--color-accent, #0e487a);
+    color: white;
+    text-shadow: none;
+    transition: background-color 0.2s ease;
+}
+
+.dark ::selection {
+    background-color: var(--color-dark-info, #3b82f6);
+    color: black;
+    text-shadow: none;
+    transition: background-color 0.2s ease;
 }
