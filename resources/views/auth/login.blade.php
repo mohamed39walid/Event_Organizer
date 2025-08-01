@@ -4,7 +4,7 @@
     <div class="h-full flex justify-center items-center px-4">
         <div
             class="bg-surface dark:bg-dark-surface w-sm h-[600px] text-white flex justify-center rounded-l-2xl overflow-hidden">
-            <img src="{{ asset('images/login.png') }}" class="w-full h-full object-cover rounded-l-2xl" alt="Login Image">
+            <img src="{{ asset('images/login.webp') }}" class="w-full h-full object-cover rounded-l-2xl" alt="Login Image">
         </div>
 
         <div class="bg-surface dark:bg-dark-surface w-lg h-[600px] text-white py-10 rounded-r-2xl flex flex-col">
