@@ -1,57 +1,66 @@
 <nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md">
-    <div class="flex justify-between items-center">
-        <!-- Logo & Navigation -->
-        <ul class="flex items-center space-x-6">
+    <div class="flex flex-wrap justify-between items-center gap-4 max-w-7xl mx-auto">
+        <a href="/" class="flex items-center gap-3 text-xl sm:text-2xl font-bold">
+            <div class="bg-white dark:bg-dark-surface p-2 rounded-full shadow">
+                <img src="{{ asset('images/logo.png') }}" alt="Event Hub Logo"
+                    class="w-8 h-8 object-contain dark:hidden" />
+                <img src="{{ asset('images/logo-dark.png') }}" alt="Event Hub Logo (Dark)"
+                    class="w-8 h-8 object-contain hidden dark:block" />
+            </div>
+            <span class="tracking-wide">Event Hub</span>
+        </a>
 
-            <li class="">
-                <a href="/"
-                    class="text-accent hover:text-accent-hover font-bold text-4xl flex justify-center items-center">
-                    <div class="bg-white rounded-full p-2 mr-3">
-                        <img src="{{ asset('images/logo.png') }}" alt="logo" class="w-8 h-auto">
-                    </div>
-                    <p>
-                        Event Hub
-                    </p>
-                </a>
-            </li>
-
-
+        <div class="flex items-center gap-6 flex-wrap text-base font-medium">
             @auth
-                @if (auth()->user()->role === 'user')
-                    <li><a href="/events" class="hover:underline">Events</a></li>
-                    <li><a href="/my-tickets" class="hover:underline">My Tickets</a></li>
-                @elseif(auth()->user()->role === 'speaker')
-                    <li><a href="/events" class="hover:underline">Events</a></li>
-                    <li><a href="/proposals" class="hover:underline">Proposals</a></li>
-                @elseif(auth()->user()->role === 'organizer')
-                    <li><a href="/my-events" class="hover:underline">My Events</a></li>
-                    <li><a href="/choose-speakers" class="hover:underline">Choose Speakers</a></li>
-                @endif
+                @switch(auth()->user()->role)
+                    @case('user')
+                        <a href="/events"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
+                        <a href="/my-tickets"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Tickets</a>
+                    @break
 
-                <li><a href="/profile" class="hover:underline">Profile</a></li>
-                <li>
-                    <form action="/logout" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="hover:underline">Logout</button>
-                    </form>
-                </li>
+                    @case('speaker')
+                        <a href="/events"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
+                        <a href="/proposals"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Proposals</a>
+                    @break
+`
+                    @case('organizer')
+                        <a href="/my-events"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Events</a>
+                        <a href="/choose-speakers"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Choose
+                            Speakers</a>
+                    @break
+                @endswitch
+
+                <a href="/profile"
+                    class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Profile</a>
+                <form action="/logout" method="POST" class="inline">
+                    @csrf
+                    <button type="submit"
+                        class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Logout</button>
+                </form>
             @endauth
 
             @guest
-                <li><a href="/login" class="hover:underline">Login</a></li>
+                <a href="/login"
+                    class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Login</a>
             @endguest
-        </ul>
 
-        {{-- Theme Toggle Button --}}
-        <button onclick="toggleTheme()"
-            class="inline-flex items-center cursor-pointer gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white dark:bg-white dark:text-primary dark:hover:bg-gray-200 rounded-full shadow transition duration-200">
-            <i class="fas fa-adjust"></i>
-            <span class="hidden sm:inline">Toggle Theme</span>
-        </button>
+            <button onclick="toggleTheme()"
+                class="ml-2 inline-flex items-center gap-2 cursor-pointer px-4 py-2 bg-primary hover:bg-primary/90 text-white dark:bg-white dark:text-primary dark:hover:bg-gray-200 rounded-full shadow transition">
+                <i class="fas fa-moon"></i>
+                <span class="hidden sm:inline">Theme</span>
+            </button>
+        </div>
     </div>
 </nav>
 
-{{-- Theme Script --}}
+
+
 <script>
     if (
         localStorage.getItem('theme') === 'dark' ||
