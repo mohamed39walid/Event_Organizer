@@ -13,6 +13,7 @@
                 class="flex flex-col justify-center items-center h-full space-y-6 px-10 w-full">
                 @csrf
 
+                
                 <label for="email" class="block w-full dark:text-dark-primary text-primary">
                     Email
                     <input id="email" name="email" type="email" required
