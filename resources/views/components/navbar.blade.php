@@ -78,6 +78,11 @@
                 Test Not Found Page
             </a>
 
+            <a href="{{ route('adminDashboard') }}"
+                class="ml-2 inline-flex items-center gap-2 cursor-pointer px-4 py-2 bg-primary hover:bg-primary/90 text-white dark:bg-dark-primbg-primary dark:hover:bg-dark-primbg-primary/90 rounded-full shadow transition">
+                Admin
+            </a>
+
         </div>
     </div>
 </nav>
