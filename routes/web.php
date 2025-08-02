@@ -54,3 +54,8 @@ Route::get('/create-proposal', function () {
 Route::get('/choose-speakers', function () {
     return view('pages.choose-speakers');
 })->name('choose-speakers');
+
+
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+})->name('adminDashboard');

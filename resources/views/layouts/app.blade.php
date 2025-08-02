@@ -15,7 +15,6 @@
 
 <body class="bg-bg dark:bg-dark-bg text-gray-900 dark:text-white font-sans leading-relaxed">
 
-    {{-- Flash Messages --}}
     @if (session('success'))
         <div class="py-3 bg-success dark:bg-dark-success text-white flex items-center justify-center gap-2">
             <i class="fas fa-check-circle text-white"></i>
@@ -32,9 +31,10 @@
 
 
 
-    <main class="h-[calc(100vh-140px)] w-full ">
+    <main>
         @yield('main')
     </main>
+
 
     <x-footer />
 

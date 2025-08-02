@@ -1,48 +1,73 @@
 @extends('layouts.app')
 
 @section('main')
-    <div class="h-full flex justify-center items-center px-4">
+    <div
+        class="min-h-[calc(100vh-140px)] flex flex-col lg:flex-row items-center justify-center px-4 py-10 bg-background text-foreground dark:bg-dark-background dark:text-dark-foreground">
 
-        <div class="bg-surface dark:bg-dark-surface w-lg h-[600px] text-white py-10 rounded-l-2xl flex flex-col">
-            <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold text-center mb-10">Register
+        <div class="bg-surface dark:bg-dark-surface w-full min-h-[700px] max-w-lg rounded-l-2xl shadow-lg p-8">
+            <h1 class="text-secondary dark:text-dark-secondary font-heading text-4xl md:text-5xl font-bold text-center">
+                Register
             </h1>
 
-            <form method="POST" action="{{ route('register') }}"
-                class="flex flex-col justify-center items-center h-full space-y-5 px-10 w-full">
+            <form method="POST" action="{{ route('register') }}" class="space-y-5 flex flex-col justify-center h-full">
                 @csrf
 
-                <label for="name" class="block w-full dark:text-dark-primary text-primary">
-                    Name
-                    <input id="name" name="name" type="name"
-                        class="mt-2 w-full rounded-md border border-gray-300 p-3" />
-                </label>
+                <div>
+                    <label for="name" class="block text-sm font-medium text-primary dark:text-dark-primary">Name</label>
+                    <input id="name" name="name" type="text" placeholder="Your full name"
+                        class="mt-2 w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary @error('name') border-error dark:border-dark-error @else border-gray-300 @enderror" />
+                    @error('name')
+                        <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                <label for="email" class="block w-full dark:text-dark-primary text-primary">
-                    Email
-                    <input id="email" name="email" type="email"
-                        class="mt-2 w-full rounded-md border border-gray-300 p-3" />
-                </label>
+                <div>
+                    <label for="email"
+                        class="block text-sm font-medium text-primary dark:text-dark-primary">Email</label>
+                    <input id="email" name="email" type="email" placeholder="you@example.com"
+                        class="mt-2 w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary @error('email') border-error dark:border-dark-error @else border-gray-300 @enderror" />
+                    @error('email')
+                        <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                <label for="password" class="block w-full dark:text-dark-primary text-primary">
-                    Password
-                    <input id="password" name="password" type="password"
-                        class="mt-2 w-full rounded-md border border-gray-300 p-3" />
-                </label>
+                <!-- Password -->
+                <div>
+                    <label for="password"
+                        class="block text-sm font-medium text-primary dark:text-dark-primary">Password</label>
+                    <input id="password" name="password" type="password" placeholder="Enter password"
+                        class="mt-2 w-full rounded-md border p-3 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary @error('password') border-error dark:border-dark-error @else border-gray-300 @enderror" />
+                    @error('password')
+                        <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                <input type="submit" value="Register"
-                    class="cursor-pointer border rounded-full py-3 w-1/2 text-xl font-bold text-dark-primary dark:text-primary hover:text-primary hover:dark:text-dark-primary bg-primary dark:bg-dark-primary hover:bg-transparent transition-all duration-300" />
+                <div>
+                    <label for="password_confirmation"
+                        class="block text-sm font-medium text-primary dark:text-dark-primary">
+                        Confirm Password
+                    </label>
+                    <input id="password_confirmation" name="password_confirmation" type="password"
+                        placeholder="Confirm password"
+                        class="mt-2 w-full rounded-md border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary" />
+                </div>
 
-                <p class="text-muted dark:text-dark-muted text-center mt-4">
-                    Do have an account?
+                <div class="text-center">
+                    <button type="submit"
+                        class="w-full md:w-1/2 rounded-full py-3 text-lg font-semibold text-dark-primary dark:text-primary bg-primary dark:bg-dark-primary hover:bg-transparent hover:text-primary hover:dark:text-dark-primary border border-primary dark:border-dark-primary transition-all duration-300">
+                        Register
+                    </button>
+                </div>
+
+                <p class="text-sm text-muted dark:text-dark-muted text-center mt-4">
+                    Already have an account?
                     <a class="text-accent hover:text-accent-hover underline" href="{{ route('login') }}">Login</a>
                 </p>
             </form>
         </div>
 
-        <div
-            class="bg-surface dark:bg-dark-surface w-sm h-[600px] text-white flex justify-center rounded-r-2xl overflow-hidden">
-            <img src="{{ asset('images/register.webp') }}" class="w-full h-full object-cover rounded-r-2xl"
-                alt="Register Image">
-        </div>
+        <img src="{{ asset('images/register.webp') }}" alt="Register Image"
+            class="object-cover  w-full min-h-[700px] max-w-md rounded-r-2xl hidden lg:block">
+
     </div>
 @endsection
