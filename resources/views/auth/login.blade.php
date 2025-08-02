@@ -1,29 +1,34 @@
 @extends('layouts.app')
 
 @section('main')
-    <div class="h-full flex justify-center items-center px-4">
-        <div
-            class="bg-surface dark:bg-dark-surface w-sm h-[600px] text-white flex justify-center rounded-l-2xl overflow-hidden">
-            <img src="{{ asset('images/login.webp') }}" class="w-full h-full object-cover rounded-l-2xl" alt="Login Image">
-        </div>
+    <div class="min-h-[calc(100vh-140px)] flex justify-center items-center px-4">
+        <img src="{{ asset('images/login.webp') }}"
+            class="object-cover w-full min-h-[600px] max-w-sm rounded-l-2xl hidden lg:block" alt="Login Image">
 
-        <div class="bg-surface dark:bg-dark-surface w-lg h-[600px] text-white py-10 rounded-r-2xl flex flex-col">
-            <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold text-center mb-10">Login</h1>
+        <div
+            class="bg-surface dark:bg-dark-surface w-full min-h-[600px] max-w-md text-white py-10 rounded-r-2xl flex flex-col items-center">
+            <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold text-center mb-6">Login</h1>
 
             <form method="POST" action="{{ route('login') }}"
-                class="flex flex-col justify-center items-center h-full space-y-8 px-10 w-full">
+                class="flex flex-col justify-center items-center h-full space-y-6 px-10 w-full">
                 @csrf
 
-                <label for="email" class="block w-full  dark:text-dark-primary text-primary">
+                <label for="email" class="block w-full dark:text-dark-primary text-primary">
                     Email
                     <input id="email" name="email" type="email" required
-                        class="mt-2 w-full rounded-md border border-gray-300 p-3 " />
+                        class="mt-2 w-full rounded-md border p-3 @error('email') border-error dark:border-dark-error  @else border-gray-300 @enderror" />
+                    @error('email')
+                        <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </label>
 
-                <label for="password" class="block w-full  dark:text-dark-primary text-primary">
+                <label for="password" class="block w-full dark:text-dark-primary text-primary">
                     Password
                     <input id="password" name="password" type="password" required
-                        class="mt-2 w-full rounded-md border border-gray-300 p-3 " />
+                        class="mt-2 w-full rounded-md border p-3 @error('password') border-error dark:border-dark-error  @else border-gray-300 @enderror" />
+                    @error('password')
+                        <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </label>
 
                 <input type="submit" value="Login"
