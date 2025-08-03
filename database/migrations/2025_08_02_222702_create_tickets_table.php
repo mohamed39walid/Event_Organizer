@@ -16,6 +16,8 @@ return new class extends Migration
             $table->enum("checked_in",['no','yes']);
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("event_id");
+
+            //realtions
             $table->foreign("user_id")->references("id")->on("users")->onUpdate('cascade')->onDelete("cascade");
             $table->foreign("event_id")->references("id")->on("events")->onUpdate('cascade')->onDelete("cascade");
             $table->timestamps();

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum("status",['pending','rejected','approved']);
             $table->unsignedBigInteger("speaker_id");
             $table->unsignedBigInteger("event_id");
+
+            //realtions
             $table->foreign("speaker_id")->references("id")->on("users")->onUpdate('cascade')->onDelete("cascade");
             $table->foreign("event_id")->references("id")->on("events")->onUpdate('cascade')->onDelete("cascade");
             $table->timestamps();
