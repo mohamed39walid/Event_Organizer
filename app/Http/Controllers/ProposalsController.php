@@ -32,6 +32,6 @@ class ProposalsController extends Controller
 
         $proposal->save();
 
-        return redirect()->route('proposals')->with('ejected', 'Speakers Propsal has been Rejected ');
+        return redirect()->route('events.')->with('rejected', 'Speakers Propsal has been Rejected ');
     }
 }
