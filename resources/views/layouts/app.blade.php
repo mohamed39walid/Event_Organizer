@@ -13,6 +13,7 @@
 
 </head>
 
+@yield('styles')
 <body class="bg-bg dark:bg-dark-bg text-gray-900 dark:text-white font-sans leading-relaxed">
 
     @if (session('success'))
@@ -33,11 +34,13 @@
 
     <main>
         @yield('main')
+
     </main>
 
 
     <x-footer />
 
+    @yield('scripts')
 
 </body>
 

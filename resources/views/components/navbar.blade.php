@@ -1,4 +1,4 @@
-<nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md">
+<nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md sticky top-0">
     <div class="flex flex-wrap justify-between items-center gap-4 max-w-7xl mx-auto">
         <a href="{{ route('home') }}" class="flex items-center gap-3 text-xl sm:text-2xl font-bold">
             <div class="bg-white dark:bg-dark-surface p-2 rounded-full shadow">
@@ -62,26 +62,6 @@
                 <i class="fas fa-moon"></i>
                 <span class="hidden sm:inline font-poppins">Theme</span>
             </button>
-
-            <a href="{{ route('test-error') }}"
-                class="ml-2 inline-flex items-center gap-2 cursor-pointer px-4 py-2 bg-error hover:bg-error/90 text-white dark:bg-dark-error dark:hover:bg-dark-error/90 rounded-full shadow transition">
-                Test Error Alert
-            </a>
-
-            <a href="{{ route('test-success') }}"
-                class="ml-2 inline-flex items-center gap-2 cursor-pointer px-4 py-2 bg-success hover:bg-success/90 text-white dark:bg-dark-success dark:hover:bg-dark-success/90 rounded-full shadow transition">
-                Test Success Alert
-            </a>
-
-            <a href="dmkafnjhgbv"
-                class="ml-2 inline-flex items-center gap-2 cursor-pointer px-4 py-2 bg-primary hover:bg-primary/90 text-white dark:bg-dark-primbg-primary dark:hover:bg-dark-primbg-primary/90 rounded-full shadow transition">
-                Test Not Found Page
-            </a>
-
-            <a href="{{ route('adminDashboard') }}"
-                class="ml-2 inline-flex items-center gap-2 cursor-pointer px-4 py-2 bg-primary hover:bg-primary/90 text-white dark:bg-dark-primbg-primary dark:hover:bg-dark-primbg-primary/90 rounded-full shadow transition">
-                Admin
-            </a>
 
         </div>
     </div>

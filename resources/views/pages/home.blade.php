@@ -14,39 +14,66 @@
             'location' => 'Alexandria',
             'image' => 'images/Concert.jpg',
         ],
-        [
-            'eventName' => 'Tech Talk',
-            'date' => '2025-08-22',
-            'location' => 'Giza',
-            'image' => 'images/login.webp',
-        ],
     ];
 @endphp
 
-
-
 @section('main')
-    <div
-        class="min-h-[calc(100vh-140px)] flex flex-col justify-center items-center px-4 bg-background text-foreground dark:bg-dark-background dark:text-dark-foreground">
-        <div class="space-y-6">
-            <h1
-                class="text-8xl text-center font-instrument sm:text-9xl font-extrabold text-error dark:text-dark-error tracking-tight drop-shadow-lg">
-                Home Page
-            </h1>
+    <section class="min-h-[calc(100vh-80px)] flex items-center bg-bg dark:bg-dark-bg px-6">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
 
+                <div class="text-center lg:text-left">
 
-            <div class="flex gap-5">
+                    <h1 class="text-5xl lg:text-6xl font-bold text-primary dark:text-dark-primary mb-6">
+                        Discover Amazing
+                        <span class="text-accent">Events</span>
+                    </h1>
+
+                    <p class="text-xl text-muted dark:text-dark-muted mb-8 max-w-lg">
+                        Connect with inspiring speakers and changemakers. Join meaningful discussions that shape the future.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#events"
+                            class="px-8 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-lg transition-colors">
+                            Explore Latest Events
+                        </a>
+
+                    </div>
+                </div>
+                <div class="flex justify-center lg:justify-end">
+                    <img src="{{ asset('images/hero-talks.png') }}" alt="Event Talks Illustration"
+                        class="max-w-full h-auto rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="py-20 bg-surface dark:bg-dark-surface px-6">
+        <div class="max-w-6xl mx-auto">
+
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-primary dark:text-dark-primary mb-4">
+                    Latest <span class="text-accent">Events</span>
+                </h2>
+                <p class="text-lg text-muted dark:text-dark-muted max-w-2xl mx-auto">
+                    Join our curated selection of events designed to inspire and connect you with like-minded individuals.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 @foreach ($events as $event)
                     <x-card :eventName="$event['eventName']" :date="$event['date']" :location="$event['location']" :image="$event['image']" />
                 @endforeach
             </div>
 
-            <div class="flex justify-center w-full items-center">
-                <a href=""
-                    class="cursor-pointer px-4 py-2 bg-error hover:bg-error/90 text-white dark:bg-dark-error dark:hover:bg-dark-error/90 rounded-full shadow transition">
-                    Show ALL Events
+            <div class="text-center">
+                <a href="{{ route('events') }}"
+                    class="inline-flex items-center px-8 py-4 bg-error hover:bg-error/90 text-white font-semibold rounded-lg transition-colors">
+                    <i class="fas fa-eye mr-2"></i>
+                    Show All Events
                 </a>
             </div>
         </div>
-    </div>
+    </section>
 @endsection
