@@ -22,7 +22,7 @@
                 @switch(auth()->user()->role)
                     {{-- User Links --}}
                     @case('user')
-                        <a href="{{ route('events') }}"
+                        <a href="{{ route('user.events') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Events
                         </a>
@@ -34,7 +34,7 @@
 
                     {{-- Speaker Links --}}
                     @case('speaker')
-                        <a href="{{ route('events') }}"
+                        <a href="{{ route('speaker.events') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Events
                         </a>
@@ -46,7 +46,7 @@
 
                     {{-- Organizer Links --}}
                     @case('organizer')
-                        <a href="{{ route('events') }}"
+                        <a href="{{ route('organizer.events') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Events
                         </a>
