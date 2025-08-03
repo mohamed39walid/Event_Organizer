@@ -14,25 +14,26 @@
             @auth
                 @switch(auth()->user()->role)
                     @case('user')
-                        <a href="{{ route('events.index') }}"
+                        <a href="{{ route('events') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
-                        <a href="{{ route('tickets.index') }}"
+                        <a href="{{ route('my-tickets') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Tickets</a>
                     @break
 
                     @case('speaker')
-                        <a href="{{ route('events.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
-                        <a href="{{ route('proposals.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Proposals</a>
+                        <a href="{{ route('events') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Events</a>
+                        <a href="{{ route('speaker.proposals') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
+                            My Proposals
+                        </a>
                     @break
 
                     @case('organizer')
-                        <a href="{{ route('my-events.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Events</a>
-                        <a href="{{ route('choose-speakers.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Choose
-                            Speakers</a>
+                        <a href="{{ route('events') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
+                        <a href="{{ route('organizer.review-proposals') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Proposals</a>
                     @break
                 @endswitch
 
