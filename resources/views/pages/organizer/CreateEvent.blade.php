@@ -31,11 +31,6 @@
 @error('record')
 
 @enderror 
-
-
- Status 
- @error('record')
-    
-@enderror --}}
+ --}}
 
 <h1>Test for form page</h1>
