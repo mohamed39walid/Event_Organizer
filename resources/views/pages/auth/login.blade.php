@@ -16,7 +16,7 @@
             class="bg-surface dark:bg-dark-surface w-full min-h-[600px] max-w-md text-white py-10 rounded-r-2xl flex flex-col items-center">
             <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold text-center mb-6">Login</h1>
 
-            <form method="POST" action="{{ route('login') }}"
+            <form method="POST" action="{{ route('handlelogin') }}"
                 class="flex flex-col justify-center items-center h-full space-y-6 px-10 w-full">
                 @csrf
 

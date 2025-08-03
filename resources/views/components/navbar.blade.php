@@ -27,29 +27,34 @@
                     @break
 
                     @case('speaker')
-                        <a href="{{ route('speaker.events') }}"
+                        <a href=""
+                        {{-- {{ route('speaker.events') }} --}}
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Events
                         </a>
-                        <a href="{{ route('speaker.proposals') }}"
+                        <a href=""
+                        {{-- {{ route('speaker.proposals') }} --}}
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Proposals
                         </a>
                     @break
 
                     @case('organizer')
-                        <a href="{{ route('organizer.events.index') }}"
+                        <a href=""
+                        {{-- {{ route('organizer.events.index') }} --}}
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Events
                         </a>
-                        <a href="{{ route('organizer.review-proposals') }}"
+                        <a href=""
+                        {{-- {{ route('organizer.review-proposals') }} --}}
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Proposals
                         </a>
                     @break
                 @endswitch
 
-                <a href="{{ route('profile') }}"
+                <a href=""
+                {{-- {{ route('profile') }} --}}
                     class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                     Profile
                 </a>

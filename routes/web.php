@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 // Auth routes (login/register)
-Route::view('/login', 'pages.auth.login')->name('login');
-Route::view('/register', 'pages.auth.register')->name('register');
 
 // Profile management (only for authenticated users)
 Route::prefix('profile')->name(value: 'profile.')->middleware('auth')->group(function () {
@@ -31,6 +29,3 @@ Route::fallback(fn() => view('pages.shared.not-found'))->name('not-found');
 require __DIR__ . '/user.php';
 require __DIR__ . '/speaker.php';
 require __DIR__ . '/organizer.php';
-
-
-

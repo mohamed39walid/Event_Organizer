@@ -21,7 +21,7 @@
                 Create Account
             </h1>
 
-            <form method="POST" action="{{ route('register') }}" class="space-y-6">
+            <form method="POST" action="{{ route('handleregister') }}" class="space-y-6">
                 @csrf
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -54,10 +54,10 @@
                     <label for="userName" class="block text-sm font-medium text-primary dark:text-dark-primary">
                         Username <span class="text-error dark:text-dark-error">*</span>
                     </label>
-                    <input id="userName" name="userName" type="text" placeholder="Your username"
-                        value="{{ old('userName') }}"
+                    <input id="userName" name="username" type="text" placeholder="Your username"
+                        value="{{ old('username') }}"
                         class="mt-2 w-full rounded-lg border py-2 px-3 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary @error('userName') border-error dark:border-dark-error @else border-gray-300 @enderror" />
-                    @error('userName')
+                    @error('username')
                         <p class="text-error dark:text-dark-error text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
