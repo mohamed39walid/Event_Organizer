@@ -1,61 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+<h1 align="center">🎉 Event Organizer System 🎤</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">A full-featured event management platform built with Laravel 11.</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🧠 Project Overview
 
-## Learning Laravel
+**Event Organizer** is a web application that facilitates the organization, submission, and management of professional events. It allows **organizers**, **speakers**, and **users** to collaborate effectively.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🔑 Key Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Authentication & Roles**: Secure login system with role-based access (Admin, Organizer, Speaker).
+- **Event Management**: Organizers can create, update, delete, and list events.
+- **Speaker Proposals**: Speakers can submit proposals (title, description, CV) for any public event.
+- **Proposal Review System**: Organizers can accept/reject proposals and view all submissions per event.
+- **Dashboard & Admin Controls**: Admins can view user activity and control system settings.
+- **Validation**: All forms are validated using Laravel Form Requests.
+- **File Uploads**: CVs are uploaded and stored securely.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## ⚙️ Technologies Used
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Framework**: Laravel 11
+- **Database**: MySQL / MariaDB
+- **UI**: Blade, Tailwind CSS (optional)
+- **Authentication**: Laravel Breeze (or Jetstream/Inertia, if used)
+- **Storage**: Local file storage (CV uploads)
+- **Routing**: RESTful Routes with Controllers
+- **Validation**: Laravel Form Requests
+- **Git**: Version control using Git & GitHub
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🖼️ System Roles
 
-## Contributing
+| Role       | Description                                          |
+|------------|------------------------------------------------------|
+| Admin      | Full control over users, roles, and system settings. |
+| Organizer  | Can manage events and moderate speaker proposals.    |
+| Speaker    | Can submit proposals to participate in events.       |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📸 Screenshots
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+> **🎞️ Demo UI (Optional):**
+> You can include images or GIFs using:
+>
+> ```md
+> ![Dashboard Screenshot](screenshots/dashboard.png)
+> ![Proposal Submission](screenshots/proposal-form.gif)
+> ```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🚀 How to Run the Project
 
-## License
+```bash
+# 1. Clone the Repository
+git clone https://github.com/your-username/event-organizer.git
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 2. Install Dependencies
+composer install
+npm install && npm run dev
+
+# 3. Environment Setup
+cp .env.example .env
+
+# 4. Database Setup
+php artisan migrate 
+
+# 5. Storage Link
+php artisan storage:link
+
+# 6. Start the Server
+php artisan serve
