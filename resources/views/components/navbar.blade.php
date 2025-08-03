@@ -1,4 +1,4 @@
-<nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md sticky top-0">
+<nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md z-50 sticky top-0">
     <div class="flex flex-wrap justify-between items-center gap-4 max-w-7xl mx-auto">
         <a href="{{ route('home') }}" class="flex items-center gap-3 text-xl sm:text-2xl font-bold">
             <div class="bg-white dark:bg-dark-surface p-2 rounded-full shadow">
@@ -14,25 +14,26 @@
             @auth
                 @switch(auth()->user()->role)
                     @case('user')
-                        <a href="{{ route('events.index') }}"
+                        <a href="{{ route('events') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
-                        <a href="{{ route('tickets.index') }}"
+                        <a href="{{ route('my-tickets') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Tickets</a>
                     @break
 
                     @case('speaker')
-                        <a href="{{ route('events.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
-                        <a href="{{ route('proposals.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Proposals</a>
+                        <a href="{{ route('events') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Events</a>
+                        <a href="{{ route('speaker.proposals') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
+                            My Proposals
+                        </a>
                     @break
 
                     @case('organizer')
-                        <a href="{{ route('my-events.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">My Events</a>
-                        <a href="{{ route('choose-speakers.index') }}"
-                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Choose
-                            Speakers</a>
+                        <a href="{{ route('events') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Events</a>
+                        <a href="{{ route('organizer.review-proposals') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">Proposals</a>
                     @break
                 @endswitch
 
