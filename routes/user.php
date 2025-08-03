@@ -2,10 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/login', 'pages.auth.login')->name('login');
-Route::view('/register', 'pages.auth.register')->name('register');
-Route::view('/', 'pages.home')->name('home');
-Route::view('/events', 'pages.events')->name('events');
-Route::view('/my-tickets', 'pages.my-tickets')->middleware(['auth', 'role:user'])->name('my-tickets');
+Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
 
-Route::fallback(fn() => view('pages.not-found'))->name('not-found');
+    Route::prefix('tickets')->name('tickets.')->group(function () {
+        Route::post('/book', fn() => view('pages.book-ticket'))->name('book');
+        Route::delete('/{id}/unbook', fn() => '')->name('unbook');
+    });
+
+    Route::view('/my-tickets', 'pages.my-tickets')->name('my-tickets');
+    Route::view('/events', 'pages.events')->name('events');
+    Route::view('/', 'pages.home')->name('home');
+});
