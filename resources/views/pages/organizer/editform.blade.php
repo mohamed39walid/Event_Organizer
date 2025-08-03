@@ -1,41 +1,41 @@
-{{-- Uncomment when Front End Part Ends --}}
+{{-- Uncomment when Front End Part Ends 
 
-{{-- Event Name --}}
-{{-- @error('event_name')
+ Event Name 
+ @error('event_name')
 
-@enderror --}}
-
-
-{{-- Location --}}
-{{-- @error('location')
-
-@enderror --}}
+@enderror 
 
 
-{{-- StartDate --}}
-{{-- @error('start_date')
+ Location 
+ @error('location')
 
-@enderror --}} 
-
-
-{{-- EndDate --}}
-{{-- @error('end_date')
-
-@enderror --}}
-
-{{-- AvailableTickets --}}
-{{-- @error('available_tickets')
-
-@enderror --}}
-
-{{-- Status --}}
-{{-- @error('record')
-
-@enderror --}}
+@enderror 
 
 
-{{-- Status --}}
-{{-- @error('record')
+ StartDate 
+ @error('start_date')
+
+@enderror  
+
+
+ EndDate 
+ @error('end_date')
+
+@enderror 
+
+ AvailableTickets 
+ @error('available_tickets')
+
+@enderror 
+
+ Status 
+ @error('record')
+
+@enderror 
+
+
+ Status 
+ @error('record')
     
 @enderror --}}
 
