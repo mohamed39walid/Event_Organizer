@@ -7,12 +7,10 @@ Route::middleware(app()->environment('local') ? [] : ['auth', 'role:user'])->pre
 
     // Ticket booking actions
     Route::prefix('tickets')->name('tickets.')->group(function () {
-        Route::post('/book', fn() => view('pages.user.book-ticket'))->name('book');
+        Route::post('/{id}/book', function ($id) {
+            return redirect()->back()->with('success', 'Booked Successfully');
+        })->name('book');
+
         Route::delete('/{id}/unbook', fn() => '')->name('unbook');
     });
-
-    // User views
-    Route::view('/my-tickets', 'pages.user.my-tickets')->name('my-tickets');
-    Route::view('/events', 'pages.shared.events')->name('events');
-    Route::view('/home', 'pages.shared.home')->name('home');
 });
