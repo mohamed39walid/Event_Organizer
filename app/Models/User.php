@@ -33,6 +33,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    //The relation between the Events and Users table
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'organizer_id');
+    }
+
+
     /**
      * Get the attributes that should be cast.
      *

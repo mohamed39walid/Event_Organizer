@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger("proposal_id");
             $table->dateTime("start_date");
             $table->dateTime("end_date");
+
+            //realtions
             $table->foreign("event_id")->references("id")->on("events")->onUpdate('cascade')->onDelete("cascade");
             $table->foreign("speaker_id")->references("id")->on("users")->onUpdate('cascade')->onDelete("cascade");
             $table->foreign("proposal_id")->references("id")->on("proposals")->onUpdate('cascade')->onDelete("cascade");

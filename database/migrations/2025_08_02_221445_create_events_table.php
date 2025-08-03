@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer("available_tickets");
             $table->string("status");
             $table->unsignedBigInteger("organizer_id");
+            
+            //realtions
             $table->foreign("organizer_id")->references("id")->on("users")->onUpdate('cascade')->onDelete("cascade");
             $table->timestamps();
         });
