@@ -69,7 +69,7 @@
             </div>
 
             <div class="text-center mt-12">
-                <a href="#"
+                <a href="{{ route('events') }}"
                     class="bg-accent hover:bg-accent-hover text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-poppins">
                     View All Events
                 </a>
