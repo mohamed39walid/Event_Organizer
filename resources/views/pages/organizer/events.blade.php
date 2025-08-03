@@ -14,4 +14,11 @@
     </ul>
 @endif --}}
 
+
+
+{{-- Should require 3 buttons on each event
+1- Edit
+2- Delete
+3- View Proposlas
+--}}
 <h1>Test Page</h1>

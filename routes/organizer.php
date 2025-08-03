@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\ProposalsController;
 use App\Http\Requests\OrganizerForm;
 use Illuminate\Support\Facades\Route;
 
@@ -24,16 +25,17 @@ use Illuminate\Support\Facades\Route;
         Route::delete('/{id}', [OrganizerController::class, 'DeleteEvent'])->name('destroy');       // Delete event
 
         Route::get('/{id}/tickets', fn() => '')->name('tickets');                                       // View event tickets
-        Route::get('/{id}/proposals', fn() => '')->name('proposals');                                   // View proposals for event
+        Route::get('/{id}/proposals', [OrganizerController::class, 'SpecificProposal'])->name('proposals');                                   // View proposals for event
         Route::post('/{id}/sessions', fn() => view('pages.organizer.event-sessions'))->name('sessions'); // Manage sessions
     });
 
     // Proposal review actions
     Route::prefix('proposals')->name('proposals.')->group(function () {
-        Route::put('/{id}/approve', fn() => '')->name('approve');               // Approve a proposal
-        Route::put('/{id}/reject', fn() => '')->name('reject');                 // Reject a proposal
+        Route::get('/', [ProposalsController::class, 'AllProposals'])->name('AllProposals');  // All Proposals
+        Route::put('/{id}/approve', [ProposalsController::class, 'AcceptProposal'])->name('approve');    // Approve a proposal
+        Route::put('/{id}/reject', [ProposalsController::class, 'RejectProposal'])->name('reject');                 // Reject a proposal
     });
 
     // View for reviewing all proposals
-    Route::view('/review-proposals', 'pages.organizer.review-proposals')->name('review-proposals');
+    // Route::get('/proposals', [ProposalsController::class, 'AllProposals'])->name('review-proposals');
 // });
