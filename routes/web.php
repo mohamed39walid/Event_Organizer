@@ -7,7 +7,7 @@ Route::view('/login', 'pages.auth.login')->name('login');
 Route::view('/register', 'pages.auth.register')->name('register');
 
 // Profile management (only for authenticated users)
-Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
+Route::prefix('profile')->name(value: 'profile.')->middleware('auth')->group(function () {
     Route::view('/', 'pages.shared.profile')->name('view');
     Route::put('/update', fn() => '')->name('update');
     Route::delete('/delete', fn() => '')->name('delete');
