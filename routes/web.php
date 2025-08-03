@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 // Auth routes (login/register)
-Route::view('/login', 'pages.auth.login')->name('login');
-Route::view('/register', 'pages.auth.register')->name('register');
 
 // Profile management (only for authenticated users)
 Route::prefix('profile')->name(value: 'profile.')->middleware('auth')->group(function () {
