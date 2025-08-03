@@ -1,4 +1,4 @@
-<nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md sticky top-0">
+<nav class="bg-surface dark:bg-dark-bg text-primary dark:text-dark-primary px-6 py-4 shadow-md z-50 sticky top-0">
     <div class="flex flex-wrap justify-between items-center gap-4 max-w-7xl mx-auto">
         <a href="{{ route('home') }}" class="flex items-center gap-3 text-xl sm:text-2xl font-bold">
             <div class="bg-white dark:bg-dark-surface p-2 rounded-full shadow">
