@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 
     // Proposal review actions
     Route::prefix('proposals')->name('proposals.')->group(function () {
-        Route::get('/', [ProposalsController::class, 'AllProposals'])->name('AllProposals');  // All Proposals
+        // Route::get('/', [ProposalsController::class, 'AllProposals'])->name('AllProposals');  // All Proposals
         Route::put('/{id}/approve', [ProposalsController::class, 'AcceptProposal'])->name('approve');    // Approve a proposal
         Route::put('/{id}/reject', [ProposalsController::class, 'RejectProposal'])->name('reject');                 // Reject a proposal
     });
