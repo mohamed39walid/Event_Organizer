@@ -20,6 +20,10 @@ Route::prefix('role/request')->name('role.')->middleware('auth')->group(function
     Route::put('/user', fn() => '')->name('to-user');
 });
 
+Route::view('/my-tickets', 'pages.user.my-tickets')->name('my-tickets');
+Route::view('/events', 'pages.shared.events')->name('events');
+Route::view('/home', 'pages.shared.home')->name('home');
+
 // Fallback route for 404 not found
 Route::fallback(fn() => view('pages.shared.not-found'))->name('not-found');
 

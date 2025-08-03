@@ -16,7 +16,7 @@
                 Oops! The page you're looking for doesn't exist or may have been moved. Let's get you back on track.
             </p>
 
-            <a href="{{ route('user.home') }}"
+            <a href="{{ route('home') }}"
                 class="inline-flex items-center font-poppins gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white font-medium rounded-full transition duration-200 ease-in-out shadow-md">
                 <i class="fas fa-home text-lg"></i>
                 Return Home
