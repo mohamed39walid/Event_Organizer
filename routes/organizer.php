@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
     // Event management
     Route::prefix('events')->name('events.')->group(function () {
         // View Event Route
-        // Route::get('/', [OrganizerController::class, 'OrganizerEvents'])->name('events');               // List all events
+        Route::get('/', [OrganizerController::class, 'OrganizerEvents'])->name('events');               // List all events
 
         //  Form Events Routes
         Route::get('/createevent', [OrganizerController::class, 'CreateEvent'])->name('CreateEvent');   //Event Form                             
