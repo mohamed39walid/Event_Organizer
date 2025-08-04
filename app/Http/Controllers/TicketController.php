@@ -14,40 +14,46 @@ class TicketController extends Controller
     {
         $event = Event::find($id);
         $user_id = Auth::id();
-        $checked_in = "no";
+
         if (!$event) {
-            echo "enter a real id";
-        } else {
-            $existing_id = Ticket::where("user_id", $user_id)->where("event_id", $id)->first();
-            if ($existing_id) {
-                echo "this event is booked";
-            } else {
-
-                Ticket::create([
-                    "checked_in" => $checked_in,
-                    "user_id" => $user_id,
-                    "event_id" => $id,
-                ]);
-                echo "Ticket Booked Successfully";
-            }
+            return redirect()->back()->with('error', 'Invalid event ID.');
         }
+
+        $existing_ticket = Ticket::where('user_id', $user_id)->where('event_id', $id)->first();
+
+        if ($existing_ticket) {
+            return redirect()->back()->with('info', 'You have already booked this event.');
+        }
+
+        Ticket::create([
+            'checked_in' => 'no',
+            'user_id' => $user_id,
+            'event_id' => $id,
+        ]);
+
+        return redirect()->route('tickets.my-tickets')->with('success', 'Ticket booked successfully.');
     }
 
-    public function UnBookTicket($id){
+    public function UnBookTicket($id)
+    {
         $user_id = Auth::id();
-        $ticket = Ticket::where("id",$id)->where("user_id",$user_id)->first();
-        if(!$ticket){
-            echo "enter a valid ticket id or this ticket isn't for you";
-        }else{
-            $ticket->delete();
-            echo "the ticket unbooked";
+        $ticket = Ticket::where('id', $id)->where('user_id', $user_id)->first();
+
+        if (!$ticket) {
+            return redirect()->back()->with('error', "Ticket not found or doesn't belong to you.");
         }
+
+        $ticket->delete();
+
+        return redirect()->route('tickets.my-tickets')->with('success', 'Ticket unbooked successfully.');
     }
 
 
-    public function mytickets(){
+
+    public function mytickets()
+    {
         $user_id = Auth::id();
-        $tickets = Ticket::where("user_id",$user_id)->get();
-        echo $tickets;
+        $tickets = Ticket::where("user_id", $user_id)->get();
+        return view("pages.user.my-tickets", compact("tickets"));
     }
 }

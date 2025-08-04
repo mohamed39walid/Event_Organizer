@@ -21,7 +21,7 @@
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Events
                         </a>
-                        <a href="{{ route('my-tickets') }}"
+                        <a href="{{ route('tickets.my-tickets') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Tickets
                         </a>
@@ -33,8 +33,7 @@
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Events
                         </a>
-                        <a href=""
-                        {{-- {{ route('speaker.proposals') }} --}}
+                        <a href="{{ route('speaker.my-proposals') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Proposals
                         </a>
