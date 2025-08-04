@@ -12,3 +12,6 @@
         </div>
     </div>
 @endsection
+
+
+{{$proposals}}
