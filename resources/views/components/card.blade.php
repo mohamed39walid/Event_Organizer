@@ -7,20 +7,34 @@
         'Closed' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
     ];
 
-    $ticketColors = [
-        'Available' => 'text-green-600 dark:text-green-400',
-        'Limited' => 'text-orange-600 dark:text-orange-400',
-        'Few Left' => 'text-orange-600 dark:text-orange-400',
-        'Sold Out' => 'text-red-600 dark:text-red-400',
-    ];
+    switch (true) {
+        case $tickets == 0:
+            $ticketColor = 'text-red-600 dark:text-red-400';
+            break;
+        case $tickets <= 10:
+            $ticketColor = 'text-orange-700 dark:text-orange-500';
+            break;
+        case $tickets <= 30:
+            $ticketColor = 'text-yellow-600 dark:text-yellow-400';
+            break;
+        case $tickets <= 99:
+            $ticketColor = 'text-blue-600 dark:text-blue-400';
+            break;
+        case $tickets <= 199:
+            $ticketColor = 'text-green-600 dark:text-green-400';
+            break;
+        default:
+            $ticketColor = 'text-emerald-600 dark:text-emerald-400';
+    }
 @endphp
 
-<div class="w-full max-w-sm bg-surface dark:bg-dark-surface rounded-4xl shadow-lg overflow-hidden h-fit  ">
+<div class="w-full max-w-sm bg-surface dark:bg-dark-surface rounded-4xl shadow-lg overflow-hidden h-fit">
     <div class="relative">
-        <div class="absolute inset-0 bg-black/20 dark:bg-black/50 rounded-4xl rounded-t-4xl z-10"></div>
+        <div class="absolute inset-0 bg-black/20 dark:bg-black/50 rounded-t-4xl z-10"></div>
 
         @if ($image)
-            <img src="{{ asset($image) }}" alt="{{ $eventName }}" class="w-full h-[250px] rounded-4xl object-cover">
+            <img src="{{ asset($image) }}" alt="{{ $eventName ?? 'Event image' }}"
+                class="w-full h-[200px] object-cover rounded-t-4xl transition-transform duration-300 hover:scale-105">
         @endif
 
         <div class="absolute top-4 right-4 z-20">
@@ -52,43 +66,73 @@
             </div>
         </div>
 
-        <div class="space-y-2 mb-4">
-            <div class="flex justify-between items-center text-sm">
+        <div class="space-y-2 mb-4 text-sm">
+            <div class="flex justify-between items-center">
                 <span class="text-muted dark:text-dark-muted">Duration:</span>
-                <span class="text-foreground dark:text-dark-foreground">
-                    {{ Carbon::parse($date)->format('M d') }} - {{ Carbon::parse($endDate)->format('M d') }}
+                <span class="font-medium text-accent dark:text-accent">
+                    {{ Carbon::parse($date)->format('M d') }} → {{ Carbon::parse($endDate)->format('M d') }}
                 </span>
             </div>
 
-            <div class="flex justify-between items-center text-sm">
+            <div class="flex justify-between items-center">
                 <span class="text-muted dark:text-dark-muted">Organizer:</span>
                 <span class="text-foreground dark:text-dark-foreground">{{ $organizer }}</span>
             </div>
 
-            <div class="flex justify-between items-center text-sm">
+            <div class="flex justify-between items-center">
                 <span class="text-muted dark:text-dark-muted">Tickets:</span>
-                <span class="font-medium {{ $ticketColors[$tickets] ?? 'text-gray-600' }}">
-                    {{ $tickets }}
+                <span class="font-medium font-inter {{ $ticketColor }}">
+                    @if ($tickets === 0 || $tickets === '0')
+                        Sold Out
+                    @else
+                        {{ $tickets }} left
+                    @endif
                 </span>
             </div>
         </div>
 
         <div class="pt-4 border-t border-gray-200 dark:border-gray-700 w-full">
-            @if ($tickets === 'Sold Out' || $status === 'Closed')
-                <button disabled
-                    class="w-full py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 rounded-lg cursor-not-allowed">
-                    {{ $tickets === 'Sold Out' ? 'Sold Out' : 'Event Closed' }}
-                </button>
+            @auth
+                @if (auth()->user()->role === 'organizer')
+                    <a href="{{ route('event-details', ['id' => $eventid]) }}"
+                        class="block w-full py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-center transition ">
+                        Show Event
+                    </a>
+                @elseif (auth()->user()->role === 'user')
+                    <div class="flex gap-4">
+                        @if ($tickets === 'Sold Out' || $status === 'Closed')
+                            <button disabled aria-disabled="true"
+                                class="w-full py-2 px-4 bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 rounded-lg cursor-not-allowed">
+                                {{ $tickets === 'Sold Out' ? 'Sold Out' : 'Event Closed' }}
+                            </button>
+                        @else
+                            <form action="{{ route('tickets.BookTicket', ['id' => $eventid]) }}" method="POST"
+                                class="w-full">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full py-2 px-4 bg-accent hover:bg-accent/90 text-white rounded-lg transition-colors text-center hover:ring-2 hover:ring-accent/40 focus:outline-none focus:ring-2 focus:ring-accent">
+                                    Book Now
+                                </button>
+                            </form>
+                        @endif
+
+                        <a href="{{ route('event-details', ['id' => $eventid]) }}"
+                            class="w-full py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-center transition ">
+                            Show Event
+                        </a>
+                    </div>
+                @elseif (auth()->user()->role === 'speaker')
+                    <a href="{{ route('event-details', ['id' => $eventid]) }}"
+                        class="block w-full py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-center transition ">
+                        Show Event
+                    </a>
+                @endif
             @else
-                <form action="{{ route('tickets.BookTicket', ['id' => 1]) }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="w-full py-2 px-4 bg-accent hover:bg-accent/90 cursor-pointer text-white rounded-lg transition-colors text-center">
-                        Book Now
-                    </button>
-                </form>
-            @endif
+                <a href="{{ route('login') }}"
+                    class="block w-full py-2 px-4 bg-accent hover:bg-accent/90 text-white rounded-lg text-center transition hover:ring-2 hover:ring-accent">
+                    Login to Book
+                </a>
+            @endauth
         </div>
     </div>
-
 </div>
