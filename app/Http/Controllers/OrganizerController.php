@@ -12,37 +12,49 @@ use Illuminate\Support\Facades\Auth;
 class OrganizerController extends Controller
 {
     /**
-     * 
+     *
      */
     public function OrganizerEvents()
     {
-        // UnCommecnt when the FrontEnd Part Ends ----> Test Page FOR NOW
 
-        // $user = Auth::user();
-        // $events = $user->events; 
-        // return view('pages.organizer.events', compact('events'));
+        $user = Auth::user();
+        $events = $user->events;
+        return view('pages.organizer.events', compact('events'));
 
-        // Delete when the upper code is uncommented 
+        // Delete when the upper code is uncommented
         return view('pages.organizer.events');
     }
 
     // Event Form
     public function CreateEvent()
     {
-        return view('pages.organizer.CreateEvent');
+        return view('pages.organizer.create-event');
     }
 
-    // Event Form Logic -> Store
-    public function StoreEvent(OrganizerForm $request)
+    // Zeyad Hyman (Fix This Function )
+    // // Event Form Logic -> Store
+    // public function StoreEvent(OrganizerForm $request)
+    // {
+    //     $data = $request->validated();
+
+    //     $data['organizer_id'] = Auth::user()->id;
+
+    //     Event::create($data);
+
+    //     return redirect()->route('events.index')->with('Success', 'Event has been created successfully.');
+    // }
+
+    // Zeyad Hyman
+    public function StoreEvent(Request $request)
     {
-        $data = $request->validated();
-
-        $data['organizer_id'] = Auth::user()->id;
-
+        $data = $request->all();
+        $data['organizer_id'] = Auth::id();
+        $data['status'] = "avalaible";
         Event::create($data);
-
-        return redirect()->route('events.index')->with('Success', 'Event has been created successfully.');
+        return redirect()->route('events')->with('success', 'Event has been created successfully.');
     }
+
+
 
     // Showing Event Form
     public function EditEvent($id)
@@ -55,21 +67,23 @@ class OrganizerController extends Controller
     {
         $data = $request->validated();
 
-        $event = Event::findOrFail($id); 
+        $event = Event::findOrFail($id);
 
         $event->update($data);
 
         return redirect()->route('events.index')->with('Success', 'Event has been updated successfully.');
     }
     // Delete an Event
-    public function DeleteEvent($id){
+    public function DeleteEvent($id)
+    {
         $event = Event::findorfail($id);
-        $event ->delete();
+        $event->delete();
         return redirect()->route('events.events')->with('Success', 'Event has been Deleted Successfully');
     }
 
     // View SpecificProposal For An Event
-    public function SpecificProposal($id){
+    public function SpecificProposal($id)
+    {
         $event = Event::findorfail($id);
 
         $proposals = Proposal::where('event_id', $id)->get();
