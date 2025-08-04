@@ -29,19 +29,22 @@ class ProposalsController extends Controller
         }
         $validated = $request->validated();
         $speaker_id = Auth::id();
-        $exsiting_proposal = Proposal::where("event_id", $id)->where("speaker_id", $speaker_id)->get();
-        if ($exsiting_proposal) {
-            return redirect()->back()->with('info', 'You have already applied this event.');
+        $cvPath = $request->file('cv')->store('cvs', 'public');
+        $existing_proposal = Proposal::where("event_id", $id)->where("speaker_id", $speaker_id)->exists();
+        if ($existing_proposal) {
+            return redirect()->back()->with('info', 'You have already applied to this event.');
         }
+
         Proposal::create([
             "title" => $validated["title"],
             "description" => $validated['description'],
-            "cv" => $validated['cv'],
+            "cv" => $cvPath,
             "status" => "pending",
             "speaker_id" => $speaker_id,
             "event_id" => $id
         ]);
-        return redirect()->route('speaker.my-proposals')->with('success', 'Proposal applied successfully.');
+
+        return redirect()->route('home')->with('success', 'Proposal applied successfully.');
     }
     public function DeleteProposal($id)
     {

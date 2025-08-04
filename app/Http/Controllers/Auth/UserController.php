@@ -28,7 +28,7 @@ class UserController extends Controller
             "role" => $validated["role"],
         ]);
         Auth::login($user);
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', "Welcome To Event Hub Website ");
     }
     public function login()
     {
@@ -39,7 +39,7 @@ class UserController extends Controller
         $credintials = $request->validated();
         if (Auth::attempt($credintials)) {
             $request->session()->regenerate();
-            return redirect()->route("home");
+            return redirect()->route("home")->with('success', "Welcome To Event Hub Website ");
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

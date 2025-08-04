@@ -54,6 +54,10 @@ class TicketController extends Controller
     {
         $user_id = Auth::id();
         $tickets = Ticket::where("user_id", $user_id)->get();
-        return view("pages.user.my-tickets", compact("tickets"));
+        $event = Event::where("id", )->get();
+        return view("pages.user.my-tickets", compact("tickets", 'event'));
     }
 }
+
+
+
