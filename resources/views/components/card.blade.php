@@ -80,7 +80,7 @@
                     {{ $tickets === 'Sold Out' ? 'Sold Out' : 'Event Closed' }}
                 </button>
             @else
-                <form action="{{ route('user.tickets.book', ['id' => 1]) }}" method="POST">
+                <form action="{{ route('tickets.BookTicket', ['id' => 1]) }}" method="POST">
                     @csrf
                     <button type="submit"
                         class="w-full py-2 px-4 bg-accent hover:bg-accent/90 cursor-pointer text-white rounded-lg transition-colors text-center">

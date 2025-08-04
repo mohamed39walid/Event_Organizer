@@ -23,7 +23,7 @@ Route::view('/events', 'pages.shared.events')->name('events');
 Route::view('/home', 'pages.shared.home')->name('home');
 
 // Fallback route for 404 not found
-Route::fallback(fn() => view('pages.shared.not-found'))->name('not-found');
+Route::get('/not-found', fn() => view('pages.shared.not-found'))->name('not-found');
 
 // Include route groups
 require __DIR__ . '/user.php';

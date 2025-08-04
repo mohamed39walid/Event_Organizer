@@ -16,7 +16,8 @@
             @auth
                 @switch(auth()->user()->role)
                     @case('user')
-                        <a href="{{ route('events') }}"
+                        <a href=""
+                        {{-- {{ route('events') }} --}}
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Events
                         </a>
