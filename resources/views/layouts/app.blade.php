@@ -14,6 +14,7 @@
 </head>
 
 @yield('styles')
+
 <body class="bg-bg dark:bg-dark-bg text-gray-900 dark:text-white font-sans leading-relaxed">
 
     @if (session('success'))
@@ -25,6 +26,11 @@
         <div class="py-3 bg-error dark:bg-dark-error text-white flex items-center justify-center gap-2">
             <i class="fas fa-exclamation-triangle text-white"></i>
             <span>{{ session('error') }}</span>
+        </div>
+    @elseif (session('info'))
+        <div class="py-3 bg-blue-600 dark:bg-blue-700 text-white flex items-center justify-center gap-2">
+            <i class="fas fa-exclamation-triangle text-white"></i>
+            <span>{{ session('info') }}</span>
         </div>
     @endif
 
