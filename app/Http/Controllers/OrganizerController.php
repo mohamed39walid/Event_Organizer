@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Event\StoreEventRequest;
 use App\Http\Requests\OrganizerForm;
 use App\Models\Event;
 use App\Models\Event_session;
@@ -60,12 +61,20 @@ class OrganizerController extends Controller
     // }
 
     // Zeyad Hyman
-    public function StoreEvent(Request $request)
+    public function StoreEvent(StoreEventRequest $request)
     {
-        $data = $request->all();
-        $data['organizer_id'] = Auth::id();
-        $data['status'] = "Avalaible";
-        Event::create($data);
+        $validated = $request->validated();
+        $organizer_id = Auth::id();
+        $status = "Avalaible";
+        Event::create([
+            "event_name" => $validated['event_name'],
+            "location" => $validated['location'],
+            "start_date" => $validated['start_date'],
+            "end_date" => $validated['end_date'],
+            "available_tickets" => $validated['available_tickets'],
+            "status" => $status,
+            "organizer_id" => $organizer_id,
+        ]);
         return redirect()->route('events')->with('success', 'Event has been created successfully.');
     }
 
