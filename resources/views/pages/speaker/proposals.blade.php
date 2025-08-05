@@ -12,6 +12,12 @@
             str_contains(strtolower(optional($proposal->speaker)->fullname ?? ''), $search) ||
             str_contains(strtolower($proposal->status), $search);
     });
+
+    $statusColors = [
+        'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+        'approved' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300',
+        'rejected' => 'bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-300',
+    ];
 @endphp
 
 @section('main')
@@ -37,7 +43,7 @@
             @foreach ($filteredproposals as $proposal)
                 <div
                     class="bg-dark-secondary dark:bg-secondary rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6">
-                    <div class="space-y-4">
+                    <div class="space-y-4 relative">
                         <div class="flex justify-between items-start">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
                                 {{ $proposal->title }}
@@ -73,6 +79,13 @@
                                     {{ $proposal->event->end_date }}
                                 </p>
                             </div>
+                        </div>
+
+                        <div class="absolute top-2 right-2 z-20">
+                            <span
+                                class="px-3 py-1 rounded-full text-xs font-medium {{ $statusColors[$proposal->status] ?? 'bg-gray-100 text-gray-800' }}">
+                                {{ ucfirst($proposal->status) }}
+                            </span>
                         </div>
 
                         <div>

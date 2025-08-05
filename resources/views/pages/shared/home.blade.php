@@ -1,41 +1,5 @@
 @extends('layouts.app')
 
-@php
-    $events = [
-        [
-            'id' => 1,
-            'eventName' => 'Live Talk Night',
-            'location' => 'Alexandria',
-            'start-date' => '2025-08-20',
-            'end-date' => '2025-08-24',
-            'available_tickets' => 'Available',
-            'status' => 'Active',
-            'organizer_name' => 'Ahmed Khaled',
-        ],
-        [
-            'id' => 2,
-            'eventName' => 'Live Talk Night',
-            'location' => 'Alexandria',
-            'start-date' => '2025-08-20',
-            'end-date' => '2025-08-24',
-            'available_tickets' => 'Available',
-            'status' => 'Active',
-            'organizer_name' => 'Ahmed Khaled',
-        ],
-        [
-            'id' => 3,
-            'eventName' => 'Summer Festival',
-            'location' => 'Cairo',
-            'start-date' => '2025-08-18',
-            'end-date' => '2025-08-20',
-            'available_tickets' => 'Limited',
-            'status' => 'Upcoming',
-            'organizer_name' => 'Event Pro',
-            'image' => 'images/Concert.jpg',
-        ],
-    ];
-@endphp
-
 @section('main')
     {{-- Hero Section --}}
     <section class="relative overflow-hidden bg-dark-bg dark:bg-dark-bg text-white">
@@ -77,8 +41,8 @@
 
             <div class="grid grid-cols-3 gap-10 max-w-6xl mx-auto">
                 @foreach ($events as $event)
-                    <x-card :eventid="$event['id']" :eventName="$event['eventName']" :date="$event['start-date']" :endDate="$event['end-date']" :location="$event['location']"
-                        :image="$event['image'] ?? ''" :tickets="$event['available_tickets']" :status="$event['status']" :organizer="$event['organizer_name']" />
+                    <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
+                        :image="$event->image ?? ''" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
                 @endforeach
             </div>
 
