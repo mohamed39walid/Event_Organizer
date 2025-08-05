@@ -94,7 +94,7 @@
                             </div>
 
                             <div>
-                                <a href="{{ asset('storage/' . $proposal->cv) }}" target="_blank"
+                                <a href="{{ asset('storage/cvs/' . $proposal->cv) }}" target="_blank"
                                     class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                                     View CV
                                 </a>
