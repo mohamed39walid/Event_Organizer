@@ -19,7 +19,6 @@ Route::prefix('events')->name('events.')->group(function () {
     Route::post('/storeevent', [OrganizerController::class, 'StoreEvent'])->name('store-event');
 
     //  Edit Events Routes
-    Route::get('/editevent', [OrganizerController::class, 'EditEvent'])->name('edit-event');     // Edit Event Form
     Route::put('/{id}', [OrganizerController::class, 'UpdateEvent'])->name('update-event');      // Update event
 
     // Delete Route

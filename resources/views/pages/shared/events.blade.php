@@ -1,27 +1,15 @@
 @extends('layouts.app')
 @php
-    $events = [
-        [
-            'id' => 1,
-            'eventName' => 'Live Talk Night',
-            'location' => 'Alexandria',
-            'start-date' => '2025-08-20',
-            'end-date' => '2025-08-24',
-            'available_tickets' => 100,
-            'status' => 'Active',
-            'organizer_name' => 'Ahmed Khaled',
-        ],
-    ];
 
     $search = request('search');
     if ($search) {
         $events = array_filter($events, function ($event) {
             $search = strtolower(request('search'));
-            return str_contains(strtolower($event['eventName']), $search) ||
-                str_contains(strtolower($event['location']), $search) ||
-                str_contains(strtolower($event['organizer_name']), $search) ||
-                str_contains(strtolower($event['available_tickets']), $search) ||
-                str_contains(strtolower($event['status']), $search);
+            return str_contains(strtolower($event->event_name), $search) ||
+                str_contains(strtolower($event->location), $search) ||
+                str_contains(strtolower($event->organizer->username), $search) ||
+                str_contains(strtolower($event->available_tickets), $search) ||
+                str_contains(strtolower($event->status), $search);
         });
     }
 
@@ -64,8 +52,8 @@
 
             <div class="columns-3 gap-4 space-y-10">
                 @foreach ($events as $event)
-                    <x-card :eventid="$event['id']" :eventName="$event['eventName']" :date="$event['start-date']" :endDate="$event['end-date']" :location="$event['location']"
-                        :image="$event['image'] ?? ''" :tickets="$event['available_tickets']" :status="$event['status']" :organizer="$event['organizer_name']" />
+                    <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
+                        :image="$event->image ?? ''" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
                 @endforeach
 
             </div>

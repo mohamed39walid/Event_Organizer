@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Proposal\AddedProposalRequest;
 use App\Models\Event;
 use App\Models\Proposal;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\json;
@@ -21,13 +22,15 @@ class ProposalsController extends Controller
         return view("pages.speaker.proposals", compact("proposals"));
     }
 
-    public function CreateProposal(AddedProposalRequest $request, $id)
+    // public function CreateProposal(AddedProposalRequest $request, $id)
+    public function CreateProposal(Request $request, $id)
     {
         $event = Event::find($id);
         if (!$event) {
             return redirect()->back()->with('error', 'Invalid event ID.');
         }
-        $validated = $request->validated();
+        // $validated = $request->validated();
+        $validated = $request->all();
         $speaker_id = Auth::id();
         $cvPath = $request->file('cv')->store('cvs', 'public');
         $existing_proposal = Proposal::where("event_id", $id)->where("speaker_id", $speaker_id)->exists();
@@ -63,7 +66,7 @@ class ProposalsController extends Controller
 
         $proposal->save();
 
-        return redirect()->route('proposals')->with('success', 'Speakers Propsal has been Approved ');
+        return redirect()->route('events')->with('success', 'Speakers Propsal has been Approved ');
     }
     public function RejectProposal($id)
     {
@@ -74,6 +77,6 @@ class ProposalsController extends Controller
 
         $proposal->save();
 
-        return redirect()->route('events.')->with('rejected', 'Speakers Propsal has been Rejected ');
+        return redirect()->route('events')->with('rejected', 'Speakers Propsal has been Rejected ');
     }
 }

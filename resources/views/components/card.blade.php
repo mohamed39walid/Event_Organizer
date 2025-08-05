@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 
     $statusColors = [
-        'Active' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+        'Avalaible' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
         'Upcoming' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
         'Closed' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
     ];
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="p-6">
+    <div class="pt-10 pb-8 px-8">
         <div class="flex items-center gap-4 mb-4">
             <div class="flex flex-col items-center justify-center w-16 h-16 bg-accent/10 dark:bg-accent/20 rounded-2xl">
                 <span class="text-sm font-medium text-accent dark:text-accent">
