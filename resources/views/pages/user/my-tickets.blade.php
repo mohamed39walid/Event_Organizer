@@ -7,7 +7,7 @@
         $search = request('search');
         return str_contains(strtolower($ticket->event->event_name), strtolower($search)) ||
             str_contains(strtolower($ticket->event->location), strtolower($search));
-    });
+    })->sortByDesc('created_at')->take(3); // Optional: limit to latest 3
 @endphp
 
 @section('main')
@@ -31,8 +31,7 @@
         <!-- Tickets List -->
         <div class="grid gap-6">
             @foreach ($filteredTickets as $ticket)
-                <div
-                    class="bg-dark-secondary dark:bg-secondary rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6">
+                <div class="bg-dark-secondary dark:bg-secondary rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6">
                     <div class="space-y-4">
                         <div class="flex justify-between items-start">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -58,8 +57,8 @@
                                 </p>
                             </div>
                         </div>
-                        <form action="{{ route('tickets.UnBookTicket', ['id' => $ticket->id]) }}" method="POST"
-                            class="w-full">
+
+                        <form action="{{ route('tickets.UnBookTicket', ['id' => $ticket->id]) }}" method="POST" class="w-full">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
@@ -71,9 +70,9 @@
                 </div>
             @endforeach
 
-            @if (empty($filteredTickets))
+            @if ($filteredTickets->isEmpty())
                 <div class="text-center text-gray-500 dark:text-gray-400 w-full">
-                    No tickets found matching "{{ request('search') }}"
+                    No tickets found{{ request('search') ? ' for "' . request('search') . '"' : '' }}.
                 </div>
             @endif
         </div>
