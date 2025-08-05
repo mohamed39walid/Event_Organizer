@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Proposal;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,10 @@ class TicketController extends Controller
         if ($existing_ticket) {
             return redirect()->back()->with('info', 'You have already booked this event.');
         }
-
+        $proposal = Proposal::where("event_id",$id)->where("speaker_id",$user_id)->first();
+        if($proposal){
+            return redirect()->back()->with("error","You can't book a ticket and you applied to the event");
+        }
         DB::beginTransaction();
         try {
             if ($event->available_tickets > 0) {

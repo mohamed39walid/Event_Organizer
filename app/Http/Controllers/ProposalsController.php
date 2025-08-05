@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Proposal\AddedProposalRequest;
 use App\Models\Event;
 use App\Models\Proposal;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 use function Pest\Laravel\json;
 
@@ -23,25 +27,41 @@ class ProposalsController extends Controller
     }
 
     // public function CreateProposal(AddedProposalRequest $request, $id)
-    public function CreateProposal(Request $request, $id)
+
+    public function CreateProposal(AddedProposalRequest $request, $id)
     {
         $event = Event::find($id);
         if (!$event) {
             return redirect()->back()->with('error', 'Invalid event ID.');
         }
-        // $validated = $request->validated();
-        $validated = $request->all();
-        $speaker_id = Auth::id();
-        $cvPath = $request->file('cv')->store('cvs', 'public');
-        $existing_proposal = Proposal::where("event_id", $id)->where("speaker_id", $speaker_id)->exists();
+
+        $validated = $request->validated();
+        $speaker = Auth::user(); // get full user object
+        $speaker_id = $speaker->id;
+        $ticket_proposal_id = Ticket::where("event_id", $id)->where("user_id", $speaker_id)->first("event_id");
+        if ($ticket_proposal_id) {
+            return redirect()->back()->with("error", "You can't book ticket and apply to this event");
+        }
+        // Handle CV upload
+        $file = $request->file('cv');
+        $username = Str::slug($speaker->username);
+        $extension = $file->getClientOriginalExtension();
+        $filename = "{$username}_event{$id}.{$extension}";
+        $file->storeAs('cvs', $filename, 'public');
+
+
+        $existing_proposal = Proposal::where("event_id", $id)
+            ->where("speaker_id", $speaker_id)
+            ->exists();
+
         if ($existing_proposal) {
             return redirect()->back()->with('info', 'You have already applied to this event.');
         }
 
         Proposal::create([
             "title" => $validated["title"],
-            "description" => $validated['description'],
-            "cv" => $cvPath,
+            "description" => $validated["description"],
+            "cv" => $filename,
             "status" => "pending",
             "speaker_id" => $speaker_id,
             "event_id" => $id
@@ -49,6 +69,7 @@ class ProposalsController extends Controller
 
         return redirect()->route('home')->with('success', 'Proposal applied successfully.');
     }
+
     public function DeleteProposal($id)
     {
         $speaker_id = Auth::id();
