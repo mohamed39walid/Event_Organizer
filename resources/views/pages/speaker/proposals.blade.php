@@ -14,57 +14,82 @@
     });
 @endphp
 
-
 @section('main')
-    <div class="min-h-[calc(100vh-140px)] bg-bg dark:bg-dark-bg py-16 px-4 text-foreground dark:text-dark-foreground">
-        <div class="max-w-7xl mx-auto space-y-10">
-
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <h2 class="text-3xl md:text-4xl font-bold font-heading text-gray-900 dark:text-white">
-                    My proposals
-                </h2>
-
-                <div class="flex flex-col md:flex-row items-center gap-4">
-                    <form action="" method="get" class="w-full md:w-auto">
-                        <div class="relative">
-                            <input type="text" placeholder="Search proposal..." name="search"
-                                value="{{ request('search') }}"
-                                class="w-full md:w-72 px-5 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-surface text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition">
-                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </div>
-                    </form>
+    <div class="max-w-7xl mx-auto space-y-8 min-h-screen mt-10">
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <h2 class="text-3xl font-bold font-heading tracking-tight">
+                My Proposals
+            </h2>
+            <form action="" method="get" class="w-full sm:w-auto">
+                <div class="relative">
+                    <input type="text" placeholder="Search proposals..." name="search" value="{{ request('search') }}"
+                        class="w-full md:w-72 px-5 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-surface text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition">
+                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </span>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <div>
-                @if ($filteredproposals->isNotEmpty())
-                    @foreach ($filteredproposals as $proposal)
-                        <div class="p-4 mb-4 bg-dark-secondary dark:bg-secondary rounded-2xl">
-                            <h2 class="text-lg font-semibold">{{ $proposal->title }}</h2>
-                            <p>Description: {{ $proposal->description }}</p>
-                            <p>Event Name: {{ $proposal->event->event_name }}</p>
-                            <p>
-                                CV:
-                                <a href="{{ asset('storage/' . $proposal->cv) }}" target="_blank"
-                                    class="text-blue-500 underline">
-                                    View CV
-                                </a>
-                            </p>
-                            <p>Speaker Name: {{ $proposal->speaker->fullname }}</p>
-                            <p>Start Date: {{ $proposal->event->start_date }}</p>
-                            <p>End Date: {{ $proposal->event->end_date }}</p>
-                            <p>Location: {{ $proposal->event->location }}</p>
-                            <p>proposal ID: {{ $proposal->id }}</p>
+        <!-- Proposals List -->
+        <div class="grid gap-6">
+            @foreach ($filteredproposals as $proposal)
+                <div
+                    class="bg-dark-secondary dark:bg-secondary rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-start">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                {{ $proposal->title }}
+                            </h2>
                         </div>
-                    @endforeach
-                @else
-                    <p class="text-center mt-20">No proposal called '{{ request('search') }}' found</p>
-                @endif
 
-            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    <span class="font-medium">Description:</span>
+                                    {{ Str::limit($proposal->description, 150) }}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    <span class="font-medium">Event:</span>
+                                    {{ $proposal->event->event_name }}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    <span class="font-medium">Speaker:</span>
+                                    {{ optional($proposal->speaker)->fullname ?? 'N/A' }}
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    <span class="font-medium">Location:</span>
+                                    {{ $proposal->event->location }}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    <span class="font-medium">Start Date:</span>
+                                    {{ $proposal->event->start_date }}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    <span class="font-medium">End Date:</span>
+                                    {{ $proposal->event->end_date }}
+                                </p>
+                            </div>
+                        </div>
 
+                        <div>
+                            <a href="{{ asset('storage/' . $proposal->cv) }}" target="_blank"
+                                class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                View CV
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+            @if (empty($filteredproposals))
+                <div class="text-center text-gray-500 dark:text-gray-400 w-full">
+                    No proposal found matching "{{ request('search') }}"
+                </div>
+            @endif
         </div>
     </div>
 @endsection
