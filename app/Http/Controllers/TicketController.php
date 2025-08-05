@@ -24,13 +24,20 @@ class TicketController extends Controller
         if ($existing_ticket) {
             return redirect()->back()->with('info', 'You have already booked this event.');
         }
-
-        Ticket::create([
-            'checked_in' => 'no',
-            'user_id' => $user_id,
-            'event_id' => $id,
-        ]);
-
+        $no_of_tickets = Event::where("id", $id)->get("available_tickets");
+        $no_of_tickets = $no_of_tickets[0]["available_tickets"];
+        if ($no_of_tickets > 0) {
+            $new_no_of_tickets = $no_of_tickets - 1;
+            $event->available_tickets = $new_no_of_tickets;
+            $event->save();
+            Ticket::create([
+                'checked_in' => 'no',
+                'user_id' => $user_id,
+                'event_id' => $id,
+            ]);
+        }else{
+            return redirect()->back()->with('info',"There is no tickets for this event anymore.");
+        }
         return redirect()->route('tickets.my-tickets')->with('success', 'Ticket booked successfully.');
     }
 
@@ -38,6 +45,7 @@ class TicketController extends Controller
     {
         $user_id = Auth::id();
         $ticket = Ticket::where('id', $id)->where('user_id', $user_id)->first();
+        return $ticket['event_id'];
 
         if (!$ticket) {
             return redirect()->back()->with('error', "Ticket not found or doesn't belong to you.");
@@ -54,10 +62,7 @@ class TicketController extends Controller
     {
         $user_id = Auth::id();
         $tickets = Ticket::where("user_id", $user_id)->get();
-        $event = Event::where("id", )->get();
+        $event = Event::where("id",)->get();
         return view("pages.user.my-tickets", compact("tickets", 'event'));
     }
 }
-
-
-
