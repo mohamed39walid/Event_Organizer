@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrganizerForm;
 use App\Models\Event;
+use App\Models\Event_session;
 use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,20 @@ class OrganizerController extends Controller
     /**
      *
      */
+    // Zeyad Hyman Create (eventDetails, events) and removed (EditEvent)
+    public function eventDetails($id)
+    {
+        $event = Event::findOrFail($id);
+        $proposals = Proposal::where('event_id', $id)->get();
+        $evntSessions = Event_session::where('event_id', $id)->get();
+        return view('pages.shared.event-details', compact('proposals', 'evntSessions', 'event'));
+    }
+    public function events()
+    {
+        $events = Event::all();
+        return view('pages.shared.events', compact('events'));
+    }
+
     public function OrganizerEvents()
     {
 
@@ -49,30 +64,44 @@ class OrganizerController extends Controller
     {
         $data = $request->all();
         $data['organizer_id'] = Auth::id();
-        $data['status'] = "avalaible";
+        $data['status'] = "Avalaible";
         Event::create($data);
         return redirect()->route('events')->with('success', 'Event has been created successfully.');
     }
 
 
+    // i don't need this funcion
+    // // Showing Event Form
+    // public function EditEvent($id)
+    // {
+    //     $event = Event::findorfail($id);
+    //     return view('pages.organizer.editform', compact('event'));
+    // }
 
-    // Showing Event Form
-    public function EditEvent($id)
+    // Zeyad Hyman (Fix This Function )
+    // // Updating an Event
+    // public function UpdateEvent(OrganizerForm $request, $id)
+    // {
+    //     $data = $request->validated();
+
+    //     $event = Event::findOrFail($id);
+
+    //     $event->update($data);
+
+    //     return redirect()->route('events.index')->with('Success', 'Event has been updated successfully.');
+    // }
+
+    public function UpdateEvent(Request $request, $id)
     {
-        $event = Event::findorfail($id);
-        return view('pages.organizer.editform', compact('event'));
-    }
-    // Updating an Event
-    public function UpdateEvent(OrganizerForm $request, $id)
-    {
-        $data = $request->validated();
+        $data = $request->all();
 
         $event = Event::findOrFail($id);
 
         $event->update($data);
 
-        return redirect()->route('events.index')->with('Success', 'Event has been updated successfully.');
+        return redirect()->route('events')->with('Success', 'Event has been updated successfully.');
     }
+
     // Delete an Event
     public function DeleteEvent($id)
     {
