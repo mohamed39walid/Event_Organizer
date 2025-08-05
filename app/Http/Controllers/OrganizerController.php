@@ -28,6 +28,12 @@ class OrganizerController extends Controller
         $events = Event::all();
         return view('pages.shared.events', compact('events'));
     }
+    public function homeEvents()
+    {
+        $events = Event::latest()->take(3)->get();
+        return view('pages.shared.home', compact('events'));
+    }
+
 
     public function OrganizerEvents()
     {
