@@ -106,18 +106,31 @@
                                 {{ $tickets === 'Sold Out' ? 'Sold Out' : 'Event Closed' }}
                             </button>
                         @else
-                            <form action="{{ route('tickets.BookTicket', ['id' => $eventid]) }}" method="POST"
-                                class="w-full">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full py-2 px-4 bg-accent hover:bg-accent/90 text-white rounded-lg transition-colors text-center hover:ring-2 hover:ring-accent/40 focus:outline-none focus:ring-2 focus:ring-accent">
-                                    Book Now
-                                </button>
-                            </form>
+                            @if (!auth()->user()->tickets->contains('event_id', $eventid))
+                                <form action="{{ route('tickets.BookTicket', ['id' => $eventid]) }}" method="POST"
+                                    class="w-full">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full py-2 cursor-pointer px-4 bg-accent hover:bg-accent/90 text-white rounded-lg transition-colors text-center hover:ring-2 hover:ring-accent/40 focus:outline-none focus:ring-2 focus:ring-accent">
+                                        Book Now
+                                    </button>
+                                </form>
+                            @endif
+                            @if (auth()->user()->tickets->contains('event_id', $eventid))
+                                <form action="{{ route('tickets.UnBookTicket', ['id' => $eventid]) }}" method="POST"
+                                    class="w-full">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit"
+                                        class="w-full py-2 cursor-pointer px-4 bg-orange-900 hover:bg-orange-900/90 text-white rounded-lg transition-colors text-center hover:ring-2 hover:ring-accent/40 focus:outline-none focus:ring-2 focus:ring-accent">
+                                        Unbook
+                                    </button>
+                                </form>
+                            @endif
                         @endif
 
                         <a href="{{ route('event-details', ['id' => $eventid]) }}"
-                            class="w-full py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-center transition ">
+                            class="w-full py-2 px-4 cursor-pointer bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-center transition ">
                             Show Event
                         </a>
                     </div>

@@ -181,7 +181,7 @@
                                                         {{-- Approve Button opens modal --}}
                                                         <button type="button"
                                                             onclick="openApproveModal({{ $proposal->id }})"
-                                                            class="px-3 py-1 text-xs bg-emerald-500 hover:bg-emerald-600 text-white rounded-full">
+                                                            class="px-3 py-1 text-xs cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white rounded-full">
                                                             <i class="fa-solid fa-check"></i>
                                                         </button>
 
@@ -192,7 +192,7 @@
                                                             @csrf @method('PUT')
                                                             <input type="hidden" name="status" value="rejected">
                                                             <button type="submit"
-                                                                class="px-3 py-1 text-xs bg-rose-500 hover:bg-rose-600 text-white rounded-full">
+                                                                class="px-3 py-1 text-xs cursor-pointer bg-rose-500 hover:bg-rose-600 text-white rounded-full">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </button>
                                                         </form>
@@ -219,27 +219,44 @@
                                                             @csrf @method('PUT')
                                                             <input type="hidden" name="status" value="approved">
 
+
+                                                            <!-- Date Input -->
                                                             <div class="mb-4">
-                                                                <label for="start_date_{{ $proposal->id }}"
+                                                                <label for="event_date_{{ $proposal->id }}"
                                                                     class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                                                                    Start Date
+                                                                    Date
                                                                 </label>
-                                                                <input type="date" id="start_date_{{ $proposal->id }}"
-                                                                    name="start_date" min="{{ now()->toDateString() }}"
+                                                                <input type="date" id="event_date_{{ $proposal->id }}"
+                                                                    name="event_date"
+                                                                    min="{{ Carbon::parse($event->start_date)->format('Y-m-d') }}"
+                                                                    value="{{ Carbon::parse($event->start_date)->format('Y-m-d') }}"
                                                                     required
                                                                     class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
                                                             </div>
 
+                                                            <!-- Start Time Input -->
                                                             <div class="mb-4">
-                                                                <label for="end_date_{{ $proposal->id }}"
+                                                                <label for="start_time_{{ $proposal->id }}"
                                                                     class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                                                                    End Date
+                                                                    Start Time (10:00 AM)
                                                                 </label>
-                                                                <input type="date" id="end_date_{{ $proposal->id }}"
-                                                                    name="end_date" min="{{ now()->toDateString() }}"
-                                                                    required
+                                                                <input type="time" id="start_time_{{ $proposal->id }}"
+                                                                    name="start_time" required step="60"
                                                                     class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
                                                             </div>
+
+                                                            <!-- End Time Input -->
+                                                            <div class="mb-4">
+                                                                <label for="end_time_{{ $proposal->id }}"
+                                                                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
+                                                                    End Time (11:00 AM)
+                                                                </label>
+                                                                <input type="time" id="end_time_{{ $proposal->id }}"
+                                                                    name="end_time" required step="60"
+                                                                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                                                            </div>
+
+
 
                                                             <div class="flex justify-end space-x-2">
                                                                 <button type="button"
@@ -282,13 +299,22 @@
                                                         {{ $evntSessions->proposal->title }}
                                                     </h4>
                                                     <p class="text-sm text-muted dark:text-dark-muted mt-1">
-                                                        <i class="fas fa-user mr-1"></i> {{ $evntSessions->proposal->speaker->username }}
+                                                        <i class="fas fa-user mr-1"></i>
+                                                        {{ $evntSessions->proposal->speaker->username }}
                                                     </p>
                                                     <p class="text-sm text-muted dark:text-dark-muted mt-1">
                                                         <i class="fas fa-clock mr-1"></i>
-                                                        {{ Carbon::parse($evntSessions->start_date)->format('M d, Y') }} -
-                                                        {{ Carbon::parse($evntSessions->end_date)->format('M d, Y') }}
+                                                        {{ Carbon::parse($evntSessions->start_date)->format('M d, Y H:i') }}
+                                                        -
+                                                        {{ Carbon::parse($evntSessions->end_date)->format('H:i') }}
                                                     </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-sm font-inter text-muted dark:text-dark-muted">
+                                                        Duration:
+                                                        {{ Carbon::parse($evntSessions->start_date)->diffInMinutes($evntSessions->end_date) }}
+                                                        min
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

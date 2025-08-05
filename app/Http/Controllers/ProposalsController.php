@@ -66,7 +66,7 @@ class ProposalsController extends Controller
 
         $proposal->save();
 
-        return redirect()->route('events')->with('success', 'Speakers Propsal has been Approved ');
+        return redirect()->back()->with('success', 'Speakers Propsal has been Approved and added to event sessions');
     }
     public function RejectProposal($id)
     {
@@ -77,6 +77,6 @@ class ProposalsController extends Controller
 
         $proposal->save();
 
-        return redirect()->route('events')->with('rejected', 'Speakers Propsal has been Rejected ');
+        return redirect()->back()->with('success', 'Speakers Propsal has been Rejected ');
     }
 }
