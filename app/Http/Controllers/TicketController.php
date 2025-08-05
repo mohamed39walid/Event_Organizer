@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Psy\Readline\Hoa\EventException;
 
 class TicketController extends Controller
@@ -24,36 +25,49 @@ class TicketController extends Controller
         if ($existing_ticket) {
             return redirect()->back()->with('info', 'You have already booked this event.');
         }
-        $no_of_tickets = Event::where("id", $id)->get("available_tickets");
-        $no_of_tickets = $no_of_tickets[0]["available_tickets"];
-        if ($no_of_tickets > 0) {
-            $new_no_of_tickets = $no_of_tickets - 1;
-            $event->available_tickets = $new_no_of_tickets;
-            $event->save();
-            Ticket::create([
-                'checked_in' => 'no',
-                'user_id' => $user_id,
-                'event_id' => $id,
-            ]);
-        }else{
-            return redirect()->back()->with('info',"There is no tickets for this event anymore.");
+
+        DB::beginTransaction();
+        try {
+            if ($event->available_tickets > 0) {
+                $event->available_tickets -= 1;
+                $event->save();
+                Ticket::create([
+                    'checked_in' => 'no',
+                    'user_id' => $user_id,
+                    'event_id' => $id,
+                ]);
+                DB::commit();
+                return redirect()->route('tickets.my-tickets')->with('success', 'Ticket booked successfully.');
+            } else {
+                DB::rollBack();
+                return redirect()->back()->with('info', "There is no tickets for this event anymore.");
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
-        return redirect()->route('tickets.my-tickets')->with('success', 'Ticket booked successfully.');
     }
 
     public function UnBookTicket($id)
     {
         $user_id = Auth::id();
         $ticket = Ticket::where('id', $id)->where('user_id', $user_id)->first();
-        return $ticket['event_id'];
-
         if (!$ticket) {
             return redirect()->back()->with('error', "Ticket not found or doesn't belong to you.");
         }
+        $event = Event::find($ticket->event_id);
+        DB::beginTransaction();
+        try {
 
-        $ticket->delete();
-
-        return redirect()->route('tickets.my-tickets')->with('success', 'Ticket unbooked successfully.');
+            $event->available_tickets += 1;
+            $event->save();
+            $ticket->delete();
+            DB::commit();
+            return redirect()->route('tickets.my-tickets')->with('success', 'Ticket unbooked successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
     }
 
 
