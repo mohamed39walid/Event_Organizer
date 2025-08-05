@@ -20,9 +20,9 @@ Route::prefix('role/request')->name('role.')->middleware('auth')->group(function
 });
 
 
-Route::view('/events', 'pages.shared.events')->name('events');
-Route::get('/{id}/event', fn() => view('pages.shared.event-details'))->name('event-details');
-Route::view('/home', 'pages.shared.home')->name('home');
+Route::get('/event', [OrganizerController::class, 'events'])->name('events');
+Route::get('/{id}/event', [OrganizerController::class, 'eventDetails'])->name('event-details');
+Route::view('/', 'pages.shared.home')->name('home');
 
 // Fallback route for 404 not found
 Route::get('/not-found', fn() => view('pages.shared.not-found'))->name('not-found');
