@@ -116,11 +116,16 @@
                                     </button>
                                 </form>
                             @endif
-                            @if (auth()->user()->tickets->contains('event_id', $eventid))
-                                <form action="{{ route('tickets.UnBookTicket', ['id' => $eventid]) }}" method="POST"
+                            @php
+                                $user = auth()->user();
+                                $ticket = $user->tickets->firstWhere('event_id', $eventid);
+                            @endphp
+
+                            @if ($ticket)
+                                <form action="{{ route('tickets.UnBookTicket', ['id' => $ticket->id]) }}" method="POST"
                                     class="w-full">
                                     @csrf
-                                    @method("DELETE")
+                                    @method('DELETE')
                                     <button type="submit"
                                         class="w-full py-2 cursor-pointer px-4 bg-orange-900 hover:bg-orange-900/90 text-white rounded-lg transition-colors text-center hover:ring-2 hover:ring-accent/40 focus:outline-none focus:ring-2 focus:ring-accent">
                                         Unbook
