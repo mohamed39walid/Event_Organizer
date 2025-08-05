@@ -38,6 +38,10 @@
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Proposals
                         </a>
+                        <a href="{{ route('tickets.my-tickets') }}"
+                            class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
+                            My Tickets
+                        </a>
                     @break
 
                     @case('organizer')
