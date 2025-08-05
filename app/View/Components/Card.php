@@ -8,7 +8,8 @@ class Card extends Component
 {
     public $eventid, $eventName, $date, $endDate, $location, $image, $tickets, $status, $organizer;
 
-    public function __construct($eventid, $eventName, $date, $location, $image, $endDate = null, $tickets = 'Available', $status = 'Active', $organizer = 'Unknown')
+    public function __construct($eventid, $eventName, $date, $location, $image, $endDate = null, $tickets = 'Available', $status = 'Avalaible
+', $organizer = 'Unknown')
     {
         $this->eventid = $eventid;
         $this->eventName = $eventName;
