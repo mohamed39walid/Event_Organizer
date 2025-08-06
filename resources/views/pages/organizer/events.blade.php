@@ -49,13 +49,21 @@
             </div>
 
 
-
-            <div class="columns-3 grid gap-4 space-y-10">
-                @foreach ($events as $event)
-                    <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
-                        :image="$event->image ?? ''" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
-                @endforeach
-            </div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @foreach ($events as $event)
+        <x-card 
+            :eventid="$event->id" 
+            :eventName="$event->event_name" 
+            :date="$event->start_date" 
+            :endDate="$event->end_date" 
+            :location="$event->location"
+            :image="$event->image ? asset('storage/events/' . $event->image) : ''" 
+            :tickets="$event->available_tickets" 
+            :status="$event->status" 
+            :organizer="$event->organizer->username" 
+        />
+    @endforeach
+</div>
             @if (empty($events))
                 <div class="text-center text-gray-500 dark:text-gray-400 w-full">
                     No events found matching "{{ request('search') }}"
