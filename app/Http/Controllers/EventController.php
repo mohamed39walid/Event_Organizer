@@ -35,9 +35,9 @@ class EventController extends Controller
         'start_date' => 'required|date|after_or_equal:today',
         'end_date' => 'required|date|after:start_date',
         'status' => 'required|in:available,upcoming,closed',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', 
     ]);
     
-    // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     $event->update($data);
 
     return redirect()->back()->with('success', 'Event has been updated successfully.');
