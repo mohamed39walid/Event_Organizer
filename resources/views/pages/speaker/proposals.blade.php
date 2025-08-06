@@ -194,10 +194,6 @@
                         <p class="text-muted dark:text-dark-muted mb-6">
                             {{ $search ? 'No proposals match your search criteria.' : "You haven't submitted any proposals yet." }}
                         </p>
-                        <a href="{{ $search ? route('speaker.my-proposals') : route('speaker.createproposal') }}"
-                            class="inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-hover text-white rounded-lg font-medium transition-colors focus:ring-2 focus:ring-accent/50">
-                            {{ $search ? 'View all proposals' : 'Submit New Proposal' }}
-                        </a>
                     </div>
                 </div>
             @endif
