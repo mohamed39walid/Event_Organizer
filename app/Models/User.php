@@ -18,9 +18,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'fullname',
+        "username",
         'email',
         'password',
+        "role"
     ];
 
     /**
@@ -37,6 +39,10 @@ class User extends Authenticatable
     public function events()
     {
         return $this->hasMany(Event::class, 'organizer_id');
+    }
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'user_id');
     }
 
 

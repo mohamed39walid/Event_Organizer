@@ -1,5 +1,12 @@
 @extends('layouts.app')
-
+{{-- @php
+    $fakeErrors = new \Illuminate\Support\MessageBag([
+        'password' => ['Password must be at least 3 characters.'],
+        'email' => ['Invalid email address.'],
+    ]);
+    $errors = new \Illuminate\Support\ViewErrorBag();
+    $errors->put('default', $fakeErrors);
+@endphp --}}
 @section('main')
     <div class="min-h-[calc(100vh-140px)] flex justify-center items-center px-4">
         <img src="{{ asset('images/login.webp') }}"
@@ -9,14 +16,14 @@
             class="bg-surface dark:bg-dark-surface w-full min-h-[600px] max-w-md text-white py-10 rounded-r-2xl flex flex-col items-center">
             <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold text-center mb-6">Login</h1>
 
-            <form method="POST" action="{{ route('login') }}"
+            <form method="POST" action="{{ route('handlelogin') }}"
                 class="flex flex-col justify-center items-center h-full space-y-6 px-10 w-full">
                 @csrf
 
 
                 <label for="email" class="block w-full dark:text-dark-primary text-primary">
                     Email
-                    <input id="email" name="email" type="email" required
+                    <input id="email" name="email" type="email" autofocus
                         class="mt-2 w-full rounded-md border p-3 @error('email') border-error dark:border-dark-error  @else border-gray-300 @enderror" />
                     @error('email')
                         <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>
@@ -25,7 +32,7 @@
 
                 <label for="password" class="block w-full dark:text-dark-primary text-primary">
                     Password
-                    <input id="password" name="password" type="password" required
+                    <input id="password" name="password" type="password"
                         class="mt-2 w-full rounded-md border p-3 @error('password') border-error dark:border-dark-error  @else border-gray-300 @enderror" />
                     @error('password')
                         <p class="text-error dark:text-dark-error  text-sm mt-1">{{ $message }}</p>

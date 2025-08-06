@@ -1,13 +1,12 @@
 <?php
 
+use App\Http\Controllers\OrganizerController;
 use Illuminate\Support\Facades\Route;
 
 // Auth routes (login/register)
-Route::view('/login', 'pages.auth.login')->name('login');
-Route::view('/register', 'pages.auth.register')->name('register');
 
 // Profile management (only for authenticated users)
-Route::prefix('profile')->name(value: 'profile.')->middleware('auth')->group(function () {
+Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
     Route::view('/', 'pages.shared.profile')->name('view');
     Route::put('/update', fn() => '')->name('update');
     Route::delete('/delete', fn() => '')->name('delete');
@@ -20,8 +19,16 @@ Route::prefix('role/request')->name('role.')->middleware('auth')->group(function
     Route::put('/user', fn() => '')->name('to-user');
 });
 
+
+Route::get('/event', [OrganizerController::class, 'events'])->name('events');
+Route::get('/{id}/event', [OrganizerController::class, 'eventDetails'])->name('event-details');
+Route::get('/', [OrganizerController::class, 'homeEvents'])->name('home');
+
 // Fallback route for 404 not found
-Route::fallback(fn() => view('pages.shared.not-found'))->name('not-found');
+Route::get('/not-found', fn() => view('pages.shared.not-found'))->name('not-found');
+Route::fallback(function () {
+    return redirect()->route('not-found');
+});
 
 // Include route groups
 require __DIR__ . '/user.php';

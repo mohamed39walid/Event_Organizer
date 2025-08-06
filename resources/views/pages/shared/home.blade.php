@@ -1,28 +1,5 @@
 @extends('layouts.app')
 
-@php
-    $events = [
-        [
-            'eventName' => 'Live Talk Night',
-            'date' => '2025-08-20',
-            'location' => 'Alexandria',
-            'image' => 'images/Concert.jpg',
-        ],
-        [
-            'eventName' => 'Summer Festival',
-            'date' => '2025-08-18',
-            'location' => 'Cairo',
-            'image' => 'images/register.webp',
-        ],
-        [
-            'eventName' => 'Live Talk Night',
-            'date' => '2025-08-20',
-            'location' => 'Alexandria',
-            'image' => 'images/Concert.jpg',
-        ],
-    ];
-@endphp
-
 @section('main')
     {{-- Hero Section --}}
     <section class="relative overflow-hidden bg-dark-bg dark:bg-dark-bg text-white">
@@ -44,7 +21,7 @@
                 </a>
                 <a href="#about"
                     class="border-2 border-dark-border hover:border-accent text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 backdrop-blur-sm font-poppins">
-                    Learn More
+                    Show Event
                 </a>
             </div>
         </div>
@@ -62,20 +39,23 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            <div class="grid grid-cols-3 gap-10 max-w-6xl mx-auto">
                 @foreach ($events as $event)
-                    <x-card :eventName="$event['eventName']" :date="$event['date']" :location="$event['location']" :image="$event['image']" />
+                    <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
+                        :image="$event->image ?? ''" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
                 @endforeach
             </div>
 
             <div class="text-center mt-12">
-                <a href="{{ route('user.events') }}"
+                <a href="{{ route('events') }}"
                     class="bg-accent hover:bg-accent-hover text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-poppins">
                     View All Events
                 </a>
             </div>
         </div>
     </section>
+
+
 
     {{-- About Section --}}
     <section id="about" class="py-24 bg-surface dark:bg-dark-surface">

@@ -7,22 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckUserRole
+class RedirectIfAuthenticated
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        $userRole = strtolower(Auth::user()->role);
-        $allowedRoles = array_map('strtolower', $roles);
-
-        if (!in_array($userRole, $allowedRoles)) {
-            return redirect()->route("not-found");
+        if(!Auth::check()){
+            return redirect()->name("home");
         }
-
         return $next($request);
     }
 }
