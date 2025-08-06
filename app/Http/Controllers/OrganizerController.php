@@ -52,37 +52,6 @@ class OrganizerController extends Controller
         return view('pages.organizer.create-event');
     }
 
-    // Zeyad Hyman (Fix This Function )
-    // // Updating an Event
-    // public function UpdateEvent(OrganizerForm $request, $id)
-    // {
-    //     $data = $request->validated();
-
-    //     $event = Event::findOrFail($id);
-
-    //     $event->update($data);
-
-    //     return redirect()->route('events.index')->with('Success', 'Event has been updated successfully.');
-    // }
-
-    // public function UpdateEvent(Request $request, $id)
-    // {
-    //     $data = $request->all();
-
-    //     $event = Event::findOrFail($id);
-
-    //     $event->update($data);
-
-    //     return redirect()->route('events')->with('Success', 'Event has been updated successfully.');
-    // }
-
-    // Delete an Event
-    public function DeleteEvent($id)
-    {
-        $event = Event::findorfail($id);
-        $event->delete();
-        return redirect()->route('events.events')->with('Success', 'Event has been Deleted Successfully');
-    }
 
     // View SpecificProposal For An Event
     public function SpecificProposal($id)

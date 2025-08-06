@@ -15,24 +15,24 @@ class EventController extends Controller
         return view('pages.organizer.create-event');
     }
 
-public function StoreEvent(EventRequest $request)
-{
-    $events = $request->validated();
+    public function StoreEvent(EventRequest $request)
+    {
+        $events = $request->validated();
 
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = $image->getClientOriginalName(); 
-        $image->storeAs('events', $imageName, 'public'); 
-        $events['image'] = $imageName;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $image->storeAs('events', $imageName, 'public');
+            $events['image'] = $imageName;
+        }
+
+        $events['status'] = "Available";
+        $events['organizer_id'] = Auth::id();
+
+        Event::create($events);
+
+        return redirect()->route('events')->with('success', 'Event has been created successfully.');
     }
-
-    $events['status'] = "Available";
-    $events['organizer_id'] = Auth::id();
-
-    Event::create($events);
-
-    return redirect()->route('events')->with('success', 'Event has been created successfully.');
-}
 
 
 public function UpdateEvent(Request $request, $id)
@@ -45,22 +45,33 @@ public function UpdateEvent(Request $request, $id)
         'available_tickets' => 'required|integer|min:1',
         'start_date' => 'required|date|after_or_equal:today',
         'end_date' => 'required|date|after:start_date',
-        'status' => 'required|in:Available,Upcoming,closed',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', 
+        'status' => 'required|in:Available,Upcoming,Closed',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 
     if ($request->hasFile('image')) {
-        if ($event->image && Storage::disk('public')->exists($event->image)) {
-            Storage::disk('public')->delete($event->image);
+        if ($event->image) {
+            $oldImagePath = str_replace('storage/', '', $event->image);
+            if (Storage::disk('public')->exists('events/'.$oldImagePath)) {
+                Storage::disk('public')->delete('events/'.$oldImagePath);
+            }
         }
-        $imagePath = $request->file('image')->store('events', 'public');
-        $data['image'] = $imagePath;
+        
+        // Store new image
+        $imageName = time().'_'.$request->file('image')->getClientOriginalName();
+        $imagePath = $request->file('image')->storeAs('events', $imageName, 'public');
+        $data['image'] = $imageName; // Store just the filename
     }
 
     $event->update($data);
 
     return redirect()->back()->with('success', 'Event has been updated successfully.');
 }
-
-
+    
+    public function DeleteEvent($id)
+    {
+        $event = Event::findorfail($id);
+        $event->delete();
+        return redirect()->route('events.events')->with('Success', 'Event has been Deleted Successfully');
+    }
 }

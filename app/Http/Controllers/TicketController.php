@@ -62,7 +62,6 @@ class TicketController extends Controller
         $event = Event::find($ticket->event_id);
         DB::beginTransaction();
         try {
-
             $event->available_tickets += 1;
             $event->save();
             $ticket->delete();
@@ -82,5 +81,12 @@ class TicketController extends Controller
         $tickets = Ticket::where("user_id", $user_id)->get();
         $event = Event::where("id",)->get();
         return view("pages.user.my-tickets", compact("tickets", 'event'));
+    }
+
+    public function AllTicketsForOrganizer($id){
+        $event = Event::findorfail($id);
+        $tickets = Ticket::where('event_id', $id);
+
+        return view('');
     }
 }

@@ -23,7 +23,7 @@ Route::prefix('events')->name('events.')->group(function () {
     Route::put('/{id}', [EventController::class, 'UpdateEvent'])->name('update-event');      // Update event
 
     // Delete Route
-    Route::delete('/{id}', [OrganizerController::class, 'DeleteEvent'])->name('destroy');       // Delete event
+    Route::delete('/{id}', [EventController::class, 'DeleteEvent'])->name('destroy');       // Delete event
 
     Route::get('/{id}/tickets', fn() => '')->name('tickets');                                       // View event tickets
     Route::post('/{id}/sessions', fn() => view('pages.organizer.event-sessions'))->name('sessions'); // Manage sessions
