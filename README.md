@@ -2,11 +2,10 @@
 
 <h1 align="center">🎉 Event Organizer System 🎤</h1>
 
-<<<<<<< HEAD
-<p align="center">A full-featured event management platform built with Laravel 11.</p>
-=======
-<p align="center">A full-featured event management platform built with Laravel 12.</p>
->>>>>>> 6a00d12b47d9c89bd1d2dabfb1c84eb66f504f8b
+
+<p align="center">A full-featured event management platform.</p>
+
+
 
 ---
 
