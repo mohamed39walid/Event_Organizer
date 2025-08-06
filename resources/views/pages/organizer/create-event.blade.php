@@ -75,6 +75,9 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Image</label>
                     <input type="file" name="image" accept="image/*"
                         class="block w-full text-sm text-gray-900 dark:text-gray-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-accent-hover transition-all cursor-pointer">
+                        @error('image')
+                            <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
+                        @enderror
                 </div>
 
                 <div class="flex justify-center mt-6">
