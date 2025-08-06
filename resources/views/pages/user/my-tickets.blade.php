@@ -68,11 +68,16 @@
 
                                     <!-- Ticket Status Badge -->
                                     <div class="ml-4 flex-shrink-0">
-                                        <span
-                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-poppins bg-success/10 text-success dark:bg-dark-success/10 dark:text-dark-success border border-success/20 dark:border-dark-success/20">
-                                            <i class="fas fa-check-circle mr-1 text-xs"></i>
-                                            Confirmed
-                                        </span>
+                                        @if ($ticket->checked_in == 'yes')
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-poppins bg-success/10 text-success dark:bg-dark-success/10 dark:text-dark-success border border-success/20 dark:border-dark-success/20">
+                                                Checked in
+                                            @else
+                                                <span
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium font-poppins bg-success/10 text-success dark:bg-dark-success/10 dark:text-dark-success border border-success/20 dark:border-dark-success/20">
+                                                    Not Checked
+                                                </span>
+                                        @endif
                                     </div>
                                 </header>
 
@@ -118,20 +123,22 @@
                                     </div>
                                 </div>
 
-                                <!-- Action Button -->
-                                <footer class="pt-6 border-t border-border/30 dark:border-dark-border/30">
-                                    <form action="{{ route('tickets.UnBookTicket', $ticket->id) }}" method="POST"
-                                        class="w-full"
-                                        onsubmit="return confirm('Are you sure you want to unbook this ticket? This action cannot be undone.')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="w-full cursor-pointer sm:w-auto px-6 py-3 bg-error hover:bg-error/90 dark:bg-dark-error dark:hover:bg-dark-error/90 text-white rounded-lg font-medium font-poppins transition-all duration-200 hover:shadow-lg hover:shadow-error/25 dark:hover:shadow-dark-error/25 focus:outline-none focus:ring-2 focus:ring-error/50 focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface transform"
-                                            aria-label="Unbook {{ $ticket->event->event_name }}">
-                                            Unbook Ticket
-                                        </button>
-                                    </form>
-                                </footer>
+
+                                @if ($ticket->checked_in == 'no')
+                                    <footer class="pt-6 border-t border-border/30 dark:border-dark-border/30">
+                                        <form action="{{ route('tickets.UnBookTicket', $ticket->id) }}" method="POST"
+                                            class="w-full"
+                                            onsubmit="return confirm('Are you sure you want to unbook this ticket? This action cannot be undone.')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="w-full cursor-pointer sm:w-auto px-6 py-3 bg-error hover:bg-error/90 dark:bg-dark-error dark:hover:bg-dark-error/90 text-white rounded-lg font-medium font-poppins transition-all duration-200 hover:shadow-lg hover:shadow-error/25 dark:hover:shadow-dark-error/25 focus:outline-none focus:ring-2 focus:ring-error/50 focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface transform"
+                                                aria-label="Unbook {{ $ticket->event->event_name }}">
+                                                Unbook Ticket
+                                            </button>
+                                        </form>
+                                    </footer>
+                                @endif
                             </div>
                         </article>
                     @endforeach
