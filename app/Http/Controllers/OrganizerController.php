@@ -20,8 +20,12 @@ class OrganizerController extends Controller
     public function eventDetails($id)
     {
         $event = Event::findOrFail($id);
-        $proposals = Proposal::where('event_id', $id)->get();
         $evntSessions = Event_session::where('event_id', $id)->get();
+        if ($event->organizer_id == Auth::id()) {
+            $proposals = Proposal::where('event_id', $id)->get();
+        } else {
+            $proposals = collect();
+        }
         return view('pages.shared.event-details', compact('proposals', 'evntSessions', 'event'));
     }
 
@@ -43,7 +47,6 @@ class OrganizerController extends Controller
         $user = Auth::user();
         $events = $user->events;
         return view('pages.organizer.events', compact('events'));
-
     }
 
     // Event Form
