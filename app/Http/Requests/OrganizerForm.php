@@ -20,13 +20,7 @@ class OrganizerForm extends FormRequest
     public function rules(): array
     {
         return [
-            'event_name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
-            'available_tickets' => 'required|integer|min:1',
-            'status' => 'required|string|in:active,inactive,pending',
-            'organizer_id' => 'nullable|exists:users,id',
+
         ];
     }
 }
