@@ -53,4 +53,31 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('home')->with("success", "Loged out successfully");
     }
+public function update(Request $request)
+{
+    $user = auth()->user(); // get the currently authenticated user
+
+    $validated = $request->validate([
+        'fullname' => 'required|string|max:255',
+        'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+    ]);
+
+    $user->update($validated);
+
+    return redirect()->back()->with('success', 'Profile updated successfully.');
+}
+public function destroy(Request $request)
+{
+    $user = auth()->user();
+
+    Auth::logout(); // Log out the user first
+
+    $user->delete(); // Delete their record
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/')->with('success', 'Your account has been deleted.');
+}
 }

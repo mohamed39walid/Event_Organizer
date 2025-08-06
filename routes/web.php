@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\Auth\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Auth routes (login/register)
@@ -8,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 // Profile management (only for authenticated users)
 Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
     Route::view('/', 'pages.shared.profile')->name('view');
-    Route::put('/update', fn() => '')->name('update');
-    Route::delete('/delete', fn() => '')->name('delete');
+    Route::put('/update',  [UserController::class, 'update'])->name('update');
+    Route::delete('/delete', [UserController::class, 'destroy'])->name('delete');
 });
 
 // Role change requests (authenticated users only)
