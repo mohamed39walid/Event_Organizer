@@ -24,7 +24,7 @@ class AddedProposalRequest extends FormRequest
         return [
             "title" => "required|string|min:6",
             "description" => "required",
-            "cv" => "required|mimes:docx,pdf",
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ];
     }
 }
