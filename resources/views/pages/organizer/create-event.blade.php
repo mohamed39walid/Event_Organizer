@@ -6,7 +6,8 @@
             class="bg-surface dark:bg-dark-surface w-full min-h-[600px] max-w-3xl text-white py-10 px-10 rounded-2xl flex flex-col">
             <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold mb-6">Create New Event</h1>
 
-            <form action="{{ route('events.store-event') }}" method="POST" class="spacae-y-6 px-4">
+            <form action="{{ route('events.store-event') }}" enctype="multipart/form-data" method="POST"
+                class="spacae-y-6 px-4">
                 @csrf
 
                 <div class="mt-5">
@@ -68,6 +69,12 @@
                             <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                </div>
+
+                <div class="mt-5">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload Image</label>
+                    <input type="file" name="image" accept="image/*"
+                        class="block w-full text-sm text-gray-900 dark:text-gray-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-accent-hover transition-all cursor-pointer">
                 </div>
 
                 <div class="flex justify-center mt-6">
