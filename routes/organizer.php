@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\ProposalsController;
 use App\Http\Requests\OrganizerForm;
@@ -15,11 +16,11 @@ Route::prefix('events')->name('events.')->group(function () {
 
 
     //  Form Events Routes
-    Route::get('/createevent', [OrganizerController::class, 'CreateEvent'])->name('create-event');   //Event Form
-    Route::post('/storeevent', [OrganizerController::class, 'StoreEvent'])->name('store-event');
+    Route::get('/createevent', [EventController::class, 'CreateEvent'])->name('create-event');   //Event Form
+    Route::post('/storeevent', [EventController::class, 'StoreEvent'])->name('store-event');
 
     //  Edit Events Routes
-    Route::put('/{id}', [OrganizerController::class, 'UpdateEvent'])->name('update-event');      // Update event
+    Route::put('/{id}', [EventController::class, 'UpdateEvent'])->name('update-event');      // Update event
 
     // Delete Route
     Route::delete('/{id}', [OrganizerController::class, 'DeleteEvent'])->name('destroy');       // Delete event
