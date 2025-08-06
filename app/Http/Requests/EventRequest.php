@@ -27,10 +27,10 @@ class EventRequest extends FormRequest
             'location' => 'required|string|max:255',
             'available_tickets' => 'required|integer|min:1',
             'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date'
+            'end_date' => 'required|date|after:start_date',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ];
 
-        // 'image' = 'required|image|mimes:jpg,jpeg,png|max:2048',
     }
 
     public function messages()
