@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    // Event.php
+
     public function organizer()
     {
         return $this->belongsTo(User::class, 'organizer_id');
     }
-    // في ملف Event.php
+
     protected $fillable = [
         'event_name',
         'location',
@@ -19,6 +19,7 @@ class Event extends Model
         'end_date',
         'available_tickets',
         'status',
-        'organizer_id', // لو فيه علاقة مع المستخدم
+         'image',
+        'organizer_id', 
     ];
 }

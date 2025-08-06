@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 
     $statusColors = [
-        'Avalaible' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+        'Available' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
         'Upcoming' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
         'Closed' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
 
@@ -32,7 +32,7 @@
                 <div class="bg-white dark:bg-dark-surface rounded-xl shadow-lg overflow-hidden">
                     @if (isset($event->image))
                         <div class="relative h-56 md:h-72">
-                            <img src="{{ asset($event->image) }}" alt="{{ $event->event_name }}"
+                            <img src="{{ asset('storage/events/' . $event->image) }}" alt="{{ $event->event_name }}"
                                 class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 right-6">
