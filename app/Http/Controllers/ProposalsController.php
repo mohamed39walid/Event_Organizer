@@ -28,73 +28,71 @@ class ProposalsController extends Controller
         return view("pages.speaker.proposals", compact("proposals"));
     }
 
-    // public function CreateProposal(AddedProposalRequest $request, $id)
-
     public function CreateProposal(AddedProposalRequest $request, $id)
     {
-        // $event = Event::find($id);
-        // if (!$event) {
-        //     return redirect()->back()->with('error', 'Invalid event ID.');
-        // }
+        $event = Event::find($id);
+        if (!$event) {
+            return redirect()->back()->with('error', 'Invalid event ID.');
+        }
 
-        // $validated = $request->validated();
-        // $speaker = Auth::user(); // get full user object
-        // $speaker_id = $speaker->id;
-        // $ticket_proposal_id = Ticket::where("event_id", $id)->where("user_id", $speaker_id)->first("event_id");
-        // if ($ticket_proposal_id) {
-        //     return redirect()->back()->with("error", "You can't book ticket and apply to this event");
-        // }
-        // // Handle CV upload
-        // $file = $request->file('cv');
-        // $username = Str::slug($speaker->username);
-        // $extension = $file->getClientOriginalExtension();
-        // $filename = "{$username}_event{$id}.{$extension}";
-        // $file->storeAs('cvs', $filename, 'public');
+        $validated = $request->validated();
+        $speaker = Auth::user(); // get full user object
+        $speaker_id = $speaker->id;
+        $ticket_proposal_id = Ticket::where("event_id", $id)->where("user_id", $speaker_id)->first("event_id");
+        if ($ticket_proposal_id) {
+            return redirect()->back()->with("error", "You can't book ticket and apply to this event");
+        }
+        // Handle CV upload
+        $file = $request->file('cv');
+        $username = Str::slug($speaker->username);
+        $extension = $file->getClientOriginalExtension();
+        $filename = "{$username}_event{$id}.{$extension}";
+        $file->storeAs('cvs', $filename, 'public');
 
 
-        // $existing_proposal = Proposal::where("event_id", $id)
-        //     ->where("speaker_id", $speaker_id)
-        //     ->exists();
+        $existing_proposal = Proposal::where("event_id", $id)
+            ->where("speaker_id", $speaker_id)
+            ->exists();
 
-        // if ($existing_proposal) {
-        //     return redirect()->back()->with('info', 'You have already applied to this event.');
-        // }
+        if ($existing_proposal) {
+            return redirect()->back()->with('info', 'You have already applied to this event.');
+        }
 
-        // Proposal::create([
-        //     "title" => $validated["title"],
-        //     "description" => $validated["description"],
-        //     "cv" => $filename,
-        //     "status" => "pending",
-        //     "speaker_id" => $speaker_id,
-        //     "event_id" => $id
-        // ]);
+        Proposal::create([
+            "title" => $validated["title"],
+            "description" => $validated["description"],
+            "cv" => $filename,
+            "status" => "pending",
+            "speaker_id" => $speaker_id,
+            "event_id" => $id
+        ]);
 
-        // return redirect()->route('home')->with('success', 'Proposal applied successfully.');
+        return redirect()->route('home')->with('success', 'Proposal applied successfully.');
 
-      $validated = $request->validated();
-    $speaker = Auth::user();
+    //   $validated = $request->validated();
+    // $speaker = Auth::user();
 
-    // Handle CV upload with unique filename
-    $file = $request->file('cv');
-    $filename = Str::slug($speaker->username)
-                . '_event_' . $id
-                . '_' . time()
-                . '.' . $file->getClientOriginalExtension();
+    // // Handle CV upload with unique filename
+    // $file = $request->file('cv');
+    // $filename = Str::slug($speaker->username)
+    //             . '_event_' . $id
+    //             . '_' . time()
+    //             . '.' . $file->getClientOriginalExtension();
     
-    $path = $file->storeAs('proposals/cvs', $filename, 'public');
+    // $path = $file->storeAs('proposals/cvs', $filename, 'public');
 
-    // Create proposal
-    Proposal::create([
-        "title" => $validated["title"],
-        "description" => $validated["description"],
-        "cv" => $path,  // Store full path
-        "status" => "pending",
-        "speaker_id" => $speaker->id,
-        "event_id" => $id
-    ]);
+    // // Create proposal
+    // Proposal::create([
+    //     "title" => $validated["title"],
+    //     "description" => $validated["description"],
+    //     "cv" => $path,  // Store full path
+    //     "status" => "pending",
+    //     "speaker_id" => $speaker->id,
+    //     "event_id" => $id
+    // ]);
 
-    return redirect()->route('home')
-           ->with('success', 'Your speaker proposal has been submitted successfully!');
+    // return redirect()->route('home')
+    //        ->with('success', 'Your speaker proposal has been submitted successfully!');
 }
     
 
