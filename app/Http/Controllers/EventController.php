@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
+
+    public function events()
+    {
+        $events = Event::all();
+        return view('pages.shared.events', compact('events'));
+    }
+
     public function CreateEvent()
     {
         return view('pages.organizer.create-event');
@@ -57,10 +64,9 @@ public function UpdateEvent(Request $request, $id)
             }
         }
         
-        // Store new image
         $imageName = time().'_'.$request->file('image')->getClientOriginalName();
         $imagePath = $request->file('image')->storeAs('events', $imageName, 'public');
-        $data['image'] = $imageName; // Store just the filename
+        $data['image'] = $imageName; 
     }
 
     $event->update($data);
@@ -74,4 +80,5 @@ public function UpdateEvent(Request $request, $id)
         $event->delete();
         return redirect()->route('events.events')->with('Success', 'Event has been Deleted Successfully');
     }
+
 }

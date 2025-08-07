@@ -14,19 +14,15 @@ use Illuminate\Support\Facades\Auth;
 class OrganizerController extends Controller
 {
     /**
-     *
+     * Adam Ahmed -> Retrived Sessions with all the data 
      */
     // Zeyad Hyman Create (eventDetails, events) and removed (EditEvent)
     public function eventDetails($id)
     {
         $event = Event::findOrFail($id);
-        $evntSessions = Event_session::where('event_id', $id)->get();
-        if ($event->organizer_id == Auth::id()) {
-            $proposals = Proposal::where('event_id', $id)->get();
-        } else {
-            $proposals = collect();
-        }
-        return view('pages.shared.event-details', compact('proposals', 'evntSessions', 'event'));
+        $proposals = Proposal::where('event_id', $id)->get();
+        $eventSessions = Event_session::where('event_id', $id)->get();
+        return view('pages.shared.event-details', compact('proposals', 'eventSessions', 'event'));
     }
 
     public function events()
@@ -49,18 +45,10 @@ class OrganizerController extends Controller
         return view('pages.organizer.events', compact('events'));
     }
 
-    // Event Form
-    public function CreateEvent()
-    {
-        return view('pages.organizer.create-event');
-    }
-
-
     // View SpecificProposal For An Event
     public function SpecificProposal($id)
     {
         $event = Event::findorfail($id);
-
         $proposals = Proposal::where('event_id', $id)->get();
         return view('pages.organizer.eventproposals', compact('proposals', 'event'));
     }

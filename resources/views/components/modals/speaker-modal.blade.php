@@ -40,3 +40,33 @@
         </form>
     </div>
 </div>
+
+
+
+@section('scripts')
+<script>
+    function openSpeakerModal() {
+        document.getElementById('speakerModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeSpeakerModal() {
+        document.getElementById('speakerModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+
+    document.getElementById('speakerModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSpeakerModal();
+        }
+    });
+
+ 
+    document.addEventListener('DOMContentLoaded', function() {
+        @if($errors->any())
+            openSpeakerModal();
+        @endif
+    });
+</script>
+@endsection

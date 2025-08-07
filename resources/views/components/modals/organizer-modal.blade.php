@@ -11,17 +11,8 @@
         <!-- Title -->
         <h2 class="text-2xl font-semibold font-heading mb-6 text-primary dark:text-dark-primary">Edit Event</h2>
 
-        <!-- Display success/error messages -->
-        @if(session('success'))
-            <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
-                {{ session('success') }}
-            </div>
-        @endif
-
-
-
         <!-- Form -->
-        <form action="{{ route('events.update-event', ['id' => $event->id]) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <form action="{{ route('organizer.events.update-event', ['id' => $event->id]) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
             @method('PUT')
 

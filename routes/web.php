@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\Auth\UserController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,7 @@ Route::prefix('role/request')->name('role.')->middleware('auth')->group(function
 });
 
 
-Route::get('/event', [OrganizerController::class, 'events'])->name('events');
+Route::get('/event', [EventController::class, 'events'])->name('events');
 Route::get('/{id}/event', [OrganizerController::class, 'eventDetails'])->name('event-details');
 Route::get('/', [OrganizerController::class, 'homeEvents'])->name('home');
 

@@ -14,7 +14,11 @@ class Proposal extends Model
     {
         return $this->belongsTo(User::class, 'speaker_id');
     }
-
+    
+public function session()
+{
+    return $this->hasOne(Event_session::class);
+}
     protected $fillable = [
         'title',
         'description',
