@@ -24,7 +24,7 @@
                 {{-- Profile Form --}}
                 <form id="profileForm" action="{{ route('profile.update') }}" method="POST" class="p-6">
                     @csrf
-                    @method('PATCH')
+                    @method('PUT')
 
                     <div class="space-y-6">
                         {{-- Full Name --}}
@@ -89,28 +89,48 @@
                                     @else fa-user @endif mr-2"></i>
                                 {{ ucfirst(auth()->user()->role) }}
                             </span>
-                        </div>
+                        </div> 
+                        
                     </div>
-
+                    
                     <div class="flex gap-3 pt-6 mt-6 border-t border-border dark:border-dark-border">
                         <button type="button" id="editBtn"
                             class="px-4 py-2 cursor-pointer bg-accent hover:bg-accent-hover text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
                             <i class="fas fa-edit"></i>
                             <span>Edit Profile</span>
                         </button>
+                        
+                        
+
 
                         <button type="submit" id="saveBtn"
                             class="hidden px-4 py-2 cursor-pointer bg-success hover:bg-success/90 text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
                             <i class="fas fa-check"></i>
                             <span>Save Changes</span>
                         </button>
-
+                        <!-- delete button -->
+                        
                         <button type="button" id="cancelBtn"
                             class="hidden px-4 py-2 cursor-pointer bg-muted hover:bg-muted/80 text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
                             <i class="fas fa-times"></i>
                             <span>Cancel</span>
                         </button>
+
                     </div>
+                </form>
+
+                <!-- delete button -->   
+                <form action="{{ route('profile.delete') }}" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
+                class="px-6 mb-4">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" id="deletebtn"
+                        class="hidden px-4 py-2 cursor-pointer bg-error hover:bg-error/90 text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
+                        <i class="fas fa-trash"></i>
+                        <span>Delete Account</span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -120,6 +140,7 @@
         const editBtn = document.getElementById('editBtn');
         const saveBtn = document.getElementById('saveBtn');
         const cancelBtn = document.getElementById('cancelBtn');
+        const deleteBtn = document.getElementById('deletebtn');
         const displays = document.querySelectorAll('.profile-display');
         const inputs = document.querySelectorAll('.profile-input');
         const originalValues = {};
@@ -135,6 +156,7 @@
             editBtn.classList.toggle('hidden', editing);
             saveBtn.classList.toggle('hidden', !editing);
             cancelBtn.classList.toggle('hidden', !editing);
+            deleteBtn.classList.toggle('hidden', !editing);
         }
 
         editBtn.addEventListener('click', () => toggleEdit(true));

@@ -16,19 +16,20 @@ class OrganizerController extends Controller
     /**
      * Adam Ahmed -> Retrived Sessions with all the data 
      */
-public function eventDetails($id)
-{
-    $event = Event::findOrFail($id);
-    $proposals = Proposal::where('event_id', $id)->get();
- 
-    // Get sessions with speaker and proposal information
-    $eventSessions = Event_session::with(['speaker', 'proposal'])
-        ->where('event_id', $id)
-        ->orderBy('start_date', 'asc')
-        ->get();
-        
-    return view('pages.shared.event-details', compact('proposals', 'eventSessions', 'event'));
-}
+    // Zeyad Hyman Create (eventDetails, events) and removed (EditEvent)
+    public function eventDetails($id)
+    {
+        $event = Event::findOrFail($id);
+        $proposals = Proposal::where('event_id', $id)->get();
+        $evntSessions = Event_session::where('event_id', $id)->get();
+        return view('pages.shared.event-details', compact('proposals', 'evntSessions', 'event'));
+    }
+
+    public function events()
+    {
+        $events = Event::all();
+        return view('pages.shared.events', compact('events'));
+    }
 
     public function homeEvents()
     {
@@ -42,7 +43,6 @@ public function eventDetails($id)
         $user = Auth::user();
         $events = $user->events;
         return view('pages.organizer.events', compact('events'));
-
     }
 
     // View SpecificProposal For An Event
