@@ -1,19 +1,20 @@
 @extends('layouts.app')
 @php
-
     $search = request('search');
+
     if ($search) {
-        $events = array_filter($events, function ($event) {
-            $search = strtolower(request('search'));
+        $search = strtolower($search);
+
+        $events = $events->filter(function ($event) use ($search) {
             return str_contains(strtolower($event->event_name), $search) ||
                 str_contains(strtolower($event->location), $search) ||
                 str_contains(strtolower($event->organizer->username), $search) ||
-                str_contains(strtolower($event->available_tickets), $search) ||
+                str_contains((string) $event->available_tickets, $search) ||
                 str_contains(strtolower($event->status), $search);
         });
     }
-
 @endphp
+
 
 
 @section('main')
@@ -57,7 +58,7 @@
                 @endforeach
 
             </div>
-            @if (empty($events))
+            @if ($events->isEmpty())
                 <div class="text-center text-gray-500 dark:text-gray-400 w-full">
                     No events found matching "{{ request('search') }}"
                 </div>
