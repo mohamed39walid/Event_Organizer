@@ -47,7 +47,14 @@
     <x-footer />
 
     @yield('scripts')
-
+<script>
+    // Force reload when using back button
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+</script>
 </body>
 
 </html>

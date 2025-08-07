@@ -51,7 +51,7 @@ class UserController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home')->with("success", "Loged out successfully");
+        return redirect()->route('home')->with("success", "Logged out successfully");
     }
     public function update(Request $request)
     {

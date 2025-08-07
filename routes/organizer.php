@@ -8,7 +8,13 @@ use App\Http\Requests\OrganizerForm;
 use Illuminate\Support\Facades\Route;
 
 // Routes accessible only by users with the 'organizer' role
-Route::middleware(app()->environment('local') ? [] : ['auth', 'role:organizer'])->prefix('organizer')->name('organizer.')->group(function () {
+Route::middleware(app()->environment('local') ? [] : [
+    'auth', 
+    'role:organizer',
+    'prevent-back-history'
+])->prefix('organizer')->name('organizer.')->group(function () {
+
+// Route::middleware(app()->environment('local') ? [] : ['auth', 'role:organizer'])->prefix('organizer')->name('organizer.')->group(function () {
 
 // Event management
 Route::get('/my-events', [OrganizerController::class, 'OrganizerEvents'])->name('organizer-events');               // List all events
@@ -36,7 +42,4 @@ Route::prefix('events')->name('events.')->group(function () {
     });
 });
 
-
-    // View for reviewing all proposals
-    // Route::get('/proposals', [ProposalsController::class, 'AllProposals'])->name('review-proposals');
 });

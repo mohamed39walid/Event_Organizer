@@ -13,9 +13,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Register middleware aliases
         $middleware->alias([
             'role' => CheckUserRole::class,
             'guestOnly' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+        ]);
+        
+        // Add global middleware
+        $middleware->append([
+            \App\Http\Middleware\PreventBackHistory::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
