@@ -173,7 +173,7 @@
                                 <!-- Footer / Action -->
                                 <footer class="pt-6 border-t border-border dark:border-dark-border mt-8">
                                     @if ($proposal->cv)
-                                        <a href="{{ asset('storage/' . $proposal->cv) }}" target="_blank"
+                                        <a href="{{ asset('storage/cvs/' . $proposal->cv) }}" target="_blank"
                                             class="inline-flex items-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg transform ">
                                             <i class="fas fa-file-alt"></i>
                                             View CV
