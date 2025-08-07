@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
@@ -70,32 +71,32 @@ class ProposalsController extends Controller
 
         return redirect()->route('home')->with('success', 'Proposal applied successfully.');
 
-    //   $validated = $request->validated();
-    // $speaker = Auth::user();
+        //   $validated = $request->validated();
+        // $speaker = Auth::user();
 
-    // // Handle CV upload with unique filename
-    // $file = $request->file('cv');
-    // $filename = Str::slug($speaker->username)
-    //             . '_event_' . $id
-    //             . '_' . time()
-    //             . '.' . $file->getClientOriginalExtension();
-    
-    // $path = $file->storeAs('proposals/cvs', $filename, 'public');
+        // // Handle CV upload with unique filename
+        // $file = $request->file('cv');
+        // $filename = Str::slug($speaker->username)
+        //             . '_event_' . $id
+        //             . '_' . time()
+        //             . '.' . $file->getClientOriginalExtension();
 
-    // // Create proposal
-    // Proposal::create([
-    //     "title" => $validated["title"],
-    //     "description" => $validated["description"],
-    //     "cv" => $path,  // Store full path
-    //     "status" => "pending",
-    //     "speaker_id" => $speaker->id,
-    //     "event_id" => $id
-    // ]);
+        // $path = $file->storeAs('proposals/cvs', $filename, 'public');
 
-    // return redirect()->route('home')
-    //        ->with('success', 'Your speaker proposal has been submitted successfully!');
-}
-    
+        // // Create proposal
+        // Proposal::create([
+        //     "title" => $validated["title"],
+        //     "description" => $validated["description"],
+        //     "cv" => $path,  // Store full path
+        //     "status" => "pending",
+        //     "speaker_id" => $speaker->id,
+        //     "event_id" => $id
+        // ]);
+
+        // return redirect()->route('home')
+        //        ->with('success', 'Your speaker proposal has been submitted successfully!');
+    }
+
 
     public function DeleteProposal($id)
     {
@@ -109,89 +110,98 @@ class ProposalsController extends Controller
     }
 
 
-public function AcceptProposal(Request $request, $id)
-{
-    try {
-        $proposal = Proposal::with(['speaker', 'event'])->findOrFail($id);
-        
-        // Validate required relationships exist
-        if (!$proposal->speaker_id) {
-            throw new \Exception("No speaker associated with this proposal");
-        }
-        
-        if (!$proposal->event_id) {
-            throw new \Exception("No event associated with this proposal");
-        }
+    public function AcceptProposal(Request $request, $id)
+    {
+        try {
+            $proposal = Proposal::with(['speaker', 'event'])->findOrFail($id);
 
-        if (!$proposal->speaker) {
-            throw new \Exception("The speaker user record doesn't exist");
-        }
+            // Validate required relationships exist
+            if (!$proposal->speaker_id) {
+                throw new \Exception("No speaker associated with this proposal");
+            }
 
-        if (!$proposal->event) {
-            throw new \Exception("The event record doesn't exist");
-        }
+            if (!$proposal->event_id) {
+                throw new \Exception("No event associated with this proposal");
+            }
 
-        $event = $proposal->event;
-        $eventStart = Carbon::parse($event->start_date);
-        $eventEnd = Carbon::parse($event->end_date);
+            $event = $proposal->event;
+            $eventStart = Carbon::parse($event->start_date);
+            $eventEnd = Carbon::parse($event->end_date);
 
-        // Validate request data first
-        $validated = $request->validate([
-            'session_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-        ]);
+            // Custom validation rules
+            $validator = Validator::make($request->all(), [
+                'session_date' => [
+                    'required',
+                    'date',
+                    function ($attribute, $value, $fail) use ($eventStart, $eventEnd) {
+                        $date = Carbon::parse($value);
+                        if ($date->lt($eventStart->startOfDay())) {
+                            $fail("Session date must be on or after " . $eventStart->format('M d, Y'));
+                        }
+                        if ($date->gt($eventEnd->endOfDay())) {
+                            $fail("Session date must be on or before " . $eventEnd->format('M d, Y'));
+                        }
+                    }
+                ],
+                'start_time' => 'required|date_format:H:i',
+                'end_time' => [
+                    'required',
+                    'date_format:H:i',
+                    'after:start_time',
+                    function ($attribute, $value, $fail) use ($request) {
+                        // $start = Carbon::parse($request->start_time);
+                        // $end = Carbon::parse($value);
+                        $start = Carbon::createFromFormat('H:i', $request->start_time);
+                        $end = Carbon::createFromFormat('H:i', $value);
+                        $duration = $start->diffInMinutes($end);
 
-        // Get session time from validated request
-        $sessionDate = Carbon::parse($validated['session_date']);
-        $startTime = Carbon::parse($validated['start_time']);
-        $endTime = Carbon::parse($validated['end_time']);
-
-        // Combine date and time
-        $sessionStart = $sessionDate->copy()
-            ->setHour($startTime->hour)
-            ->setMinute($startTime->minute);
-            
-        $sessionEnd = $sessionDate->copy()
-            ->setHour($endTime->hour)
-            ->setMinute($endTime->minute);
-
-        // Validate session is within event dates
-        if ($sessionStart->lt($eventStart)) {
-            throw new \Exception("Session cannot start before the event begins (".$eventStart->format('M d, Y').")");
-        }
-
-        if ($sessionEnd->gt($eventEnd)) {
-            throw new \Exception("Session cannot end after the event concludes (".$eventEnd->format('M d, Y').")");
-        }
-
-        // Validate session duration (minimum 30 minutes, maximum 4 hours)
-        $durationMinutes = $sessionStart->diffInMinutes($sessionEnd);
-        if ($durationMinutes < 30) {
-            throw new \Exception("Session must be at least 30 minutes long");
-        }
-        if ($durationMinutes > 240) {
-            throw new \Exception("Session cannot exceed 4 hours");
-        }
-   
-        DB::transaction(function() use ($proposal, $sessionStart, $sessionEnd) {
-            $session = Event_session::create([
-                'event_id' => $proposal->event_id,
-                'speaker_id' => $proposal->speaker_id,
-                'proposal_id' => $proposal->id,
-                'start_date' => $sessionStart,
-                'end_date' => $sessionEnd,
+                        if ($duration < 30) {
+                            $fail("Session must be at least 30 minutes long");
+                        }
+                        if ($duration > 240) {
+                            $fail("Session cannot exceed 4 hours");
+                        }
+                    }
+                ]
             ]);
-            
-            $proposal->update(['status' => 'approved']);
-        });
-        
-        return back()->with('success', 'Proposal approved and session scheduled successfully');
-        
-    } catch (\Exception $e) {
-        return back()->with('error', $e->getMessage());
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator, 'approve_' . $proposal->id)
+                    ->withInput()
+                    ->with('_from_proposal_id', $proposal->id);
+            }
+
+            $validated = $validator->validated();
+            $sessionDate = Carbon::parse($validated['session_date']);
+            $startTime = Carbon::parse($validated['start_time']);
+            $endTime = Carbon::parse($validated['end_time']);
+
+            $sessionStart = $sessionDate->copy()
+                ->setHour($startTime->hour)
+                ->setMinute($startTime->minute);
+
+            $sessionEnd = $sessionDate->copy()
+                ->setHour($endTime->hour)
+                ->setMinute($endTime->minute);
+
+            DB::transaction(function () use ($proposal, $sessionStart, $sessionEnd) {
+                $session = Event_session::create([
+                    'event_id' => $proposal->event_id,
+                    'speaker_id' => $proposal->speaker_id,
+                    'proposal_id' => $proposal->id,
+                    'start_date' => $sessionStart,
+                    'end_date' => $sessionEnd,
+                ]);
+
+                $proposal->update(['status' => 'approved']);
+            });
+
+            return back()->with('success', 'Proposal approved and session scheduled successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
-}
 
     public function RejectProposal($id)
     {
