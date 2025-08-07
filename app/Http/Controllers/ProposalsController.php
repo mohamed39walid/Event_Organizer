@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Event_session;
 use App\Models\Proposal;
 use App\Models\Ticket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -108,7 +109,7 @@ class ProposalsController extends Controller
     }
 
 
-public function AcceptProposal($id)
+public function AcceptProposal(Request $request, $id)
 {
     try {
         $proposal = Proposal::with(['speaker', 'event'])->findOrFail($id);
@@ -129,20 +130,63 @@ public function AcceptProposal($id)
         if (!$proposal->event) {
             throw new \Exception("The event record doesn't exist");
         }
+
+        $event = $proposal->event;
+        $eventStart = Carbon::parse($event->start_date);
+        $eventEnd = Carbon::parse($event->end_date);
+
+        // Validate request data first
+        $validated = $request->validate([
+            'session_date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+        ]);
+
+        // Get session time from validated request
+        $sessionDate = Carbon::parse($validated['session_date']);
+        $startTime = Carbon::parse($validated['start_time']);
+        $endTime = Carbon::parse($validated['end_time']);
+
+        // Combine date and time
+        $sessionStart = $sessionDate->copy()
+            ->setHour($startTime->hour)
+            ->setMinute($startTime->minute);
+            
+        $sessionEnd = $sessionDate->copy()
+            ->setHour($endTime->hour)
+            ->setMinute($endTime->minute);
+
+        // Validate session is within event dates
+        if ($sessionStart->lt($eventStart)) {
+            throw new \Exception("Session cannot start before the event begins (".$eventStart->format('M d, Y').")");
+        }
+
+        if ($sessionEnd->gt($eventEnd)) {
+            throw new \Exception("Session cannot end after the event concludes (".$eventEnd->format('M d, Y').")");
+        }
+
+        // Validate session duration (minimum 30 minutes, maximum 4 hours)
+        $durationMinutes = $sessionStart->diffInMinutes($sessionEnd);
+        if ($durationMinutes < 30) {
+            throw new \Exception("Session must be at least 30 minutes long");
+        }
+        if ($durationMinutes > 240) {
+            throw new \Exception("Session cannot exceed 4 hours");
+        }
    
-        DB::transaction(function() use ($proposal) {
+        DB::transaction(function() use ($proposal, $sessionStart, $sessionEnd) {
             $session = Event_session::create([
                 'event_id' => $proposal->event_id,
                 'speaker_id' => $proposal->speaker_id,
                 'proposal_id' => $proposal->id,
-                'start_date' => now()->addDays(1)->setHour(10)->setMinute(0), // DEFUALT Api 
-                'end_date' => now()->addDays(1)->setHour(11)->setMinute(0), // DEFUALT 
+                'start_date' => $sessionStart,
+                'end_date' => $sessionEnd,
             ]);
             
             $proposal->update(['status' => 'approved']);
         });
         
-        return back()->with('success', 'Proposal Approved and Session Scheduled');
+        return back()->with('success', 'Proposal approved and session scheduled successfully');
         
     } catch (\Exception $e) {
         return back()->with('error', $e->getMessage());
