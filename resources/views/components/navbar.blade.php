@@ -17,6 +17,7 @@
                 <p class="text-red-900">
                     {{ strtoupper(auth()->user()->role) }}
                 </p>
+
                 @switch(auth()->user()->role)
                     @case('user')
                         <a href="{{ route('events') }}"
@@ -27,6 +28,40 @@
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Tickets
                         </a>
+
+                        {{-- Become a Partner Dropdown --}}
+                        <div class="relative group">
+                            <button
+                                class="cursor-pointer hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out focus:outline-none">
+                                Become a Partner
+                            </button>
+
+                            <div class="absolute mt-2 w-48 bg-white dark:bg-dark-surface shadow-lg rounded-md py-2 z-50 
+                invisible opacity-0 group-hover:visible group-hover:opacity-100 
+                transition-all duration-200"
+                                onmouseenter="this.classList.add('visible','opacity-100')"
+                                onmouseleave="this.classList.remove('visible','opacity-100')">
+
+                                <form id="speaker-form" action="{{ route('role.to-speaker') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="button" onclick="confirmRoleChange('speaker')"
+                                        class="cursor-pointer block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-bg transition">
+                                        Become a Speaker
+                                    </button>
+                                </form>
+
+                                <form id="organizer-form" action="{{ route('role.to-organizer') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="button" onclick="confirmRoleChange('organizer')"
+                                        class="cursor-pointer block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-bg transition">
+                                        Become an Organizer
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
                     @break
 
                     @case('speaker')
@@ -56,7 +91,7 @@
                     @break
                 @endswitch
 
-                <a href=" {{ route('profile.view') }}"
+                <a href="{{ route('profile.view') }}"
                     class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                     Profile
                 </a>
@@ -68,7 +103,6 @@
                         Logout
                     </button>
                 </form>
-
             @endauth
 
             @guest
@@ -107,5 +141,22 @@
         const isDark = html.classList.contains('dark');
         html.classList.toggle('dark', !isDark);
         localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    function confirmRoleChange(role) {
+        let roleName = role.charAt(0).toUpperCase() + role.slice(1); // Capitalize
+        Swal.fire({
+            title: `Are you sure?`,
+            text: `You are about to become a ${roleName}.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, become ${roleName}`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`${role}-form`).submit();
+            }
+        });
     }
 </script>

@@ -18,11 +18,17 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function (
 });
 
 // Role change requests (authenticated users only)
+// Route::prefix('role/request')->name('role.')->middleware('auth')->group(function () {
+//     Route::put('/speaker', [UserController::class, 'toSpeaker'])->name('to-speaker');
+//     Route::put('/organizer', [UserController::class, 'toOrganizer'])->name('to-organizer');
+//     // Route::put('/user', fn() => '')->name('to-user');
+// });
+
 Route::prefix('role/request')->name('role.')->middleware('auth')->group(function () {
-    Route::put('/speaker', fn() => '')->name('to-speaker');
-    Route::put('/organizer', fn() => '')->name('to-organizer');
-    Route::put('/user', fn() => '')->name('to-user');
+    Route::put('/speaker', [UserController::class, 'toSpeaker'])->name('to-speaker');
+    Route::put('/organizer', [UserController::class, 'toOrganizer'])->name('to-organizer');
 });
+
 
 
 Route::get('/event', [EventController::class, 'events'])->name('events');
