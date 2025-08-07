@@ -55,7 +55,7 @@ class UserController extends Controller
     }
     public function update(Request $request)
     {
-        $user = auth()->user(); // get the currently authenticated user
+        $user = Auth::user(); // get the currently authenticated user
 
         $validated = $request->validate([
             'fullname' => 'required|string|max:255',
@@ -69,7 +69,7 @@ class UserController extends Controller
     }
     public function destroy(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         Auth::logout(); // Log out the user first
 
