@@ -19,10 +19,16 @@ class OrganizerController extends Controller
     // Zeyad Hyman Create (eventDetails, events) and removed (EditEvent)
     public function eventDetails($id)
     {
+        if(Auth::user()){
         $event = Event::findOrFail($id);
         $proposals = Proposal::where('event_id', $id)->get();
         $eventSessions = Event_session::where('event_id', $id)->get();
         return view('pages.shared.event-details', compact('proposals', 'eventSessions', 'event'));
+        }
+        else{
+            return redirect()->route('home')->with('info', 'Error while trying to open previous page, please sign in');
+        }
+
     }
 
     public function events()
@@ -40,9 +46,14 @@ class OrganizerController extends Controller
 
     public function OrganizerEvents()
     {
-        $user = Auth::user();
+        if(Auth::user()){
+                    $user = Auth::user();
         $events = $user->events;
         return view('pages.organizer.events', compact('events'));
+        }
+        return redirect()->route('home')->with('info', 'Error while trying to open previous page, please sign in');
+
+
     }
 
     // View SpecificProposal For An Event

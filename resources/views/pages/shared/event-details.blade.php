@@ -199,9 +199,9 @@
                                                     @endif
                                                 </div>
 
-                                                {{-- Approve Modal
+
                                                 <div id="approveModal-{{ $proposal->id }}"
-                                                    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
+                                                    class="fixed inset-0 z-50 items-center justify-center bg-black/80 {{ old('_from_proposal_id') == $proposal->id && $errors->getBag('approve_' . $proposal->id)->isNotEmpty() ? 'flex' : 'hidden' }}">
                                                     <div
                                                         class="bg-bg dark:bg-dark-bg w-full max-w-md rounded-xl p-6 relative shadow-xl">
                                                         <button onclick="closeApproveModal({{ $proposal->id }})"
@@ -211,52 +211,69 @@
 
                                                         <h2
                                                             class="text-lg font-bold mb-4 text-primary dark:text-dark-primary">
-                                                            Approve Proposal</h2>
+                                                            Approve Proposal
+                                                        </h2>
 
                                                         <form
                                                             action="{{ route('organizer.events.proposals.approve', $proposal->id) }}"
                                                             method="POST">
-                                                            @csrf @method('PUT')
+                                                            @csrf
+                                                            @method('PUT')
+
                                                             <input type="hidden" name="status" value="approved">
+                                                            <input type="hidden" name="_from_proposal_id"
+                                                                value="{{ $proposal->id }}">
 
-
-                                                            <!-- Date Input -->
+                                                            <!-- Session Date Input -->
                                                             <div class="mb-4">
-                                                                <label for="event_date_{{ $proposal->id }}"
+                                                                <label for="session_date_{{ $proposal->id }}"
                                                                     class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
                                                                     Date
                                                                 </label>
-                                                                <input type="date" id="event_date_{{ $proposal->id }}"
-                                                                    name="event_date"
-                                                                    min="{{ Carbon::parse($event->start_date)->format('Y-m-d') }}"
-                                                                    value="{{ Carbon::parse($event->start_date)->format('Y-m-d') }}"
-                                                                    required
+                                                                <input type="date" id="session_date_{{ $proposal->id }}"
+                                                                    name="session_date"
+                                                                    min="{{ \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') }}"
+                                                                    max="{{ \Carbon\Carbon::parse($event->end_date)->format('Y-m-d') }}"
+                                                                    value="{{ old('session_date', \Carbon\Carbon::parse($event->start_date)->format('Y-m-d')) }}"
                                                                     class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+
+                                                                @error('session_date', 'approve_' . $proposal->id)
+                                                                    <span
+                                                                        class="text-sm text-red-500">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
 
                                                             <!-- Start Time Input -->
                                                             <div class="mb-4">
                                                                 <label for="start_time_{{ $proposal->id }}"
                                                                     class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                                                                    Start Time (10:00 AM)
+                                                                    Start Time
                                                                 </label>
                                                                 <input type="time" id="start_time_{{ $proposal->id }}"
-                                                                    name="start_time" required step="60"
+                                                                    name="start_time" step="60"
+                                                                    value="{{ old('start_time') }}"
                                                                     class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                                                                @error('start_time', 'approve_' . $proposal->id)
+                                                                    <span
+                                                                        class="text-sm text-red-500">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
 
                                                             <!-- End Time Input -->
                                                             <div class="mb-4">
                                                                 <label for="end_time_{{ $proposal->id }}"
                                                                     class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                                                                    End Time (11:00 AM)
+                                                                    End Time
                                                                 </label>
                                                                 <input type="time" id="end_time_{{ $proposal->id }}"
-                                                                    name="end_time" required step="60"
+                                                                    name="end_time" step="60"
+                                                                    value="{{ old('end_time') }}"
                                                                     class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                                                                @error('end_time', 'approve_' . $proposal->id)
+                                                                    <span
+                                                                        class="text-sm text-red-500">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
-
-
 
                                                             <div class="flex justify-end space-x-2">
                                                                 <button type="button"
@@ -271,91 +288,7 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                </div> --}}
-{{-- Approve Modal --}}
-<div id="approveModal-{{ $proposal->id }}"
-    class="fixed inset-0 z-50 items-center justify-center bg-black/80 {{ old('_from_proposal_id') == $proposal->id && $errors->getBag('approve_'.$proposal->id)->isNotEmpty() ? 'flex' : 'hidden' }}">
-    <div class="bg-bg dark:bg-dark-bg w-full max-w-md rounded-xl p-6 relative shadow-xl">
-        <button onclick="closeApproveModal({{ $proposal->id }})"
-            class="absolute top-4 right-4 text-gray-200 rounded-full cursor-pointer hover:text-gray-100 bg-gray-400 dark:bg-gray-600 w-10 h-10 flex justify-center items-center">
-            <i class="fas fa-times"></i>
-        </button>
-
-        <h2 class="text-lg font-bold mb-4 text-primary dark:text-dark-primary">
-            Approve Proposal
-        </h2>
-
-        <form action="{{ route('organizer.events.proposals.approve', $proposal->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <input type="hidden" name="status" value="approved">
-            <input type="hidden" name="_from_proposal_id" value="{{ $proposal->id }}">
-
-            <!-- Session Date Input -->
-            <div class="mb-4">
-                <label for="session_date_{{ $proposal->id }}"
-                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                    Date
-                </label>
-                <input type="date" id="session_date_{{ $proposal->id }}"
-                    name="session_date"
-                    min="{{ \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') }}"
-                    max="{{ \Carbon\Carbon::parse($event->end_date)->format('Y-m-d') }}"
-                    value="{{ old('session_date', \Carbon\Carbon::parse($event->start_date)->format('Y-m-d')) }}"
-                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
-                    
-                @error('session_date', 'approve_'.$proposal->id)
-                    <span class="text-sm text-red-500">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Start Time Input -->
-            <div class="mb-4">
-                <label for="start_time_{{ $proposal->id }}"
-                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                    Start Time
-                </label>
-                <input type="time" id="start_time_{{ $proposal->id }}"
-                    name="start_time"
-                    step="60"
-                    value="{{ old('start_time') }}"
-                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
-                       @error('start_time', 'approve_'.$proposal->id)
-                    <span class="text-sm text-red-500">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- End Time Input -->
-            <div class="mb-4">
-                <label for="end_time_{{ $proposal->id }}"
-                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
-                    End Time
-                </label>
-                <input type="time" id="end_time_{{ $proposal->id }}"
-                    name="end_time"
-                    step="60"
-                    value="{{ old('end_time') }}"
-                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
-                             @error('end_time', 'approve_'.$proposal->id)
-                    <span class="text-sm text-red-500">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="flex justify-end space-x-2">
-                <button type="button"
-                    onclick="closeApproveModal({{ $proposal->id }})"
-                    class="px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-400 dark:hover:bg-gray-600">
-                    Cancel
-                </button>
-                <button type="submit"
-                    class="px-4 py-2 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white">
-                    Confirm
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+                                                </div>
 
 
                                             </div>
@@ -479,27 +412,27 @@
             document.getElementById('approveModal-' + id).classList.add('hidden');
         }
 
-           function openApproveModal(id) {
-        const modal = document.getElementById(`approveModal-${id}`);
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        function openApproveModal(id) {
+            const modal = document.getElementById(`approveModal-${id}`);
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
         }
-    }
 
-    function closeApproveModal(id) {
-        const modal = document.getElementById(`approveModal-${id}`);
-        if (modal) {
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
+        function closeApproveModal(id) {
+            const modal = document.getElementById(`approveModal-${id}`);
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
         }
-    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        @if ($errors->any() && old('_from_proposal_id'))
-            openApproveModal({{ old('_from_proposal_id') }});
-        @endif
-    });
+        document.addEventListener('DOMContentLoaded', () => {
+            @if ($errors->any() && old('_from_proposal_id'))
+                openApproveModal({{ old('_from_proposal_id') }});
+            @endif
+        });
     </script>
 
 
