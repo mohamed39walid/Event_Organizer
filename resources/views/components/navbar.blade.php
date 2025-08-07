@@ -49,7 +49,7 @@
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             Events
                         </a>
-                        <a href="{{ route('organizer-events') }}"
+                        <a href="{{ route('organizer.organizer-events') }}"
                             class="hover:text-accent dark:hover:text-dark-accent transition duration-150 ease-in-out">
                             My Events
                         </a>

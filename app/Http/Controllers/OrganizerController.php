@@ -14,22 +14,21 @@ use Illuminate\Support\Facades\Auth;
 class OrganizerController extends Controller
 {
     /**
-     *
+     * Adam Ahmed -> Retrived Sessions with all the data 
      */
-    // Zeyad Hyman Create (eventDetails, events) and removed (EditEvent)
-    public function eventDetails($id)
-    {
-        $event = Event::findOrFail($id);
-        $proposals = Proposal::where('event_id', $id)->get();
-        $evntSessions = Event_session::where('event_id', $id)->get();
-        return view('pages.shared.event-details', compact('proposals', 'evntSessions', 'event'));
-    }
-
-    public function events()
-    {
-        $events = Event::all();
-        return view('pages.shared.events', compact('events'));
-    }
+public function eventDetails($id)
+{
+    $event = Event::findOrFail($id);
+    $proposals = Proposal::where('event_id', $id)->get();
+ 
+    // Get sessions with speaker and proposal information
+    $eventSessions = Event_session::with(['speaker', 'proposal'])
+        ->where('event_id', $id)
+        ->orderBy('start_date', 'asc')
+        ->get();
+        
+    return view('pages.shared.event-details', compact('proposals', 'eventSessions', 'event'));
+}
 
     public function homeEvents()
     {
@@ -46,18 +45,10 @@ class OrganizerController extends Controller
 
     }
 
-    // Event Form
-    public function CreateEvent()
-    {
-        return view('pages.organizer.create-event');
-    }
-
-
     // View SpecificProposal For An Event
     public function SpecificProposal($id)
     {
         $event = Event::findorfail($id);
-
         $proposals = Proposal::where('event_id', $id)->get();
         return view('pages.organizer.eventproposals', compact('proposals', 'event'));
     }

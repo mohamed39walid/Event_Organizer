@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-
+ 
 Route::controller(ProposalsController::class)->name("speaker.")->middleware("role:speaker")->group(function () {
     Route::get("/my-proposals", "GetSpeakerProposals")->name("my-proposals");
     Route::post("/proposal/{id}", "CreateProposal")->name("createproposal"); //the id here is event id

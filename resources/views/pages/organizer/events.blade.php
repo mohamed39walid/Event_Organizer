@@ -39,7 +39,7 @@
 
                     @auth
                         @if (auth()->user()->role === 'organizer')
-                            <a href="{{ route('events.create-event') }}"
+                            <a href="{{ route('organizer.events.create-event') }}"
                                 class="inline-flex mr-10 items-center px-4 py-2 rounded-full bg-accent text-white hover:bg-accent/90 transition text-sm font-medium shadow">
                                 <i class="fas fa-plus mr-2"></i> Add New Event
                             </a>

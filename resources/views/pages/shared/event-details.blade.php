@@ -166,7 +166,7 @@
                                                     @if ($proposal->cv)
                                                         <p class="text-sm text-muted dark:text-dark-muted mt-1">
                                                             <i class="fas fa-file-download mr-1"></i>
-                                                            <a href="{{ asset('storage/' . $proposal->cv) }}"
+                                                            <a href="{{ asset('storage/cvs' . $proposal->cv) }}"
                                                                 target="_blank" class="underline hover:text-accent">
                                                                 View CV
                                                             </a>
@@ -187,7 +187,7 @@
 
                                                         {{-- Reject Button --}}
                                                         <form
-                                                            action="{{ route('events.proposals.reject', $proposal->id) }}"
+                                                            action="{{ route('organizer.events.proposals.reject', $proposal->id) }}"
                                                             method="POST">
                                                             @csrf @method('PUT')
                                                             <input type="hidden" name="status" value="rejected">
@@ -214,7 +214,7 @@
                                                             Approve Proposal</h2>
 
                                                         <form
-                                                            action="{{ route('events.proposals.approve', $proposal->id) }}"
+                                                            action="{{ route('organizer.events.proposals.approve', $proposal->id) }}"
                                                             method="POST">
                                                             @csrf @method('PUT')
                                                             <input type="hidden" name="status" value="approved">
@@ -282,37 +282,38 @@
                         @endif
 
 
-                        @if ($evntSessions)
+                        @if ($eventSessions)
                             <div class="mt-6 border-t border-border dark:border-dark-border pt-6">
                                 <h3
                                     class="text-lg font-semibold font-heading text-secondary dark:text-dark-secondary mb-4">
                                     <i class="fas fa-microphone-alt mr-2"></i> Event Sessions
                                 </h3>
                                 <div class="space-y-4">
-                                    @foreach ($evntSessions as $evntSessions)
+                                    @foreach ($eventSessions as $session)
                                         <div class="bg-surface dark:bg-dark-bg rounded-lg p-4 shadow-sm">
                                             <div
                                                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                                 <div>
                                                     <h4
                                                         class="text-base font-semibold font-inter text-primary dark:text-dark-primary">
-                                                        {{ $evntSessions->proposal->title }}
+                                                        {{ $session->proposal->title ?? 'Session Title' }}
                                                     </h4>
+
                                                     <p class="text-sm text-muted dark:text-dark-muted mt-1">
                                                         <i class="fas fa-user mr-1"></i>
-                                                        {{ $evntSessions->proposal->speaker->username }}
+                                                        {{ $session->speaker->username ?? 'Speaker Name' }}
                                                     </p>
                                                     <p class="text-sm text-muted dark:text-dark-muted mt-1">
                                                         <i class="fas fa-clock mr-1"></i>
-                                                        {{ Carbon::parse($evntSessions->start_date)->format('M d, Y H:i') }}
+                                                        {{ Carbon::parse($session->start_date)->format('M d, Y H:i') }}
                                                         -
-                                                        {{ Carbon::parse($evntSessions->end_date)->format('H:i') }}
+                                                        {{ Carbon::parse($session->end_date)->format('H:i') }}
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <span class="text-sm font-inter text-muted dark:text-dark-muted">
                                                         Duration:
-                                                        {{ Carbon::parse($evntSessions->start_date)->diffInMinutes($evntSessions->end_date) }}
+                                                        {{ Carbon::parse($session->start_date)->diffInMinutes($session->end_date) }}
                                                         min
                                                     </span>
                                                 </div>
