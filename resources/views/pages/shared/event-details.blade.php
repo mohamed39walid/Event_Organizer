@@ -199,7 +199,7 @@
                                                     @endif
                                                 </div>
 
-                                                {{-- Approve Modal --}}
+                                                {{-- Approve Modal
                                                 <div id="approveModal-{{ $proposal->id }}"
                                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
                                                     <div
@@ -271,7 +271,91 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                </div>
+                                                </div> --}}
+{{-- Approve Modal --}}
+<div id="approveModal-{{ $proposal->id }}"
+    class="fixed inset-0 z-50 items-center justify-center bg-black/80 {{ old('_from_proposal_id') == $proposal->id && $errors->getBag('approve_'.$proposal->id)->isNotEmpty() ? 'flex' : 'hidden' }}">
+    <div class="bg-bg dark:bg-dark-bg w-full max-w-md rounded-xl p-6 relative shadow-xl">
+        <button onclick="closeApproveModal({{ $proposal->id }})"
+            class="absolute top-4 right-4 text-gray-200 rounded-full cursor-pointer hover:text-gray-100 bg-gray-400 dark:bg-gray-600 w-10 h-10 flex justify-center items-center">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <h2 class="text-lg font-bold mb-4 text-primary dark:text-dark-primary">
+            Approve Proposal
+        </h2>
+
+        <form action="{{ route('organizer.events.proposals.approve', $proposal->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <input type="hidden" name="status" value="approved">
+            <input type="hidden" name="_from_proposal_id" value="{{ $proposal->id }}">
+
+            <!-- Session Date Input -->
+            <div class="mb-4">
+                <label for="session_date_{{ $proposal->id }}"
+                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
+                    Date
+                </label>
+                <input type="date" id="session_date_{{ $proposal->id }}"
+                    name="session_date"
+                    min="{{ \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') }}"
+                    max="{{ \Carbon\Carbon::parse($event->end_date)->format('Y-m-d') }}"
+                    value="{{ old('session_date', \Carbon\Carbon::parse($event->start_date)->format('Y-m-d')) }}"
+                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                    
+                @error('session_date', 'approve_'.$proposal->id)
+                    <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Start Time Input -->
+            <div class="mb-4">
+                <label for="start_time_{{ $proposal->id }}"
+                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
+                    Start Time
+                </label>
+                <input type="time" id="start_time_{{ $proposal->id }}"
+                    name="start_time"
+                    step="60"
+                    value="{{ old('start_time') }}"
+                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                       @error('start_time', 'approve_'.$proposal->id)
+                    <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- End Time Input -->
+            <div class="mb-4">
+                <label for="end_time_{{ $proposal->id }}"
+                    class="block text-sm font-medium text-secondary dark:text-dark-secondary mb-1">
+                    End Time
+                </label>
+                <input type="time" id="end_time_{{ $proposal->id }}"
+                    name="end_time"
+                    step="60"
+                    value="{{ old('end_time') }}"
+                    class="w-full px-4 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                             @error('end_time', 'approve_'.$proposal->id)
+                    <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="flex justify-end space-x-2">
+                <button type="button"
+                    onclick="closeApproveModal({{ $proposal->id }})"
+                    class="px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-400 dark:hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button type="submit"
+                    class="px-4 py-2 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white">
+                    Confirm
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
                                             </div>
@@ -282,102 +366,47 @@
                         @endif
 
 
-                    @if ($eventSessions->isNotEmpty())
-    <div class="mt-6 border-t border-border dark:border-dark-border pt-6">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold font-heading text-secondary dark:text-dark-secondary">
-                <i class="fas fa-microphone-alt mr-2"></i> Event Sessions
-            </h3>
-            <span class="text-sm text-muted dark:text-dark-muted">
-                {{ $eventSessions->count() }} session{{ $eventSessions->count() > 1 ? 's' : '' }}
-            </span>
-        </div>
+                        @if ($eventSessions)
+                            <div class="mt-6 border-t border-border dark:border-dark-border pt-6">
+                                <h3
+                                    class="text-lg font-semibold font-heading text-secondary dark:text-dark-secondary mb-4">
+                                    <i class="fas fa-microphone-alt mr-2"></i> Event Sessions
+                                </h3>
+                                <div class="space-y-4">
+                                    @foreach ($eventSessions as $session)
+                                        <div class="bg-surface dark:bg-dark-bg rounded-lg p-4 shadow-sm">
+                                            <div
+                                                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                                <div>
+                                                    <h4
+                                                        class="text-base font-semibold font-inter text-primary dark:text-dark-primary">
+                                                        {{ $session->proposal->title ?? 'Session Title' }}
+                                                    </h4>
 
-        <div class="space-y-4">
-            @foreach ($eventSessions->sortBy('start_date') as $session)
-                <div class="bg-surface dark:bg-dark-bg rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div class="flex-1 min-w-0">
-                            <h4 class="text-base font-semibold font-inter text-primary dark:text-dark-primary truncate">
-                                {{ $session->proposal->title ?? 'Untitled Session' }}
-                            </h4>
-
-                            <div class="mt-2 space-y-1">
-                                <div class="flex items-center text-sm text-muted dark:text-dark-muted">
-                                    <i class="fas fa-user mr-2 w-4 text-center"></i>
-                                    <span>{{ $session->speaker->username ?? 'Speaker not assigned' }}</span>
-                                </div>
-                                
-                                <div class="flex items-center text-sm text-muted dark:text-dark-muted">
-                                    <i class="fas fa-calendar-day mr-2 w-4 text-center"></i>
-                                    <span>
-                                        {{ Carbon::parse($session->start_date)->format('l, M d, Y') }}
-                                    </span>
-                                </div>
-                                
-                                <div class="flex items-center text-sm text-muted dark:text-dark-muted">
-                                    <i class="fas fa-clock mr-2 w-4 text-center"></i>
-                                    <span>
-                                        {{ Carbon::parse($session->start_date)->format('g:i A') }} 
-                                        to 
-                                        {{ Carbon::parse($session->end_date)->format('g:i A') }}
-                                        ({{ Carbon::parse($session->start_date)->diffInHours($session->end_date) }}h 
-                                        {{ Carbon::parse($session->start_date)->diffInMinutes($session->end_date) % 60 }}m)
-                                    </span>
+                                                    <p class="text-sm text-muted dark:text-dark-muted mt-1">
+                                                        <i class="fas fa-user mr-1"></i>
+                                                        {{ $session->speaker->username ?? 'Speaker Name' }}
+                                                    </p>
+                                                    <p class="text-sm text-muted dark:text-dark-muted mt-1">
+                                                        <i class="fas fa-clock mr-1"></i>
+                                                        {{ Carbon::parse($session->start_date)->format('M d, Y H:i') }}
+                                                        -
+                                                        {{ Carbon::parse($session->end_date)->format('H:i') }}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span class="text-sm font-inter text-muted dark:text-dark-muted">
+                                                        Duration:
+                                                        {{ Carbon::parse($session->start_date)->diffInMinutes($session->end_date) }}
+                                                        min
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="flex flex-col items-end">
-                            <span class="text-sm font-medium px-3 py-1 rounded-full 
-                                @if(Carbon::parse($session->start_date)->isPast())
-                                    bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300
-                                @else
-                                    bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                @endif">
-                                @if(Carbon::parse($session->start_date)->isPast())
-                                    Completed
-                                @elseif(Carbon::now()->between($session->start_date, $session->end_date))
-                                    Happening Now
-                                @else
-                                    Upcoming
-                                @endif
-                            </span>
-                            
-
-                        </div>
-                    </div>
-                    
-                    @if($session->proposal->description ?? false)
-                        <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-                            <p class="text-sm text-gray-600 dark:text-gray-300">
-                                {{ Str::limit($session->proposal->description, 200) }}
-                            </p>
-                        </div>
-                    @endif
-                </div>
-            @endforeach
-        </div>
-    </div>
-@else
-    <div class="mt-6 border-t border-border dark:border-dark-border pt-6">
-        <h3 class="text-lg font-semibold font-heading text-secondary dark:text-dark-secondary mb-2">
-            <i class="fas fa-microphone-alt mr-2"></i> Event Sessions
-        </h3>
-        <div class="bg-surface dark:bg-dark-bg rounded-lg p-8 text-center">
-            <i class="fas fa-calendar-times text-3xl text-muted dark:text-dark-muted mb-3"></i>
-            <p class="text-muted dark:text-dark-muted">No sessions scheduled yet</p>
-            @auth
-                @if(auth()->user()->role === 'organizer')
-                    <button onclick="openCreateSessionModal()" 
-                        class="mt-3 px-4 py-2 bg-accent hover:bg-accent-hover text-white text-sm rounded-lg">
-                        <i class="fas fa-plus mr-1"></i> Schedule a Session
-                    </button>
-                @endif
-            @endauth
-        </div>
-    </div>
-@endif
+                        @endif
 
                     </div>
                 </div>
@@ -449,6 +478,29 @@
         function closeApproveModal(id) {
             document.getElementById('approveModal-' + id).classList.add('hidden');
         }
+
+           function openApproveModal(id) {
+        const modal = document.getElementById(`approveModal-${id}`);
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    }
+
+    function closeApproveModal(id) {
+        const modal = document.getElementById(`approveModal-${id}`);
+        if (modal) {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        @if ($errors->any() && old('_from_proposal_id'))
+            openApproveModal({{ old('_from_proposal_id') }});
+        @endif
+    });
     </script>
+
 
 @endsection
