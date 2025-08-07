@@ -21,8 +21,8 @@ class OrganizerController extends Controller
     {
         $event = Event::findOrFail($id);
         $proposals = Proposal::where('event_id', $id)->get();
-        $evntSessions = Event_session::where('event_id', $id)->get();
-        return view('pages.shared.event-details', compact('proposals', 'evntSessions', 'event'));
+        $eventSessions = Event_session::where('event_id', $id)->get();
+        return view('pages.shared.event-details', compact('proposals', 'eventSessions', 'event'));
     }
 
     public function events()

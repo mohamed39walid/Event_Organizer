@@ -137,7 +137,7 @@ public function AcceptProposal($id)
                 'event_id' => $proposal->event_id,
                 'speaker_id' => $proposal->speaker_id,
                 'proposal_id' => $proposal->id,
-                'start_date' => now()->addDays(1)->setHour(10)->setMinute(0), // DEFUALT 
+                'start_date' => now()->addDays(1)->setHour(10)->setMinute(0), // DEFUALT Api 
                 'end_date' => now()->addDays(1)->setHour(11)->setMinute(0), // DEFUALT 
             ]);
             
