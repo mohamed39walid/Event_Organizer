@@ -81,25 +81,33 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Your account has been deleted.');
     }
 
+public function toSpeaker(Request $request)
+{
+    $user = $request->user();
+    $user->role = 'speaker';
+    $user->save();
 
-    public function requestSpeaker()
-    {
-        return $this->updateRoleRequest('speaker');
-    }
+    return redirect()->route('home')->with('success', 'You have become a speaker.');
+}
 
-    public function requestOrganizer()
-    {
-        return $this->updateRoleRequest('organizer');
-    }
+public function toOrganizer(Request $request)
+{
+    $user = $request->user();
+    $user->role = 'organizer';
+    $user->save();
 
-    private function updateRoleRequest($requestedRole)
-    {
-        $user = Auth::user();
+    return redirect()->route('home')->with('success', 'You have become an organizer.');
+}
 
-        if ($user->role === $requestedRole) {
-            return response()->json([
-                'message' => "You already have the {$requestedRole} role."
-            ], 400);
-        }
-    }
+
+    // private function updateRoleRequest($requestedRole)
+    // {
+    //     $user = Auth::user();
+
+    //     if ($user->role === $requestedRole) {
+    //         return response()->json([
+    //             'message' => "You already have the {$requestedRole} role."
+    //         ], 400);
+    //     }
+    // }
 }

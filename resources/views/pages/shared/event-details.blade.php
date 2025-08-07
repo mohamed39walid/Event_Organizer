@@ -166,7 +166,7 @@
                                                     @if ($proposal->cv)
                                                         <p class="text-sm text-muted dark:text-dark-muted mt-1">
                                                             <i class="fas fa-file-download mr-1"></i>
-                                                            <a href="{{ asset('storage/cvs' . $proposal->cv) }}"
+                                                            <a href="{{ asset('storage/cvs/' . $proposal->cv) }}"
                                                                 target="_blank" class="underline hover:text-accent">
                                                                 View CV
                                                             </a>
