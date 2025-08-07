@@ -1,4 +1,5 @@
 {{-- Adam Ahmed Edited the modal  --}}
+@if (Auth::user() && Auth::user()->role == 'organizer')    
 <div id="organizerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 {{ session('errors') ? '' : 'hidden' }}">
     <div class="bg-white dark:bg-dark-bg w-full max-w-2xl rounded-2xl p-8 shadow-2xl relative mx-4">
         <!-- Close Button -->
@@ -132,3 +133,4 @@
     });
 </script>
 @endsection
+@endif
