@@ -20,7 +20,11 @@ class EventController extends Controller
 
     public function CreateEvent()
     {
-        return view('pages.organizer.create-event');
+        // Adam Ahmed -> Prevent back history
+        if(Auth::user() && Auth::user()->role == 'organizer'){
+            return view('pages.organizer.create-event');
+        }
+        return redirect()->route('home')->with('info', 'Error while trying to open previous page, please sign in');
     }
 
     public function StoreEvent(EventRequest $request)
