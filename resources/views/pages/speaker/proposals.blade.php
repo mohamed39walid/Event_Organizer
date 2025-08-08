@@ -171,16 +171,26 @@
                                 </div>
 
                                 <!-- Footer / Action -->
-                                <footer class="pt-6 border-t border-border dark:border-dark-border mt-8">
-                                    @if ($proposal->cv)
-                                        <a href="{{ asset('storage/cvs/' . $proposal->cv) }}" target="_blank"
-                                            class="inline-flex items-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg transform ">
-                                            <i class="fas fa-file-alt"></i>
-                                            View CV
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    @endif
-                                </footer>
+                              <!-- Footer / Action -->
+<footer class="pt-6 border-t border-border dark:border-dark-border mt-8 flex gap-4 flex-wrap">
+    @if ($proposal->cv)
+        <a href="{{ asset('storage/cvs/' . $proposal->cv) }}" target="_blank"
+            class="inline-flex items-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg transform ">
+            <i class="fas fa-file-alt"></i>
+            View CV
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    @endif
+
+    <!-- زرار اختصار للـ Event -->
+    <a href="{{ route('event-details', $proposal->event->id) }}"
+        class="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg transform">
+        <i class="fas fa-calendar-alt"></i>
+        View Event
+        <i class="fas fa-arrow-right"></i>
+    </a>
+</footer>
+
                             </div>
                         </article>
                     @endforeach
