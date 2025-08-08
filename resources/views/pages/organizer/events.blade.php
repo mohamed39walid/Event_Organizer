@@ -48,6 +48,8 @@
                 </div>
             </div>
 
+
+
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @foreach ($events as $event)
         <x-card 
@@ -56,7 +58,7 @@
             :date="$event->start_date" 
             :endDate="$event->end_date" 
             :location="$event->location"
-            :image="$event->image ? asset('storage/events/' . $event->image) : ''" 
+            :image="$event->image ? $event->image : ''" 
             :tickets="$event->available_tickets" 
             :status="$event->status" 
             :organizer="$event->organizer->username" 

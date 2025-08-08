@@ -27,4 +27,6 @@ class AddedProposalRequest extends FormRequest
             'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ];
     }
+    // Adam Ahmed -> Added ErrorBag for the Speaker Modal Returning Errors MSGS
+    protected $errorBag = 'speaker';
 }

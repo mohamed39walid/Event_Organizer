@@ -32,12 +32,13 @@ class ProposalsController extends Controller
 
     public function CreateProposal(AddedProposalRequest $request, $id)
     {
+        //  Adam Ahmed -> Edited the Modal With the Returning ErrorBag Logic
         $event = Event::find($id);
         if (!$event) {
             return redirect()->back()->with('error', 'Invalid event ID.');
         }
 
-        $validated = $request->validated();
+        $validated = $request->validated();        
         $speaker = Auth::user(); // get full user object
         $speaker_id = $speaker->id;
         $ticket_proposal_id = Ticket::where("event_id", $id)->where("user_id", $speaker_id)->first("event_id");
@@ -71,30 +72,6 @@ class ProposalsController extends Controller
 
         return redirect()->route('home')->with('success', 'Proposal applied successfully.');
 
-        //   $validated = $request->validated();
-        // $speaker = Auth::user();
-
-        // // Handle CV upload with unique filename
-        // $file = $request->file('cv');
-        // $filename = Str::slug($speaker->username)
-        //             . '_event_' . $id
-        //             . '_' . time()
-        //             . '.' . $file->getClientOriginalExtension();
-
-        // $path = $file->storeAs('proposals/cvs', $filename, 'public');
-
-        // // Create proposal
-        // Proposal::create([
-        //     "title" => $validated["title"],
-        //     "description" => $validated["description"],
-        //     "cv" => $path,  // Store full path
-        //     "status" => "pending",
-        //     "speaker_id" => $speaker->id,
-        //     "event_id" => $id
-        // ]);
-
-        // return redirect()->route('home')
-        //        ->with('success', 'Your speaker proposal has been submitted successfully!');
     }
 
 
