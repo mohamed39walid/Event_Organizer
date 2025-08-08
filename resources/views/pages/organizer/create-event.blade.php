@@ -6,7 +6,7 @@
             class="bg-surface dark:bg-dark-surface w-full min-h-[600px] max-w-3xl text-white py-10 px-10 rounded-2xl flex flex-col">
             <h1 class="text-secondary dark:text-dark-secondary font-heading text-5xl font-bold mb-6">Create New Event</h1>
 
-            <form action="{{ route('events.store-event') }}" enctype="multipart/form-data" method="POST"
+            <form action="{{ route('organizer.events.store-event') }}" enctype="multipart/form-data" method="POST"
                 class="spacae-y-6 px-4">
                 @csrf
 

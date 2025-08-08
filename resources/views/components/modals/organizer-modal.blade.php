@@ -108,7 +108,7 @@
                 <!-- Submit Button -->
                 <div>
                     <button type="submit"
-                        class="w-full py-3 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors">
+                        class="cursor-pointer w-full py-3 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors">
                         Save Changes
                     </button>
                 </div>
