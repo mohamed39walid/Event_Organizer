@@ -54,14 +54,13 @@
             <div class="columns-3 gap-4 space-y-10">
                 @foreach ($events as $event)
                     <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
-                        :image="asset('storage/events/' . $event->image)" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
+                        :image="$event->image" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
                 @endforeach
 
             </div>
             @if ($events->isEmpty())
                 <div class="text-center text-gray-500 dark:text-gray-400 w-full">
-                    No events found matching "{{ request('search') }}"
-                </div>
+                    No events founded</div>
             @endif
 
 

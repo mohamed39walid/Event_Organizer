@@ -1,3 +1,4 @@
+{{-- Adam Ahmed Added Timeout for the Messages -> 5s--}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,9 +11,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=Inter:wght@400;600&family=Manrope:wght@400;600&family=Poppins:wght@400;600&family=Space+Grotesk:wght@400;700&family=Urbanist:wght@400;600&display=swap"
         rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    {{-- Adam Ahmed -> Added Smoothi Scroll for all the pages --}}
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 @yield('styles')
@@ -20,17 +26,17 @@
 <body class="bg-bg dark:bg-dark-bg text-gray-900 dark:text-white font-sans leading-relaxed">
 
     @if (session('success'))
-        <div class="py-3 bg-success dark:bg-dark-success text-white flex items-center justify-center gap-2">
+        <div id="flash-message" class="flash-message py-3 bg-success dark:bg-dark-success text-white flex items-center justify-center gap-2">
             <i class="fas fa-check-circle text-white"></i>
             <span>{{ session('success') }}</span>
         </div>
     @elseif (session('error'))
-        <div class="py-3 bg-error dark:bg-dark-error text-white flex items-center justify-center gap-2">
+        <div id="flash-message" class="flash-message py-3 bg-error dark:bg-dark-error text-white flex items-center justify-center gap-2">
             <i class="fas fa-exclamation-triangle text-white"></i>
             <span>{{ session('error') }}</span>
         </div>
     @elseif (session('info'))
-        <div class="py-3 bg-blue-600 dark:bg-blue-700 text-white flex items-center justify-center gap-2">
+        <div id="flash-message" class="flash-message py-3 bg-blue-600 dark:bg-blue-700 text-white flex items-center justify-center gap-2">
             <i class="fas fa-exclamation-triangle text-white"></i>
             <span>{{ session('info') }}</span>
         </div>
@@ -38,25 +44,34 @@
 
     <x-navbar />
 
-
-
     <main>
         @yield('main')
-
     </main>
-
 
     <x-footer />
 
     @yield('scripts')
-<script>
-    // Force reload when using back button
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            window.location.reload();
-        }
-    });
-</script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const flash = document.querySelector('.flash-message');
+            if (flash) {
+                setTimeout(() => {
+                    flash.style.transition = 'opacity 0.5s ease';
+                    flash.style.opacity = '0';
+                    setTimeout(() => flash.remove(), 500); 
+                }, 5000); 
+            }
+        });
+
+        // Force reload on back button
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

@@ -29,7 +29,7 @@ class EventRequest extends FormRequest
             'available_tickets' => 'required|integer|min:1',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 

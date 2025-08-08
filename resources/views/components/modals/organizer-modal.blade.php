@@ -1,7 +1,7 @@
 {{-- Adam Ahmed Edited the modal  --}}
 @if (Auth::user() && Auth::user()->role == 'organizer')
     <div id="organizerModal"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/80
     {{ session('errors') && !str_starts_with(array_keys(session('errors')->getBags())[0] ?? '', 'approve_') ? '' : 'hidden' }}">
         <div class="bg-white dark:bg-dark-bg w-full max-w-2xl rounded-2xl p-8 shadow-2xl relative mx-4">
             <!-- Close Button -->
@@ -22,7 +22,7 @@
                 <!-- Event Name -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Event Name</label>
-                    <input type="text" name="event_name" value="{{ old('event_name', $event->event_name) }}" required
+                    <input type="text" name="event_name" value="{{ old('event_name', $event->event_name) }}" 
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
                     @error('event_name', 'organizer')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -32,7 +32,7 @@
                 <!-- Location -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
-                    <input type="text" name="location" value="{{ old('location', $event->location) }}" required
+                    <input type="text" name="location" value="{{ old('location', $event->location) }}" 
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
 
                     @error('location', 'organizer')
@@ -45,7 +45,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
                     <input type="date" name="start_date"
                         value="{{ old('start_date', \Carbon\Carbon::parse($event->start_date)->format('Y-m-d')) }}"
-                        required
+                        
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
 
                     @error('start_date', 'organizer')
@@ -57,7 +57,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
                     <input type="date" name="end_date"
-                        value="{{ old('end_date', \Carbon\Carbon::parse($event->end_date)->format('Y-m-d')) }}" required
+                        value="{{ old('end_date', \Carbon\Carbon::parse($event->end_date)->format('Y-m-d')) }}" 
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
 
                     @error('end_date', 'organizer')
@@ -70,7 +70,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Available
                         Tickets</label>
                     <input type="number" name="available_tickets"
-                        value="{{ old('available_tickets', $event->available_tickets) }}" min="1" required
+                        value="{{ old('available_tickets', $event->available_tickets) }}" min="1" 
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
 
                     @error('available_tickets', 'organizer')
@@ -81,7 +81,7 @@
                 <!-- Status -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                    <select name="status" required
+                    <select name="status" 
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
                         <option value="Available"
                             {{ old('status', $event->status) === 'Available' ? 'selected' : '' }}>Available</option>
@@ -108,7 +108,7 @@
                 <!-- Submit Button -->
                 <div>
                     <button type="submit"
-                        class="w-full py-3 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors">
+                        class="cursor-pointer w-full py-3 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors">
                         Save Changes
                     </button>
                 </div>
