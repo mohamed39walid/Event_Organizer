@@ -28,7 +28,7 @@ class TicketController extends Controller
         }
         $proposal = Proposal::where("event_id",$id)->where("speaker_id",$user_id)->first();
         if($proposal){
-            return redirect()->back()->with("error","You can't book a ticket and you applied to the event");
+            return redirect()->back()->with("error","You can't book a ticket in this Event as you are A Speaker");
         }
         DB::beginTransaction();
         try {
