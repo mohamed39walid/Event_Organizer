@@ -70,11 +70,16 @@
                                     {{ $event->available_tickets == 0 ? 'Sold Out' : $event->available_tickets . ' tickets' }}
                                 </span>
                             </div>
-                       @auth
+ @auth
     @if (auth()->user()->role == 'speaker')
         @php
             $hasTicket = \App\Models\Ticket::where('event_id', $event->id)
                 ->where('user_id', auth()->user()->id)
+                ->exists();
+
+            $hasPendingProposal = \App\Models\Proposal::where('event_id', $event->id)
+                ->where('speaker_id', auth()->user()->id)
+                ->where('status', 'pending')
                 ->exists();
         @endphp
 
@@ -82,6 +87,11 @@
             <button disabled
                 class="px-6 py-2.5 bg-surface dark:bg-dark-surface text-muted dark:text-dark-muted text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
                 You Can't apply to this Event
+            </button>
+        @elseif ($hasPendingProposal)
+            <button disabled
+                class="px-6 py-2.5 bg-yellow-100 text-yellow-800 border border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800 text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+                <i class="fas fa-clock mr-2"></i> Under Review
             </button>
         @else
             <button onclick="openSpeakerModal()"
@@ -114,6 +124,7 @@
         @endif
     @endif
 @endauth
+
 
                         </div>
 
