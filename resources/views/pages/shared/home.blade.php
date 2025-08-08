@@ -42,7 +42,7 @@
             <div class="grid grid-cols-3 gap-10 max-w-6xl mx-auto">
                 @foreach ($events as $event)
                     <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
-                        :image="asset('storage/events/' . $event->image)" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
+                        :image="$event->image ? $event->image : asset('images/Concert.jpg')" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
                 @endforeach
             </div>
 

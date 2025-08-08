@@ -32,7 +32,7 @@
                 <div class="bg-white dark:bg-dark-surface rounded-xl shadow-lg overflow-hidden">
                     @if (isset($event->image))
                         <div class="relative h-56 md:h-72">
-                            <img src="{{ asset('storage/events/' . $event->image) }}" alt="{{ $event->event_name }}"
+                            <img src="{{ $event->image ? asset('/storage/events/' . $event->image) : asset('/images/event-defualt.jpg') }}" alt="{{ $event->event_name }}"
                                 class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 right-6">
