@@ -70,35 +70,51 @@
                                     {{ $event->available_tickets == 0 ? 'Sold Out' : $event->available_tickets . ' tickets' }}
                                 </span>
                             </div>
-                            @auth
-                                @if (auth()->user()->role == 'speaker')
-                                    <button onclick="openSpeakerModal()"
-                                        class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
-                                        Apply as Speaker
-                                    </button>
-                                @elseif (auth()->user()->role == 'organizer' && auth()->user()->id == $event->organizer->id)
-                                    <button onclick="openOrganizerModal()"
-                                        class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
-                                        Edit This Event
-                                    </button>
-                                @elseif(auth()->user()->role == 'user')
-                                    @if ($event->available_tickets > 0)
-                                        <form action="{{ route('tickets.BookTicket', ['id' => $event->id]) }}" method="POST"
-                                            class="flex items-center justify-center ">
-                                            @csrf
-                                            <button
-                                                class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
-                                                <i class="fas fa-ticket-alt mr-2"></i> Book a Ticket
-                                            </button>
-                                        </form>
-                                    @else
-                                        <button disabled
-                                            class="flex items-center justify-center px-6 py-2.5 bg-surface dark:bg-dark-surface text-muted dark:text-dark-muted text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
-                                            <i class="fas fa-ban mr-2"></i> Sold Out
-                                        </button>
-                                    @endif
-                                @endif
-                            @endauth
+                       @auth
+    @if (auth()->user()->role == 'speaker')
+        @php
+            $hasTicket = \App\Models\Ticket::where('event_id', $event->id)
+                ->where('user_id', auth()->user()->id)
+                ->exists();
+        @endphp
+
+        @if ($hasTicket)
+            <button disabled
+                class="px-6 py-2.5 bg-surface dark:bg-dark-surface text-muted dark:text-dark-muted text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+                You Can't apply to this Event
+            </button>
+        @else
+            <button onclick="openSpeakerModal()"
+                class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
+                Apply as Speaker
+            </button>
+        @endif
+
+    @elseif (auth()->user()->role == 'organizer' && auth()->user()->id == $event->organizer->id)
+        <button onclick="openOrganizerModal()"
+            class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
+            Edit This Event
+        </button>
+
+    @elseif(auth()->user()->role == 'user')
+        @if ($event->available_tickets > 0)
+            <form action="{{ route('tickets.BookTicket', ['id' => $event->id]) }}" method="POST"
+                class="flex items-center justify-center ">
+                @csrf
+                <button
+                    class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
+                    <i class="fas fa-ticket-alt mr-2"></i> Book a Ticket
+                </button>
+            </form>
+        @else
+            <button disabled
+                class="flex items-center justify-center px-6 py-2.5 bg-surface dark:bg-dark-surface text-muted dark:text-dark-muted text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+                <i class="fas fa-ban mr-2"></i> Sold Out
+            </button>
+        @endif
+    @endif
+@endauth
+
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
