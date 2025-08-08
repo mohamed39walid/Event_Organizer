@@ -45,7 +45,7 @@
                 </div>
 
 
-            {{-- <div class="mt-5">
+            <div class="mt-5">
                 <label for="location" class="block text-primary dark:text-dark-primary font-semibold mb-2">
                     Location
                 </label>
@@ -55,7 +55,7 @@
                 @error('location')
                 <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
                 @enderror
-            </div> --}}
+            </div>
 
             <div class="mt-5">
                 <label for="available_tickets" class="block text-primary dark:text-dark-primary font-semibold mb-2">
