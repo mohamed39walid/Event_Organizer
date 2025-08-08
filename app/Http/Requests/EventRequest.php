@@ -24,6 +24,7 @@ class EventRequest extends FormRequest
     {
         return [
             'event_name' => 'required|string|max:255',
+            "location" => "required",
             "latitude" => "required",
             "longitude" => "required",
             'available_tickets' => 'required|integer|min:1',
