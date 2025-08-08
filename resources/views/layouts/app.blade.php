@@ -12,6 +12,13 @@
         href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=Inter:wght@400;600&family=Manrope:wght@400;600&family=Poppins:wght@400;600&family=Space+Grotesk:wght@400;700&family=Urbanist:wght@400;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    {{-- Adam Ahmed -> Added Smooth Scroll for all the pages --}}
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 @yield('styles')
