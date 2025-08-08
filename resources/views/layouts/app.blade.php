@@ -13,7 +13,7 @@
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    {{-- Adam Ahmed -> Added Smooth Scroll for all the pages --}}
+    {{-- Adam Ahmed -> Added Smoothi Scroll for all the pages --}}
     <style>
         html {
             scroll-behavior: smooth;
