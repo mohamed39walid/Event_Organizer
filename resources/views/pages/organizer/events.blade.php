@@ -49,6 +49,7 @@
             </div>
 
 
+<<<<<<< HEAD
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @foreach ($events as $event)
         <x-card 
@@ -64,14 +65,12 @@
         />
     @endforeach
 </div>
-            @if (empty($events))
-                <div class="text-center text-gray-500 dark:text-gray-400 w-full">
-                    No events found matching "{{ request('search') }}"
-                </div>
-            @endif
+         @if ($events->isEmpty())
+    <div class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 w-full py-16">
+        <i class="fas fa-folder-open text-6xl text-muted dark:text-dark-muted mb-4"></i>
+        <p class="text-lg">You Haven't Created An Event Yet!</p>
+    </div>
+@endif
 
-
-
-        </div>
     </div>
 @endsection
