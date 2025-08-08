@@ -23,7 +23,8 @@ class StoreEventRequest extends FormRequest
     {
         return [
             "event_name" => "required|min:3|string",
-            "location" => "required|string|min:3",
+            "latitude" => "required",
+            "longtitude" => "required",
             "start_date" => "required|date",
             "end_date" => "required|date|after_or_equal:start_date",
             "available_tickets" => "required|min:0",
