@@ -89,18 +89,18 @@
                                     @else fa-user @endif mr-2"></i>
                                 {{ ucfirst(auth()->user()->role) }}
                             </span>
-                        </div> 
-                        
+                        </div>
+
                     </div>
-                    
+
                     <div class="flex gap-3 pt-6 mt-6 border-t border-border dark:border-dark-border">
                         <button type="button" id="editBtn"
                             class="px-4 py-2 cursor-pointer bg-accent hover:bg-accent-hover text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
                             <i class="fas fa-edit"></i>
                             <span>Edit Profile</span>
                         </button>
-                        
-                        
+
+
 
 
                         <button type="submit" id="saveBtn"
@@ -109,7 +109,7 @@
                             <span>Save Changes</span>
                         </button>
                         <!-- delete button -->
-                        
+
                         <button type="button" id="cancelBtn"
                             class="hidden px-4 py-2 cursor-pointer bg-muted hover:bg-muted/80 text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
                             <i class="fas fa-times"></i>
@@ -118,15 +118,12 @@
 
                     </div>
                 </form>
-
-                <!-- delete button -->   
-                <form action="{{ route('profile.delete') }}" method="POST"
-                onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
-                class="px-6 mb-4">
+                {{-- Adam Ahmed -> Addedd Sweet Alert Message for deleting the Account --}}
+                <form id="deleteForm" action="{{ route('profile.delete') }}" method="POST" class="px-6 mb-4">
                     @csrf
                     @method('DELETE')
 
-                    <button type="submit" id="deletebtn"
+                    <button type="button" id="deletebtn"
                         class="hidden px-4 py-2 cursor-pointer bg-error hover:bg-error/90 text-white font-medium font-poppins rounded-lg transition-colors flex items-center gap-2">
                         <i class="fas fa-trash"></i>
                         <span>Delete Account</span>
@@ -166,6 +163,25 @@
                 input.value = originalValues[input.name];
             });
             toggleEdit(false);
+        });
+
+
+        //  Adam Ahmed -> Addedd Sweet Alert Message for deleting the Account
+        deleteBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e3342f',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteForm.submit();
+                }
+            });
         });
     </script>
 @endsection
