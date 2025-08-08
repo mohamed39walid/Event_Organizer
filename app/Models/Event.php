@@ -21,6 +21,7 @@ class Event extends Model
         'available_tickets',
         'status',
          'image',
+         'location',
         'organizer_id', 
     ];
 }
