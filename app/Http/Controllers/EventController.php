@@ -39,7 +39,7 @@ class EventController extends Controller
         }
 
         $events['status'] = "Available";
-        $events['organizer_id'] = Auth::id();
+        $events['organizer_id'] = Auth::id(); // Use auth() helper
 
         Event::create($events);
 

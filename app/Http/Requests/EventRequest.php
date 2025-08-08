@@ -24,13 +24,13 @@ class EventRequest extends FormRequest
     {
         return [
             'event_name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            "latitude" => "required",
+            "longitude" => "required",
             'available_tickets' => 'required|integer|min:1',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
-
     }
 
     public function messages()
@@ -38,6 +38,8 @@ class EventRequest extends FormRequest
         return [
             'end_date.after' => 'The end date must be after the start date.',
             'start_date.after_or_equal' => 'The start date must be today or later.',
+            'latitude' => "Enter the event location",
+            // 'longitude' => "Enter the event location",
         ];
     }
 }
