@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 
     $statusColors = [
-        'Avalaible' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+        'Available' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
         'Upcoming' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
         'Closed' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
     ];
@@ -33,9 +33,24 @@
         <div class="absolute inset-0 bg-black/20 dark:bg-black/50 rounded-t-4xl z-10"></div>
 
         @if ($image)
-            <img src="{{ asset($image) }}" alt="{{ $eventName ?? 'Event image' }}"
+            <img src="{{ asset('storage/events/' . $image) }}" alt="{{ $eventName ?? 'Event image' }}"
                 class="w-full h-[200px] object-cover rounded-t-4xl transition-transform duration-300 hover:scale-105">
         @endif
+
+        @auth
+            @if (auth()->user()->username == $organizer)
+                <div
+                    class="absolute top-4 left-4 z-20 w-10 h-10 flex justify-center items-center bg-white/30 cursor-pointer rounded-full text-red-900 hover:text-red-400 ">
+                    <form action="{{ route('organizer.events.destroy', ['id' => $eventid]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            @endif
+        @endauth
 
         <div class="absolute top-4 right-4 z-20">
             <span
@@ -45,7 +60,7 @@
         </div>
     </div>
 
-    <div class="pt-10 pb-8 px-8">
+    <div class="pb-8 px-8 {{ $image ? 'pt-8' : 'pt-14' }}">
         <div class="flex items-center gap-4 mb-4">
             <div class="flex flex-col items-center justify-center w-16 h-16 bg-accent/10 dark:bg-accent/20 rounded-2xl">
                 <span class="text-sm font-medium text-accent dark:text-accent">
@@ -98,7 +113,7 @@
                         class="block w-full py-2 px-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg text-center transition ">
                         Show Event
                     </a>
-                @elseif (auth()->user()->role === 'user' || auth()->user()->role === 'speaker' )
+                @elseif (auth()->user()->role === 'user' || auth()->user()->role === 'speaker')
                     <div class="flex gap-4">
                         @if ($tickets === 'Sold Out' || $status === 'Closed')
                             <button disabled aria-disabled="true"

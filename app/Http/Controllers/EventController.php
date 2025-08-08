@@ -43,51 +43,51 @@ class EventController extends Controller
     }
 
 
-public function UpdateEvent(Request $request, $id)
-{
-    $event = Event::findOrFail($id);
+    public function UpdateEvent(Request $request, $id)
+    {
+        $event = Event::findOrFail($id);
 
-    $validator = Validator::make($request->all(), [
-        'event_name' => 'required|string|min:3|max:255',
-        'location' => 'required|string|min:3|max:255',
-        'available_tickets' => 'required|integer|min:1',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after:start_date',
-        'status' => 'required|in:Available,Upcoming,Closed',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+        $validator = Validator::make($request->all(), [
+            'event_name' => 'required|string|min:3|max:255',
+            'location' => 'required|string|min:3|max:255',
+            'available_tickets' => 'required|integer|min:1',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'status' => 'required|in:Available,Upcoming,Closed',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    if ($validator->fails()) {
-        return redirect()->back()
-            ->withErrors($validator, 'organizer') 
-            ->withInput();
-    }
-
-    $data = $validator->validated(); 
-
-    if ($request->hasFile('image')) {
-        if ($event->image) {
-            $oldImagePath = str_replace('storage/', '', $event->image);
-            if (Storage::disk('public')->exists('events/' . $oldImagePath)) {
-                Storage::disk('public')->delete('events/' . $oldImagePath);
-            }
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator, 'organizer')
+                ->withInput();
         }
 
-        $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-        $imagePath = $request->file('image')->storeAs('events', $imageName, 'public');
-        $data['image'] = $imageName;
+        $data = $validator->validated();
+
+        if ($request->hasFile('image')) {
+            if ($event->image) {
+                $oldImagePath = str_replace('storage/', '', $event->image);
+                if (Storage::disk('public')->exists('events/' . $oldImagePath)) {
+                    Storage::disk('public')->delete('events/' . $oldImagePath);
+                }
+            }
+
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $imagePath = $request->file('image')->storeAs('events', $imageName, 'public');
+            $data['image'] = $imageName;
+        }
+
+        $event->update($data);
+
+        return redirect()->back()->with('success', 'Event has been updated successfully.');
     }
-
-    $event->update($data);
-
-    return redirect()->back()->with('success', 'Event has been updated successfully.');
-}
 
 
     public function DeleteEvent($id)
     {
         $event = Event::findorfail($id);
         $event->delete();
-        return redirect()->route('events.events')->with('Success', 'Event has been Deleted Successfully');
+        return redirect()->back()->with('Success', 'Event has been Deleted Successfully');
     }
 }

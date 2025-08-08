@@ -42,7 +42,7 @@ class UserController extends Controller
             return redirect()->route("home")->with('success', "Welcome To Event Hub Website ");
         }
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => "The email or password you entered is incorrect. Please try again.",
         ]);
     }
 
@@ -81,23 +81,23 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Your account has been deleted.');
     }
 
-public function toSpeaker(Request $request)
-{
-    $user = $request->user();
-    $user->role = 'speaker';
-    $user->save();
+    public function toSpeaker(Request $request)
+    {
+        $user = $request->user();
+        $user->role = 'speaker';
+        $user->save();
 
-    return redirect()->route('home')->with('success', 'You have become a speaker.');
-}
+        return redirect()->route('home')->with('success', 'You have become a speaker.');
+    }
 
-public function toOrganizer(Request $request)
-{
-    $user = $request->user();
-    $user->role = 'organizer';
-    $user->save();
+    public function toOrganizer(Request $request)
+    {
+        $user = $request->user();
+        $user->role = 'organizer';
+        $user->save();
 
-    return redirect()->route('home')->with('success', 'You have become an organizer.');
-}
+        return redirect()->route('home')->with('success', 'You have become an organizer.');
+    }
 
 
     // private function updateRoleRequest($requestedRole)
