@@ -24,13 +24,13 @@ class EventRequest extends FormRequest
     {
         return [
             'event_name' => 'required|string|max:255',
-            "location" => "required",
             "latitude" => "required",
             "longitude" => "required",
             'available_tickets' => 'required|integer|min:1',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            "location" => "required",
         ];
     }
 

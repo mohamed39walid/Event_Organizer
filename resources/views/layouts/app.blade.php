@@ -12,13 +12,62 @@
         href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=Inter:wght@400;600&family=Manrope:wght@400;600&family=Poppins:wght@400;600&family=Space+Grotesk:wght@400;700&family=Urbanist:wght@400;600&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet Geocoder JS -->
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet Geocoder CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     
     {{-- Adam Ahmed -> Added Smoothi Scroll for all the pages --}}
     <style>
         html {
             scroll-behavior: smooth;
         }
+            /* Custom styles for the map */
+    #map {
+        z-index: 1;
+        background-color: #f0f0f0;
+    }
+
+    /* Search input styling */
+    .location_input,
+    textarea,
+    select {
+        color: #000 !important;
+    }
+
+    .leaflet-control-geocoder {
+        margin-top: 10px !important;
+        margin-right: 10px !important;
+    }
+
+    /* Suggestions dropdown */
+    .leaflet-control-geocoder-form {
+        width: 300px;
+    }
+
+    .leaflet-control-geocoder-form input {
+        color: #000 !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Error states */
+    .border-error,
+    .dark .border-dark-error {
+        border-color: #ef4444;
+    }
+
+    .text-error,
+    .dark .text-dark-error {
+        color: #ef4444;
+    }
     </style>
+
+
+
 </head>
 
 @yield('styles')
