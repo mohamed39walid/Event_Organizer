@@ -126,17 +126,16 @@
 
                                 @if ($ticket->checked_in == 'no')
                                     <footer class="pt-6 border-t border-border/30 dark:border-dark-border/30">
-                                        <form action="{{ route('tickets.UnBookTicket', $ticket->id) }}" method="POST"
-                                            class="w-full"
-                                            onsubmit="return confirm('Are you sure you want to unbook this ticket? This action cannot be undone.')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="w-full cursor-pointer sm:w-auto px-6 py-3 bg-error hover:bg-error/90 dark:bg-dark-error dark:hover:bg-dark-error/90 text-white rounded-lg font-medium font-poppins transition-all duration-200 hover:shadow-lg hover:shadow-error/25 dark:hover:shadow-dark-error/25 focus:outline-none focus:ring-2 focus:ring-error/50 focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface transform"
-                                                aria-label="Unbook {{ $ticket->event->event_name }}">
-                                                Unbook Ticket
-                                            </button>
-                                        </form>
+                                       <form id="unbook-form-{{ $ticket->id }}" action="{{ route('tickets.UnBookTicket', $ticket->id) }}" method="POST" class="w-full">
+    @csrf
+    @method('DELETE')
+    <button type="button" 
+        onclick="confirmUnbook({{ $ticket->id }})"
+        class="w-full cursor-pointer sm:w-auto px-6 py-3 bg-error hover:bg-error/90 dark:bg-dark-error dark:hover:bg-dark-error/90 text-white rounded-lg font-medium font-poppins transition-all duration-200 hover:shadow-lg hover:shadow-error/25 dark:hover:shadow-dark-error/25 focus:outline-none focus:ring-2 focus:ring-error/50 focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-dark-surface">
+        Unbook Ticket
+    </button>
+</form>
+
                                     </footer>
                                 @endif
                             </div>
@@ -171,3 +170,21 @@
         </main>
     </div>
 @endsection
+<script>
+function confirmUnbook(ticketId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, unbook it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(`unbook-form-${ticketId}`).submit();
+        }
+    });
+}
+</script>
