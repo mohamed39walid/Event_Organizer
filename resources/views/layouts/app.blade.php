@@ -1,4 +1,4 @@
-{{-- Adam Ahmed Added Timeout for the Messages -> 5s--}}
+{{-- Adam Ahmed Added Timeout for the Messages -> 5s --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,57 +13,58 @@
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- Leaflet Geocoder JS -->
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet Geocoder JS -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<!-- Leaflet Geocoder CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet Geocoder CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
     {{-- Adam Ahmed -> Added Smoothi Scroll for all the pages --}}
     <style>
         html {
             scroll-behavior: smooth;
         }
-            /* Custom styles for the map */
-    #map {
-        z-index: 1;
-        background-color: #f0f0f0;
-    }
 
-    /* Search input styling */
-    .location_input,
-    textarea,
-    select {
-        color: #000 !important;
-    }
+        /* Custom styles for the map */
+        #map {
+            z-index: 1;
+            background-color: #f0f0f0;
+        }
 
-    .leaflet-control-geocoder {
-        margin-top: 10px !important;
-        margin-right: 10px !important;
-    }
+        /* Search input styling */
+        .location_input,
+        textarea,
+        select {
+            color: #000 !important;
+        }
 
-    /* Suggestions dropdown */
-    .leaflet-control-geocoder-form {
-        width: 300px;
-    }
+        .leaflet-control-geocoder {
+            margin-top: 10px !important;
+            margin-right: 10px !important;
+        }
 
-    .leaflet-control-geocoder-form input {
-        color: #000 !important;
-        padding: 8px 12px !important;
-    }
+        /* Suggestions dropdown */
+        .leaflet-control-geocoder-form {
+            width: 300px;
+        }
 
-    /* Error states */
-    .border-error,
-    .dark .border-dark-error {
-        border-color: #ef4444;
-    }
+        .leaflet-control-geocoder-form input {
+            color: #000 !important;
+            padding: 8px 12px !important;
+        }
 
-    .text-error,
-    .dark .text-dark-error {
-        color: #ef4444;
-    }
+        /* Error states */
+        .border-error,
+        .dark .border-dark-error {
+            border-color: #ef4444;
+        }
+
+        .text-error,
+        .dark .text-dark-error {
+            color: #ef4444;
+        }
     </style>
 
 
@@ -75,17 +76,20 @@
 <body class="bg-bg dark:bg-dark-bg text-gray-900 dark:text-white font-sans leading-relaxed">
 
     @if (session('success'))
-        <div id="flash-message" class="flash-message py-3 bg-success dark:bg-dark-success text-white flex items-center justify-center gap-2">
+        <div id="flash-message"
+            class="flash-message py-3 bg-success dark:bg-dark-success text-white flex items-center justify-center gap-2">
             <i class="fas fa-check-circle text-white"></i>
             <span>{{ session('success') }}</span>
         </div>
     @elseif (session('error'))
-        <div id="flash-message" class="flash-message py-3 bg-error dark:bg-dark-error text-white flex items-center justify-center gap-2">
+        <div id="flash-message"
+            class="flash-message py-3 bg-error dark:bg-dark-error text-white flex items-center justify-center gap-2">
             <i class="fas fa-exclamation-triangle text-white"></i>
             <span>{{ session('error') }}</span>
         </div>
     @elseif (session('info'))
-        <div id="flash-message" class="flash-message py-3 bg-blue-600 dark:bg-blue-700 text-white flex items-center justify-center gap-2">
+        <div id="flash-message"
+            class="flash-message py-3 bg-blue-600 dark:bg-blue-700 text-white flex items-center justify-center gap-2">
             <i class="fas fa-exclamation-triangle text-white"></i>
             <span>{{ session('info') }}</span>
         </div>
@@ -102,19 +106,19 @@
     @yield('scripts')
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const flash = document.querySelector('.flash-message');
             if (flash) {
                 setTimeout(() => {
                     flash.style.transition = 'opacity 0.5s ease';
                     flash.style.opacity = '0';
-                    setTimeout(() => flash.remove(), 500); 
-                }, 5000); 
+                    setTimeout(() => flash.remove(), 500);
+                }, 5000);
             }
         });
 
         // Force reload on back button
-        window.addEventListener('pageshow', function (event) {
+        window.addEventListener('pageshow', function(event) {
             if (event.persisted) {
                 window.location.reload();
             }
