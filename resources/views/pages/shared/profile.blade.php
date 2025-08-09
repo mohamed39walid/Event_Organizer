@@ -27,50 +27,60 @@
                     @method('PUT')
 
                     <div class="space-y-6">
-                        {{-- Full Name --}}
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-primary dark:text-dark-primary font-poppins">
-                                <i class="fas fa-id-card mr-2 text-muted dark:text-dark-muted"></i>Full Name
-                            </label>
-                            <div class="profile-field">
-                                <div
-                                    class="profile-display px-3 py-2 bg-surface dark:bg-dark-surface rounded-lg text-primary dark:text-dark-primary font-manrope">
-                                    {{ auth()->user()->fullname ?? 'Not provided' }}
-                                </div>
-                                <input type="text" name="fullname" value="{{ auth()->user()->fullname }}"
-                                    class="profile-input hidden w-full px-3 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary font-manrope focus:ring-2 focus:ring-accent focus:border-transparent">
-                            </div>
-                        </div>
+           {{-- Full Name --}}
+<div class="space-y-2">
+    <label class="block text-sm font-medium text-primary dark:text-dark-primary font-poppins">
+        <i class="fas fa-id-card mr-2 text-muted dark:text-dark-muted"></i>Full Name
+    </label>
+    <div class="profile-field">
+        <div
+            class="profile-display px-3 py-2 bg-surface dark:bg-dark-surface rounded-lg text-primary dark:text-dark-primary font-manrope">
+            {{ auth()->user()->fullname ?? 'Not provided' }}
+        </div>
+        <input type="text" name="fullname" value="{{ old('fullname', auth()->user()->fullname) }}"
+            class="profile-input hidden w-full px-3 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary font-manrope focus:ring-2 focus:ring-accent focus:border-transparent">
+    </div>
+    @error('fullname')
+        <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
-                        {{-- Username --}}
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-primary dark:text-dark-primary font-poppins">
-                                <i class="fas fa-at mr-2 text-muted dark:text-dark-muted"></i>Username
-                            </label>
-                            <div class="profile-field">
-                                <div
-                                    class="profile-display px-3 py-2 bg-surface dark:bg-dark-surface rounded-lg text-primary dark:text-dark-primary font-mono">
-                                    {{ auth()->user()->username }}
-                                </div>
-                                <input type="text" name="username" value="{{ auth()->user()->username }}"
-                                    class="profile-input hidden w-full px-3 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary font-mono focus:ring-2 focus:ring-accent focus:border-transparent">
-                            </div>
-                        </div>
+{{-- Username --}}
+<div class="space-y-2">
+    <label class="block text-sm font-medium text-primary dark:text-dark-primary font-poppins">
+        <i class="fas fa-at mr-2 text-muted dark:text-dark-muted"></i>Username
+    </label>
+    <div class="profile-field">
+        <div
+            class="profile-display px-3 py-2 bg-surface dark:bg-dark-surface rounded-lg text-primary dark:text-dark-primary font-mono">
+            {{ auth()->user()->username }}
+        </div>
+        <input type="text" name="username" value="{{ old('username', auth()->user()->username) }}"
+            class="profile-input hidden w-full px-3 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary font-mono focus:ring-2 focus:ring-accent focus:border-transparent">
+    </div>
+    @error('username')
+        <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
-                        {{-- Email --}}
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-primary dark:text-dark-primary font-poppins">
-                                <i class="fas fa-envelope mr-2 text-muted dark:text-dark-muted"></i>Email Address
-                            </label>
-                            <div class="profile-field">
-                                <div
-                                    class="profile-display px-3 py-2 bg-surface dark:bg-dark-surface rounded-lg text-primary dark:text-dark-primary font-manrope">
-                                    {{ auth()->user()->email }}
-                                </div>
-                                <input type="email" name="email" value="{{ auth()->user()->email }}"
-                                    class="profile-input hidden w-full px-3 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary font-manrope focus:ring-2 focus:ring-accent focus:border-transparent">
-                            </div>
-                        </div>
+{{-- Email --}}
+<div class="space-y-2">
+    <label class="block text-sm font-medium text-primary dark:text-dark-primary font-poppins">
+        <i class="fas fa-envelope mr-2 text-muted dark:text-dark-muted"></i>Email Address
+    </label>
+    <div class="profile-field">
+        <div
+            class="profile-display px-3 py-2 bg-surface dark:bg-dark-surface rounded-lg text-primary dark:text-dark-primary font-manrope">
+            {{ auth()->user()->email }}
+        </div>
+        <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}"
+            class="profile-input hidden w-full px-3 py-2 border border-border dark:border-dark-border rounded-lg bg-white dark:bg-dark-bg text-primary dark:text-dark-primary font-manrope focus:ring-2 focus:ring-accent focus:border-transparent">
+    </div>
+    @error('email')
+        <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
                         {{-- Role --}}
                         <div class="space-y-2">
