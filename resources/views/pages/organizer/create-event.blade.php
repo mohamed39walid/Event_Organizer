@@ -73,8 +73,8 @@
             <!-- Map Section -->
             <div class="mt-5">
                 <label for="addressInput" class="block text-primary dark:text-dark-primary font-semibold mb-2">Event Location</label>
-                <input id="addressInput" type="text" placeholder="Enter the event location"
-                    class="w-full rounded-md border text-primary dark:text-dark-primary p-3 mb-1 border-gray-300" />
+                <input id="location" type="text" placeholder="Enter the event location"
+                    name="location" class="w-full rounded-md border text-primary dark:text-dark-primary p-3 mb-1 border-gray-300" value="{{ old('location') }}"/>
                 @error('location')
                 <p class="text-sm text-error dark:text-dark-error mb-1">{{ $message }}</p>
                 @enderror
