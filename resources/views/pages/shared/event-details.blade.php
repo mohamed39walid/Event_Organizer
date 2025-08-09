@@ -71,6 +71,9 @@ return 'text-green-600 dark:text-green-400';
                     ->where('speaker_id', auth()->user()->id)
                     ->where('status', 'pending')
                     ->exists();
+
+
+                     $isAcceptedSpeaker = $eventSessions->contains('speaker_id', auth()->id());
                     @endphp
 
                     @if ($hasTicket)
@@ -83,6 +86,11 @@ return 'text-green-600 dark:text-green-400';
                         class="px-6 py-2.5 bg-yellow-100 text-yellow-800 border border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800 text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
                         <i class="fas fa-clock mr-2"></i> Under Review
                     </button>
+                    @elseif ($isAcceptedSpeaker)
+                  <button disabled
+        class="px-6 py-2.5 bg-green-100 text-green-800 border border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800 text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+        <i class="fas fa-check-circle mr-2"></i> Approved
+    </button>
                     @else
                     <button onclick="openSpeakerModal()"
                         class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
