@@ -26,10 +26,15 @@ class TicketController extends Controller
         if ($existing_ticket) {
             return redirect()->back()->with('info', 'You have already booked this event.');
         }
-        $proposal = Proposal::where("event_id",$id)->where("speaker_id",$user_id)->first();
-        if($proposal){
-            return redirect()->back()->with("error","You can't book a ticket in this Event as you are A Speaker");
-        }
+    $proposal = Proposal::where("event_id", $id)
+    ->where("speaker_id", $user_id)
+    ->whereIn('status', ['approved', 'pending'])
+    ->first();
+
+if ($proposal) {
+    return redirect()->back()->with("error", "You can't book a ticket in this Event as you are A Speaker");
+}
+
         DB::beginTransaction();
         try {
             if ($event->available_tickets > 0) {
