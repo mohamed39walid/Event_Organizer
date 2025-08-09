@@ -74,6 +74,9 @@ return 'text-green-600 dark:text-green-400';
 
 
                      $isAcceptedSpeaker = $eventSessions->contains('speaker_id', auth()->id());
+                     $ifrejectedid = $proposals->contains('speaker_id', auth()->id());
+                     $ifrejectedprop = $proposals->contains('status', 'rejected');
+
                     @endphp
 
                     @if ($hasTicket)
@@ -91,6 +94,12 @@ return 'text-green-600 dark:text-green-400';
         class="px-6 py-2.5 bg-green-100 text-green-800 border border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800 text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
         <i class="fas fa-check-circle mr-2"></i> Approved
     </button>
+                    @elseif ($ifrejectedid && $ifrejectedprop)
+    <button disabled
+    class="px-6 py-2.5 bg-red-100 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800 text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+    <i class="fas fa-times-circle mr-2"></i> Rejected
+</button>
+
                     @else
                     <button onclick="openSpeakerModal()"
                         class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
