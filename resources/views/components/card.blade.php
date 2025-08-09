@@ -28,7 +28,7 @@
     }
 @endphp
 {{-- Adam Ahmed -> Added A little animation on the cards --}}
-<div class="w-full max-w-sm bg-surface dark:bg-dark-surface rounded-4xl shadow-lg overflow-hidden h-fit 
+<div class="w-full max-w-sm bg-surface dark:bg-dark-surface rounded-4xl shadow-lg overflow-hidden h-fit
             transform transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.00] hover:shadow-2xl">
 
 {{-- <div class="w-full max-w-sm bg-surface dark:bg-dark-surface rounded-4xl shadow-lg overflow-hidden h-fit"> --}}
