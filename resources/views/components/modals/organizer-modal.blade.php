@@ -1,8 +1,8 @@
 {{-- Adam Ahmed Edited the modal --}}
 @if (Auth::user() && Auth::user()->role == 'organizer')
 <div id="organizerModal"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80
-    {{ session('errors') && !str_starts_with(array_keys(session('errors')->getBags())[0] ?? '', 'approve_') ? '' : 'hidden' }}">
+    class="fixed inset-0 z-50 items-center justify-center bg-black/80
+    {{ session('errors') && !str_starts_with(array_keys(session('errors')->getBags())[0] ?? '', 'approve_') ? 'flex' : 'hidden' }}">
     <div class="bg-white dark:bg-dark-bg w-full max-w-2xl rounded-2xl p-8 shadow-2xl relative mx-4 max-h-[90vh] overflow-y-auto">
         <!-- Close Button -->
         <button onclick="closeOrganizerModal()"
@@ -120,7 +120,7 @@
                     </div>
 
                     <!-- Map container -->
-                    <div id="map" style="height: 400px; width: 100%; border-radius: 0.5rem;"></div>
+                    <div id="editMap" style="height: 400px; width: 100%; border-radius: 0.5rem;"></div>
 
                     <!-- Hidden inputs for coordinates -->
                     <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $event->latitude) }}">
@@ -156,75 +156,75 @@
 
 @section('scripts')
 <!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
 <!-- Leaflet Geocoder CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
 <style>
     /* Custom styles for the map */
-    #map { 
+    #editMap {
         z-index: 1;
         background-color: #f0f0f0;
     }
-    
+
     /* Search input styling */
     input, textarea, select {
         color: #000 !important;
     }
-    
+
     .leaflet-control-geocoder {
         margin-top: 10px !important;
         margin-right: 10px !important;
     }
-    
+
     /* Suggestions dropdown */
     .leaflet-control-geocoder-form {
         width: 300px;
     }
-    
+
     .leaflet-control-geocoder-form input {
         color: #000 !important;
         padding: 8px 12px !important;
     }
-    
+
     /* Error states */
     .border-error, .dark .border-dark-error {
         border-color: #ef4444;
     }
-    
+
     .text-error, .dark .text-dark-error {
         color: #ef4444;
     }
-    
+
     /* Modal scrollbar styling */
     .overflow-y-auto::-webkit-scrollbar {
         width: 8px;
     }
-    
+
     .overflow-y-auto::-webkit-scrollbar-track {
         background: #f1f1f1;
         border-radius: 4px;
     }
-    
+
     .overflow-y-auto::-webkit-scrollbar-thumb {
         background: #888;
         border-radius: 4px;
     }
-    
+
     .overflow-y-auto::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
-    
+
     .dark .overflow-y-auto::-webkit-scrollbar-track {
         background: #2d3748;
     }
-    
+
     .dark .overflow-y-auto::-webkit-scrollbar-thumb {
         background: #4a5568;
     }
-    
+
     .dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
         background: #718096;
     }
@@ -238,22 +238,31 @@
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+let editMapInstance = null;
+
+// Initialize edit map function
+function initEditMap() {
+    // Prevent double initialization
+    if (editMapInstance) {
+        editMapInstance.invalidateSize();
+        return;
+    }
+
     // Use existing coordinates if available, otherwise default to Cairo
     const initialLat = {{ $event->latitude ?? '30.0444' }};
     const initialLng = {{ $event->longitude ?? '31.2357' }};
-    
+
     // Initialize the map
-    const map = L.map('map').setView([initialLat, initialLng], 13);
+    editMapInstance = L.map('editMap').setView([initialLat, initialLng], 13);
 
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    }).addTo(editMapInstance);
 
     // Create a marker
-    const marker = L.marker([initialLat, initialLng], {draggable: true}).addTo(map);
-    
+    const marker = L.marker([initialLat, initialLng], {draggable: true}).addTo(editMapInstance);
+
     const googleMapsLink = document.getElementById('googleMapsLink');
     const selectedLocation = document.getElementById('selectedLocation');
     const addressInput = document.getElementById('addressInput');
@@ -277,23 +286,23 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessage: 'Nothing found.'
     }).on('markgeocode', function(e) {
         const {center, name} = e.geocode;
-        map.setView(center, 15);
+        editMapInstance.setView(center, 15);
         marker.setLatLng(center);
         updateLocation(center.lat, center.lng, name);
         addressInput.value = name;
-    }).addTo(map);
+    }).addTo(editMapInstance);
 
     // Function to update location information
     function updateLocation(lat, lng, name = '') {
         document.getElementById('latitude').value = lat;
         document.getElementById('longitude').value = lng;
-        
+
         if (name) {
             selectedLocation.textContent = name;
         } else {
             selectedLocation.textContent = `Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
         }
-        
+
         // Update Google Maps link
         googleMapsLink.href = `https://www.google.com/maps?q=${lat},${lng}&ll=${lat},${lng}&z=15`;
         googleMapsLink.classList.remove('hidden');
@@ -303,9 +312,9 @@ document.addEventListener('DOMContentLoaded', function() {
     marker.on('dragend', function(e) {
         const {lat, lng} = e.target.getLatLng();
         updateLocation(lat, lng);
-        
+
         // Reverse geocode to get address
-        geocoder.reverse({lat, lng}, map.options.crs.scale(map.getZoom()), function(results) {
+        geocoder.reverse({lat, lng}, editMapInstance.options.crs.scale(editMapInstance.getZoom()), function(results) {
             if (results.length > 0) {
                 updateLocation(lat, lng, results[0].name);
                 addressInput.value = results[0].name;
@@ -314,12 +323,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle map click
-    map.on('click', function(e) {
+    editMapInstance.on('click', function(e) {
         marker.setLatLng(e.latlng);
         updateLocation(e.latlng.lat, e.latlng.lng);
-        
+
         // Reverse geocode to get address
-        geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
+        geocoder.reverse(e.latlng, editMapInstance.options.crs.scale(editMapInstance.getZoom()), function(results) {
             if (results.length > 0) {
                 updateLocation(e.latlng.lat, e.latlng.lng, results[0].name);
                 addressInput.value = results[0].name;
@@ -335,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
         geocoder.geocode(query, function(results) {
             if (results.length > 0) {
                 const {center, name} = results[0];
-                map.setView(center, 15);
+                editMapInstance.setView(center, 15);
                 marker.setLatLng(center);
                 updateLocation(center.lat, center.lng, name);
                 addressInput.value = name;
@@ -346,6 +355,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Handle Enter key in search input
+    addressInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchButton.click();
+        }
+    });
+
     // Set initial location if coordinates exist
     @if($event->latitude && $event->longitude)
         updateLocation(initialLat, initialLng);
@@ -353,39 +370,66 @@ document.addEventListener('DOMContentLoaded', function() {
     @else
         updateLocation(initialLat, initialLng, 'Default location: Cairo, Egypt');
     @endif
-    
+
     // Initialize address input with current location if available
     @if($event->location)
         addressInput.value = '{{ $event->location }}';
     @endif
-});
+
+    // Force map to render properly
+    setTimeout(() => {
+        editMapInstance.invalidateSize();
+    }, 250);
+}
 
 function openOrganizerModal() {
-    document.getElementById('organizerModal').classList.remove('hidden');
+    const modal = document.getElementById('organizerModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
     @if (session('errors'))
         window.history.replaceState({}, document.title, window.location.pathname);
     @endif
-    
-    // Small timeout to ensure map is properly initialized when modal opens
+
+    // Initialize map after modal is visible
     setTimeout(() => {
-        const mapElement = document.getElementById('map');
-        if (mapElement && mapElement._leaflet_map) {
-            mapElement._leaflet_map.invalidateSize();
-        }
+        initEditMap();
     }, 100);
 }
 
 function closeOrganizerModal() {
-    document.getElementById('organizerModal').classList.add('hidden');
+    const modal = document.getElementById('organizerModal');
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+
     @if (session('errors'))
         window.history.replaceState({}, document.title, window.location.pathname);
     @endif
 }
 
+// Handle modal initialization on page load
 document.addEventListener('DOMContentLoaded', function() {
     @if ($errors->getBag('organizer')->any())
+        // If there are validation errors, show modal immediately
         openOrganizerModal();
     @endif
+});
+
+// Handle escape key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('organizerModal');
+        if (modal && !modal.classList.contains('hidden')) {
+            closeOrganizerModal();
+        }
+    }
+});
+
+// Handle click outside modal to close
+document.getElementById('organizerModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeOrganizerModal();
+    }
 });
 </script>
 @endsection
