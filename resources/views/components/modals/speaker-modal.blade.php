@@ -11,16 +11,18 @@
             </button>
 
             <!-- Title -->
-            <h2 class="text-2xl font-semibold font-heading mb-6 text-primary dark:text-dark-primary">Request to be a Speaker</h2>
+            <h2 class="text-2xl font-semibold font-heading mb-6 text-primary dark:text-dark-primary">Request to be a
+                Speaker</h2>
 
             <!-- Form -->
-            <form action="{{ route('speaker.createproposal', ['id' => $event->id]) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="{{ route('speaker.createproposal', ['id' => $event->id]) }}" method="POST"
+                enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
                 <!-- Talk Title -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Talk Title</label>
-                    <input type="text" name="title" value="{{ old('title') }}" 
+                    <input type="text" name="title" value="{{ old('title') }}"
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
                     @error('title', 'speaker')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -30,17 +32,20 @@
                 <!-- Description -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
-                    <textarea name="description" rows="4"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">{{ old('description') }}</textarea>
+                    <textarea name="description" rows="4" style="color:red !important;"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-primary dark:text-dark-primary focus:ring-2 focus:ring-accent focus:outline-none">
+                        {{ old('description') }}
+                    </textarea>
                     @error('description', 'speaker')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <!-- Upload CV -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload CV (PDF or DOCX)</label>
-                    <input type="file" name="cv" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Upload CV (PDF or
+                        DOCX)</label>
+                    <input type="file" name="cv"
+                        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         class="block w-full text-sm text-gray-900 dark:text-gray-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-accent-hover transition-all cursor-pointer">
                     @error('cv', 'speaker')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
