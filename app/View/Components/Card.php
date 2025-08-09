@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
+
 class Card extends Component
 {
     public $eventid, $eventName, $date, $endDate, $location, $image, $tickets, $status, $organizer;
