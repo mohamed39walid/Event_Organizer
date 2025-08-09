@@ -23,8 +23,8 @@ return 'text-green-600 dark:text-green-400';
         <div class="bg-white dark:bg-dark-surface rounded-xl shadow-lg overflow-hidden">
             @if (isset($event->image))
             <div class="relative h-56 md:h-72">
-                <img src="{{ asset('storage/events/' . $event->image) }}" alt="{{ $event->event_name }}"
-                    class="w-full h-full object-cover">
+                <img src="{{ $event->image ? asset('/storage/events/' . $event->image) : asset('/images/event-defualt.jpg') }}"
+                    alt="{{ $event->event_name }}" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-6 left-6 right-6">
                     <h1 class="text-2xl md:text-3xl font-bold font-heading text-white mb-2">
@@ -62,15 +62,40 @@ return 'text-green-600 dark:text-green-400';
                     </div>
                     @auth
                     @if (auth()->user()->role == 'speaker')
+                    @php
+                    $hasTicket = \App\Models\Ticket::where('event_id', $event->id)
+                    ->where('user_id', auth()->user()->id)
+                    ->exists();
+
+                    $hasPendingProposal = \App\Models\Proposal::where('event_id', $event->id)
+                    ->where('speaker_id', auth()->user()->id)
+                    ->where('status', 'pending')
+                    ->exists();
+                    @endphp
+
+                    @if ($hasTicket)
+                    <button disabled
+                        class="px-6 py-2.5 bg-surface dark:bg-dark-surface text-muted dark:text-dark-muted text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+                        You Can't apply to this Event
+                    </button>
+                    @elseif ($hasPendingProposal)
+                    <button disabled
+                        class="px-6 py-2.5 bg-yellow-100 text-yellow-800 border border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800 text-sm font-medium font-poppins rounded-lg cursor-not-allowed">
+                        <i class="fas fa-clock mr-2"></i> Under Review
+                    </button>
+                    @else
                     <button onclick="openSpeakerModal()"
                         class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
                         Apply as Speaker
                     </button>
+                    @endif
+
                     @elseif (auth()->user()->role == 'organizer' && auth()->user()->id == $event->organizer->id)
                     <button onclick="openOrganizerModal()"
                         class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
                         Edit This Event
                     </button>
+
                     @elseif(auth()->user()->role == 'user')
                     @if ($event->available_tickets > 0)
                     <form action="{{ route('tickets.BookTicket', ['id' => $event->id]) }}" method="POST"
@@ -89,6 +114,8 @@ return 'text-green-600 dark:text-green-400';
                     @endif
                     @endif
                     @endauth
+
+
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
@@ -318,32 +345,19 @@ return 'text-green-600 dark:text-green-400';
             </div>
         </div>
 
-        {{-- <div class="mt-6 bg-white dark:bg-dark-surface rounded-xl shadow-lg">
+        <div class="mt-6 bg-white dark:bg-dark-surface rounded-xl shadow-lg">
             <div class="p-6">
                 <h3 class="text-lg font-semibold font-heading text-secondary dark:text-dark-secondary mb-4">
                     <i class="fas fa-map-marked-alt mr-2"></i> Event Location
                 </h3>
-                <div class="h-48 bg-surface dark:bg-dark-bg rounded-lg shadow-lg flex items-center justify-center">
-                    <div class="text-center">
-                        <i class="fas fa-map-marked-alt w-8 h-8 text-muted dark:text-dark-muted mb-2"></i>
-                        <p class="text-sm text-muted dark:text-dark-muted font-inter">
-                            Interactive map for {{ $event->location }}
-                        </p>
-                        <p class="text-xs text-muted dark:text-dark-muted font-inter mt-1">
-                            Map integration placeholder
-                        </p>
-                    </div>
-                </div>
+                    <div id="map" style="height: 400px;"></div>
+                    <p id="coordinates" class="mt-2"></p>
+                    <a id="googleMapsLink" href="#" target="_blank"></a>
+                    <button id="openGoogleMapsBtn" class="btn btn-primary mt-2">
+                        Open in Google Maps
+                    </button>
             </div>
-        </div> --}}
-
-        <div id="map" style="height: 400px;"></div>
-        <p id="coordinates" class="mt-2"></p>
-        <a id="googleMapsLink" href="#" target="_blank"></a>
-        <button id="openGoogleMapsBtn" class="btn btn-primary mt-2">
-            Open in Google Maps
-        </button>
-
+        </div>
         @else
         <div class="text-center py-16">
             <div class="max-w-md mx-auto">
@@ -449,6 +463,7 @@ function updateLocation(lat, lng) {
     });
 }
     </script>
+
 
 
     @endsection
