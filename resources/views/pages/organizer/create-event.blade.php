@@ -22,17 +22,6 @@
                 @enderror
             </div>
 
-            <div class="mt-5">
-                <label for="location" class="block text-primary dark:text-dark-primary font-semibold mb-2">
-                    Location
-                </label>
-                <input id="location" name="location" type="text" value="{{ old('location') }}"
-                    placeholder="e.g., Cairo International Stadium"
-                    class="w-full rounded-md border text-primary dark:text-dark-primary p-3 @error('location') border-error dark:border-dark-error @else border-gray-300 @enderror" />
-                @error('location')
-                <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
-                @enderror
-            </div>
 
             <div class="mt-5">
                 <label for="available_tickets" class="block text-primary dark:text-dark-primary font-semibold mb-2">
