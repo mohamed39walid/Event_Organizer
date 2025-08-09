@@ -141,7 +141,7 @@ return 'text-green-600 dark:text-green-400';
                     </div>
 
                 </div>
-                @if ($proposals && auth()->user()->role == 'organizer' && $event->organizer_id == auth()->id())
+                @if ( auth()->user()->role == 'organizer' && $event->organizer_id == auth()->id())
                 <div class="mt-6 border-t border-border dark:border-dark-border pt-6">
                     <h3 class="text-lg font-semibold font-heading text-secondary dark:text-dark-secondary mb-4">
                         <i class="fa-solid fa-hand mr-2"></i> Proposal Requests
