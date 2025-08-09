@@ -41,20 +41,21 @@
                 class="w-full h-[200px] object-cover rounded-t-4xl transition-transform duration-300 hover:scale-105">
         @endif
 
-@auth
-    @if (auth()->user()->username == $organizer)
-        <div
-            class="cursor-pointer absolute top-4 left-4 z-20 w-10 h-10 flex justify-center items-center bg-white/30 rounded-full text-red-900 hover:text-red-400">
-            <form id="delete-event-form" action="{{ route('organizer.events.destroy', ['id' => $eventid]) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" id="delete-event-btn">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </form>
-        </div>
-    @endif
-@endauth
+        @auth
+            @if (auth()->user()->username == $organizer)
+                <div
+                    class="cursor-pointer absolute top-4 left-4 z-20 w-10 h-10 flex justify-center items-center bg-white/30 rounded-full text-red-900 hover:text-red-400">
+                    <form id="delete-event-form" action="{{ route('organizer.events.destroy', ['id' => $eventid]) }}"
+                        method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" id="delete-event-btn">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            @endif
+        @endauth
 
 
         <div class="absolute top-4 right-4 z-20">
@@ -177,26 +178,26 @@
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('delete-event-form');
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('delete-event-form');
 
-    form.addEventListener('submit', function (e) {
-        e.preventDefault(); // prevent default form submit
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // prevent default form submit
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit(); // submit the form if confirmed
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // submit the form if confirmed
+                }
+            });
         });
     });
-});
 </script>
