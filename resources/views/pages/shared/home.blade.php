@@ -70,7 +70,7 @@
                     an intimate workshop or a large-scale conference, we provide the tools to make it extraordinary.
                 </p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-                    <div class="text-center">
+                    {{-- <div class="text-center">
                         <div class="text-3xl font-bold text-accent font-urbanist">500+</div>
                         <div class="text-muted dark:text-muted font-manrope">Events Hosted</div>
                     </div>
@@ -85,9 +85,63 @@
                     <div class="text-center">
                         <div class="text-3xl font-bold text-accent font-urbanist">50+</div>
                         <div class="text-muted dark:text-muted font-manrope">Cities Worldwide</div>
+                    </div> --}}
+                    {{-- Adam Ahmed -> Counter Animtion using JS --}}
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent font-urbanist counter" data-target="500">0+</div>
+                        <div class="text-muted dark:text-muted font-manrope">Events Hosted</div>
                     </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent font-urbanist counter" data-target="10000">0+</div>
+                        <div class="text-muted dark:text-muted font-manrope">Community Members</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent font-urbanist counter" data-target="200">0+</div>
+                        <div class="text-muted dark:text-muted font-manrope">Featured Speakers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent font-urbanist counter" data-target="50">0+</div>
+                        <div class="text-muted dark:text-muted font-manrope">Cities Worldwide</div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </section>
 @endsection
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const counters = document.querySelectorAll(".counter");
+
+        const animateCount = (counter) => {
+            const target = +counter.getAttribute("data-target");
+            let count = 0;
+            const increment = target / 200; 
+
+            const updateCount = () => {
+                count += increment;
+                if (count < target) {
+                    counter.textContent = Math.ceil(count) + "+";
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.textContent = target + "+";
+                }
+            };
+
+            updateCount();
+        };
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    obs.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        counters.forEach(counter => observer.observe(counter));
+    });
+</script>
