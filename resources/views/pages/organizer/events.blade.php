@@ -50,27 +50,18 @@
 
 
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @foreach ($events as $event)
-        <x-card 
-            :eventid="$event->id" 
-            :eventName="$event->event_name" 
-            :date="$event->start_date" 
-            :endDate="$event->end_date" 
-            :location="$event->location"
-            :image="$event->image ? $event->image : ''" 
-            :tickets="$event->available_tickets" 
-            :status="$event->status" 
-            :organizer="$event->organizer->username" 
-        />
-    @endforeach
-</div>
-         @if ($events->isEmpty())
-    <div class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 w-full py-16">
-        <i class="fas fa-folder-open text-6xl text-muted dark:text-dark-muted mb-4"></i>
-        <p class="text-lg">You Haven't Created An Event Yet!</p>
-    </div>
-@endif
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($events as $event)
+                    <x-card :eventid="$event->id" :eventName="$event->event_name" :date="$event->start_date" :endDate="$event->end_date" :location="$event->location"
+                        :image="$event->image ? $event->image : ''" :tickets="$event->available_tickets" :status="$event->status" :organizer="$event->organizer->username" />
+                @endforeach
+            </div>
+            @if ($events->isEmpty())
+                <div class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 w-full py-16">
+                    <i class="fas fa-folder-open text-6xl text-muted dark:text-dark-muted mb-4"></i>
+                    <p class="text-lg">You Haven't Created An Event Yet!</p>
+                </div>
+            @endif
 
-    </div>
-@endsection
+        </div>
+    @endsection
