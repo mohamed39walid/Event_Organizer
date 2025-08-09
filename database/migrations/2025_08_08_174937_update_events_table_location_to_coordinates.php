@@ -25,7 +25,6 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             // Reverse the changes
-            $table->string('location')->nullable()->after('event_name');
             $table->dropColumn(['latitude', 'longitude']);
         });
     }
