@@ -31,7 +31,7 @@
                 </div>
 
                 <!-- Location -->
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
                     <input type="text" name="location" value="{{ old('location', $event->location) }}"
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
@@ -39,7 +39,7 @@
                     @error('location', 'organizer')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 <!-- Start Date -->
                 <div>
@@ -112,11 +112,7 @@
                     <!-- Search Box -->
                     <div class="relative mb-4">
                         <input type="text" id="addressInput" placeholder="Search for a location..."
-                            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
-                        <button type="button" id="searchButton"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-accent text-white px-3 py-1 rounded-md hover:bg-accent-hover transition-colors">
-                            Search
-                        </button>
+                            name="location" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
                     </div>
 
                     <!-- Map container -->
