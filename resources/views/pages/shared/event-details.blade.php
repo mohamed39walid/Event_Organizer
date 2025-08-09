@@ -115,7 +115,7 @@
                                         class="px-6 py-2.5 bg-accent cursor-pointer hover:bg-accent-hover text-white text-sm font-medium font-poppins rounded-lg transition-colors duration-200">
                                         Edit This Event
                                     </button>
-                                @elseif(auth()->user()->role == 'user' && auth()->user()->role == 'speaker')
+                                @elseif(auth()->user()->role == 'user' || auth()->user()->role == 'speaker')
                                     @if ($event->available_tickets > 0)
                                         <form action="{{ route('tickets.BookTicket', ['id' => $event->id]) }}" method="POST"
                                             class="flex items-center justify-center ">
