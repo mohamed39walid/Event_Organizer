@@ -22,7 +22,7 @@ class AddedProposalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|string|min:6",
+            "title" => "required|string",
             "description" => "required",
             'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ];
