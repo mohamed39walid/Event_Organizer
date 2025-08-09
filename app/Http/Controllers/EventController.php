@@ -21,7 +21,7 @@ class EventController extends Controller
     public function CreateEvent()
     {
         // Adam Ahmed -> Prevent back history
-        if(Auth::user() && Auth::user()->role == 'organizer'){
+        if (Auth::user() && Auth::user()->role == 'organizer') {
             return view('pages.organizer.create-event');
         }
         return redirect()->route('home')->with('info', 'Error while trying to open previous page, please sign in');
@@ -54,6 +54,8 @@ class EventController extends Controller
         $validator = Validator::make($request->all(), [
             'event_name' => 'required|string|min:3|max:255',
             'location' => 'required|string|min:3|max:255',
+            "latitude" => "required",
+            "longitude" => "required",
             'available_tickets' => 'required|integer|min:1',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',

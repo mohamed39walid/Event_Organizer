@@ -106,37 +106,44 @@
                 </div>
 
                 <!-- Map Section -->
-                <div class="mt-5">
-                    <label class="block text-primary dark:text-dark-primary font-semibold mb-2">Event Location</label>
+<div class="mt-5">
+    <label class="block text-primary dark:text-dark-primary font-semibold mb-2">Event Location</label>
 
-                    <!-- Search Box -->
-                    <div class="relative mb-4">
-                        <input type="text" id="addressInput" placeholder="Search for a location..."
-                            name="location" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none">
-                    </div>
+    <!-- Search Box -->
+    <div class="relative mb-4">
+        <input type="text" id="addressInput" placeholder="Search for a location..."
+            name="location"
+            value="{{ old('location', $event->location) }}"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-accent focus:outline-none @error('location', 'organizer') border-error dark:border-dark-error @enderror">
+        @error('location', 'organizer')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+        @enderror
+    </div>
 
-                    <!-- Map container -->
-                    <div id="editMap" style="height: 400px; width: 100%; border-radius: 0.5rem;"></div>
+    <!-- Map container -->
+    <div id="editMap" style="height: 400px; width: 100%; border-radius: 0.5rem;"></div>
 
-                    <!-- Hidden inputs for coordinates -->
-                    <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $event->latitude) }}">
-                    <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $event->longitude) }}">
+    <!-- Hidden inputs for coordinates -->
+    <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $event->latitude) }}">
+    <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $event->longitude) }}">
 
-                    <!-- Selected location display -->
-                    <div class="mt-3 flex items-center justify-between">
-                        <div id="selectedLocation" class="text-sm text-gray-600 dark:text-gray-300">
-                            @if($event->latitude && $event->longitude)
-                                Current location: {{ $event->latitude }}, {{ $event->longitude }}
-                            @else
-                                No location selected yet
-                            @endif
-                        </div>
-                        <a id="googleMapsLink" href="#" target="_blank"
-                            class="text-blue-500 hover:text-blue-400 underline text-sm {{ $event->latitude && $event->longitude ? '' : 'hidden' }}">
-                            Open in Google Maps
-                        </a>
-                    </div>
-                </div>
+    <!-- Selected location display -->
+    <div class="mt-3 flex items-center justify-between">
+        <div id="selectedLocation" class="text-sm text-gray-600 dark:text-gray-300">
+            @if(old('latitude', $event->latitude) && old('longitude', $event->longitude))
+                Current location: {{ old('latitude', $event->latitude) }}, {{ old('longitude', $event->longitude) }}
+            @else
+                No location selected yet
+            @endif
+        </div>
+        <a id="googleMapsLink" href="#"
+            target="_blank"
+            class="text-blue-500 hover:text-blue-400 underline text-sm
+            {{ (old('latitude', $event->latitude) && old('longitude', $event->longitude)) ? '' : 'hidden' }}">
+            Open in Google Maps
+        </a>
+    </div>
+</div>
 
                 <!-- Submit Button -->
                 <div class="pt-4">
