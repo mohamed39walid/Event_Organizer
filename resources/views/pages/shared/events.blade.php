@@ -60,8 +60,9 @@
 
 
             @if ($events->isEmpty())
-                <div class="text-center text-gray-500 dark:text-gray-400 w-full">
-                    No events found matching "{{ request('search') }}"
+                    <div class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 w-full py-16">
+                    <i class="fas fa-folder-open text-6xl text-muted dark:text-dark-muted mb-4"></i>
+                    <p class="text-lg">No Events Has Been Added Yet</p>
                 </div>
             @endif
 
