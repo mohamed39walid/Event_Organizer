@@ -88,9 +88,6 @@
 
                 <input class="location_input" type="hidden" name="longitude" id="longitude"
                     value="{{ old('longitude') }}">
-                @error('longitude')
-                <p class="text-sm text-error dark:text-dark-error mt-1">{{ $message }}</p>
-                @enderror
 
                 <!-- Selected location display -->
                 <div class="mt-3 flex items-center justify-between">
